@@ -12,3 +12,8 @@
 */
 
 Route::get('/', 'PageController@index');
+Route::get('/facturation{any}', [
+    'as' => 'root_facturation'	,
+    'uses' => 'PageController@facturation'
+
+    ])->where('any','.*');

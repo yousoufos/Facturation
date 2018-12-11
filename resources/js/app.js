@@ -9,6 +9,14 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+import VueRouter from 'vue-router';
+Vue.use(VueRouter);
+import axios from 'axios';
+Vue.use(axios);
+import Vuetify from 'vuetify';
+Vue.use(Vuetify);
+import App from './components/App.vue';
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -21,6 +29,7 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key)))
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
+Vue.component('app', require('./components/App.vue'));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -29,5 +38,6 @@ Vue.component('example-component', require('./components/ExampleComponent.vue'))
  */
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    component: {App},
 });

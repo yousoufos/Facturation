@@ -17,4 +17,7 @@ class PageController extends Controller
         
         
     }
+    public function facturation(){
+        return view('layouts.app');
+    }
 }

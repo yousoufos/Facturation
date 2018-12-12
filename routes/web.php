@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', 'PageController@index');
+Route::get('/', 'FactureController@store');
 Route::get('/facturation{any}', [
     'as' => 'root_facturation'	,
     'uses' => 'PageController@facturation'

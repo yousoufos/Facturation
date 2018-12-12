@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Facture;
+use App\LigneFacture;
 use Illuminate\Http\Request;
 
 class FactureController extends Controller
@@ -35,7 +36,32 @@ class FactureController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        $facture = new Facture;
+        $facture->reference = $request->reference;
+        $facture->statut = $request->statut;
+        $facture->mode_reglement = $request->reglement;
+        $facture->date_emission = $request->date_emission;
+        $facture->date_echeance = $request->date_echeance;
+        $facture->client_id = $request->client_id;
+        $facture->total_ht = $request->total_ht;
+        $facture->total_ttc = $request->totla_ttc;
+        $facture->total_remise = $request->total_remise;
+        $facture->total_tva = $request->total_tva;
+        $facture->save();
+
+         $lignes = $request->lignes;
+       
+         foreach($lignes as $key=>$ligne)
+         {
+            $l = new LigneFacture;
+            $l->produit_id= $ligne['produit_id'];
+            $l->facture_id = $facture->id;
+            $l->qte = $ligne['qte'];
+            $l->remise = $ligne['remise'];
+           // $l->save();
+         }
+
+        return response()->json('okkkk');
     }
 
     /**

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class LigneFacture extends Model
 {
-    protected $fillable = ['qte','remise'];
+    protected $fillable = ['qte','remise','produit_id','facture_id'];
    
 
     public function Produit(){

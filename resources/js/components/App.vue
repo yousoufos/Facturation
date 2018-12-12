@@ -1,58 +1,93 @@
-use App\LigneFacture;
 <template>
-  <v-app class="primary">
-    <v-btn color="success" @click="submit">Save</v-btn>
+  <v-app id="inspire">
+    <v-navigation-drawer
+    stateless
+    value="true"
+  >
+    <v-list>
+      <v-list-tile>
+        <v-list-tile-action>
+          <v-icon>home</v-icon>
+        </v-list-tile-action>
+        <v-list-tile-title>Home</v-list-tile-title>
+      </v-list-tile>
+
+      <v-list-group
+        prepend-icon="account_circle"
+        value="true"
+      >
+        <v-list-tile slot="activator">
+          <v-list-tile-title>Users</v-list-tile-title>
+        </v-list-tile>
+
+        <v-list-group
+          no-action
+          sub-group
+          value="true"
+        >
+          <v-list-tile slot="activator">
+            <v-list-tile-title>Admin</v-list-tile-title>
+          </v-list-tile>
+
+          <v-list-tile
+            v-for="(admin, i) in admins"
+            :key="i"
+            @click=""
+          >
+            <v-list-tile-title v-text="admin[0]"></v-list-tile-title>
+            <v-list-tile-action>
+              <v-icon v-text="admin[1]"></v-icon>
+            </v-list-tile-action>
+          </v-list-tile>
+        </v-list-group>
+
+        <v-list-group
+          sub-group
+          no-action
+        >
+          <v-list-tile slot="activator">
+            <v-list-tile-title>Actions</v-list-tile-title>
+          </v-list-tile>
+
+          <v-list-tile
+            v-for="(crud, i) in cruds"
+            :key="i"
+            @click=""
+          >
+            <v-list-tile-title v-text="crud[0]"></v-list-tile-title>
+            <v-list-tile-action>
+              <v-icon v-text="crud[1]"></v-icon>
+            </v-list-tile-action>
+          </v-list-tile>
+        </v-list-group>
+      </v-list-group>
+    </v-list>
+  </v-navigation-drawer>
+   
   </v-app>
 </template>
 
 <script>
-export default {
-  props: ["url"],
-  data() {
-    return {
-      facture: {
-        reference: "FACT-TEST",
-        statut: "En cours",
-        reglement: "cheque",
-        date_emission: new Date(),
-        date_echeanche: new Date(),
-        client_id: 1,
-        total_ht: 100,
-        total_tva: 20,
-        total_ttc: 120,
-        total_remise: 11,
-        lignes: [
-          {
-            produit_id: 5,
-            qte: 10,
-            remise: 0
-          },
-          {
-            produit_id: 1,
-            qte: 6,
-            remise: 4
-          },
-          {
-            produit_id: 3,
-            qte: 2,
-            remise: 7
-          }
-        ]
-      }
-    };
-  },
-  methods: {
-    submit() {
-      let uri = this.url + "/api/facturation/create";
-      this.axios
-        .post(uri, this.facture)
-        .then(response => {
-          console.log(response);
-        })
-        .catch(error => {
-          console.log(error);
-        });
+  export default {
+    data: () => ({
+      admins: [
+        ['Management', 'people_outline'],
+        ['Settings', 'settings']
+      ],
+      cruds: [
+        ['Create', 'add'],
+        ['Read', 'insert_drive_file'],
+        ['Update', 'update'],
+        ['Delete', 'delete']
+      ]
+    }),
+    computed:{
+      
+    },
+    methods:{
+
     }
+    
+    
   }
-};
 </script>

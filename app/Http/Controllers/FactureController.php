@@ -44,7 +44,7 @@ class FactureController extends Controller
         $facture->date_echeance = $request->date_echeance;
         $facture->client_id = $request->client_id;
         $facture->total_ht = $request->total_ht;
-        $facture->total_ttc = $request->totla_ttc;
+        $facture->total_ttc = $request->total_ttc;
         $facture->total_remise = $request->total_remise;
         $facture->total_tva = $request->total_tva;
         $facture->save();
@@ -58,10 +58,10 @@ class FactureController extends Controller
             $l->facture_id = $facture->id;
             $l->qte = $ligne['qte'];
             $l->remise = $ligne['remise'];
-           // $l->save();
+            $l->save();
          }
 
-        return response()->json('okkkk');
+        return response()->json('Facture enregistrée avec sucees');
     }
 
     /**

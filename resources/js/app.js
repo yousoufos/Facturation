@@ -4,7 +4,9 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 window.Vue = require('vue')
-import {store} from './store/index'
+import {
+    store
+} from './store/index'
 import router from './router/Router'
 
 
@@ -16,6 +18,7 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 
 Vue.use(VueAxios, axios)
+
 
 /**
  * The following block of code may be used to automatically register your
@@ -31,6 +34,7 @@ Vue.use(VueAxios, axios)
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 Vue.component('app', require('./components/App.vue'));
 
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -39,6 +43,9 @@ Vue.component('app', require('./components/App.vue'));
 
 const app = new Vue({
     el: '#app',
-    component: {App},router,
+    component: {
+        App
+    },
+    router,
     store: store,
 });

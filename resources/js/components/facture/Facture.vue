@@ -1,6 +1,15 @@
-use App\LigneFacture;
+
 <template>
-    <v-btn color="success" @click="submit">Save</v-btn>
+  <v-container>
+    <v-layout>
+      <v-flex xs12>
+        <v-btn color="success" @click="submit" block>Save</v-btn>
+      </v-flex>
+      <v-flex xs12>
+        <v-btn color="primary" @click="test" block>Vuex</v-btn>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
@@ -50,6 +59,11 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    test() {
+      this.$store.dispatch("loadClients", this.url);
+      //console.log(this.$store.getters.getloadedClients);
+      //console.log(this.url);
     }
   }
 };

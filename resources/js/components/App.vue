@@ -1,93 +1,66 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer
-    stateless
-    value="true"
-  >
-    <v-list>
-      <v-list-tile>
-        <v-list-tile-action>
-          <v-icon>home</v-icon>
-        </v-list-tile-action>
-        <v-list-tile-title>Home</v-list-tile-title>
-      </v-list-tile>
-
-      <v-list-group
-        prepend-icon="account_circle"
-        value="true"
-      >
-        <v-list-tile slot="activator">
-          <v-list-tile-title>Users</v-list-tile-title>
+    <v-navigation-drawer app stateless value="true" class="blue-grey lighten-3" width="250" fixed>
+      <v-list>
+        <v-list-tile :to="'/facturation'">
+          <v-list-tile-action>
+            <v-icon>home</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-title>Home</v-list-tile-title>
         </v-list-tile>
 
-        <v-list-group
-          no-action
-          sub-group
-          value="true"
-        >
+        <v-list-group prepend-icon="account_circle" value="true">
           <v-list-tile slot="activator">
-            <v-list-tile-title>Admin</v-list-tile-title>
+            <v-list-tile-title>Users</v-list-tile-title>
           </v-list-tile>
 
-          <v-list-tile
-            v-for="(admin, i) in admins"
-            :key="i"
-            @click=""
-          >
-            <v-list-tile-title v-text="admin[0]"></v-list-tile-title>
-            <v-list-tile-action>
-              <v-icon v-text="admin[1]"></v-icon>
-            </v-list-tile-action>
-          </v-list-tile>
+          <v-list-group no-action sub-group value="true">
+            <v-list-tile slot="activator">
+              <v-list-tile-title>Admin</v-list-tile-title>
+            </v-list-tile>
+
+            <v-list-tile v-for="(admin, i) in admins" :key="i" @click>
+              <v-list-tile-title v-text="admin[0]"></v-list-tile-title>
+              <v-list-tile-action>
+                <v-icon v-text="admin[1]"></v-icon>
+              </v-list-tile-action>
+            </v-list-tile>
+          </v-list-group>
+
+          <v-list-group sub-group no-action>
+            <v-list-tile slot="activator">
+              <v-list-tile-title>Facturation</v-list-tile-title>
+            </v-list-tile>
+
+            <v-list-tile v-for="(menu, i) in menu_facturation" :key="i" @click :to="menu.link">
+              <v-list-tile-title v-text="menu.title"></v-list-tile-title>
+              <v-list-tile-action>
+                <v-icon v-text="menu.icon"></v-icon>
+              </v-list-tile-action>
+            </v-list-tile>
+          </v-list-group>
         </v-list-group>
-
-        <v-list-group
-          sub-group
-          no-action
-        >
-          <v-list-tile slot="activator">
-            <v-list-tile-title>Actions</v-list-tile-title>
-          </v-list-tile>
-
-          <v-list-tile
-            v-for="(crud, i) in cruds"
-            :key="i"
-            @click=""
-          >
-            <v-list-tile-title v-text="crud[0]"></v-list-tile-title>
-            <v-list-tile-action>
-              <v-icon v-text="crud[1]"></v-icon>
-            </v-list-tile-action>
-          </v-list-tile>
-        </v-list-group>
-      </v-list-group>
-    </v-list>
-  </v-navigation-drawer>
-   
+      </v-list>
+    </v-navigation-drawer>
+    <v-content>
+      <main>
+        <router-view :url="url"></router-view>
+      </main>
+    </v-content>
   </v-app>
 </template>
 
 <script>
-  export default {
-    data: () => ({
-      admins: [
-        ['Management', 'people_outline'],
-        ['Settings', 'settings']
-      ],
-      cruds: [
-        ['Create', 'add'],
-        ['Read', 'insert_drive_file'],
-        ['Update', 'update'],
-        ['Delete', 'delete']
-      ]
-    }),
-    computed:{
-      
-    },
-    methods:{
+export default {
+  props: ["url"],
+  data: () => ({
+    admins: [["Management", "people_outline"], ["Settings", "settings"]],
 
-    }
-    
-    
-  }
+    menu_facturation: [
+      { icon: "add", title: "Creer", link: "/facturation/create" }
+    ]
+  }),
+  computed: {},
+  methods: {}
+};
 </script>

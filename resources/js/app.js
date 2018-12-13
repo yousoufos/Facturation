@@ -48,4 +48,7 @@ const app = new Vue({
     },
     router,
     store: store,
+    created() {
+        this.$store.dispatch("loadClients", this.url)        
+    },
 });

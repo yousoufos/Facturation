@@ -1,15 +1,13 @@
 import axios from 'axios'
 export default {
     state: {
-        loadedClients: [],
+        loadedClients:null,
         reponse: ''
 
     },
     mutations: {
         setLoadedClients(state, payload) {
             state.loadedClients = payload
-            //state.reponse = payload
-
         }
     },
     actions: {
@@ -17,11 +15,26 @@ export default {
             commit
         }, payload) {
             let uri = payload + '/api/client'
+            commit('setLoading',true)
             axios.get(uri).then(response => {
-                commit('setLoadedClients', response.data.data)
-                console.log(response.data.data)
+                const client=[]
+                const obj = response.data
+                for (let key in obj) {
+                    //console.log(key);
+                    client.push({
+                        id: key,
+                        nom: obj[key].nom,
+                        raison: obj[key].raison,
+                        matricule:obj[key].matricule,
+                        adresse: obj[key].adresse,
+                        tel: obj[key].tel,
+                         })
+                }
+                commit('setLoadedClients', client)
+                commit('setLoading',false)
 
             }).catch((error) => {
+                commit('setLoading',false)
                 console.log(error)
             })
 

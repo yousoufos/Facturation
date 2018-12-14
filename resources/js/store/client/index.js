@@ -2,12 +2,16 @@ import axios from 'axios'
 export default {
     state: {
         loadedClients:null,
-        reponse: ''
+        clientListName: null
 
     },
     mutations: {
         setLoadedClients(state, payload) {
             state.loadedClients = payload
+        },
+        setClientListName(state,payload)
+        {
+            state.clientListName = payload
         }
     },
     actions: {
@@ -39,12 +43,23 @@ export default {
             })
 
 
+        },
+        loadClientListName({comit,getters}){
+            clt = []
+            getters.getloadedClients.forEach(element => {
+                clt.push(element.name)
+            });
+            commit('setClientListName',clt)
         }
     },
     getters: {
         getloadedClients(state) {
             return state.loadedClients
         },
+        getClientListName(state,actions){
+            actions.loadClientNameList
+            return state.clientListName
+        }
 
 
     }

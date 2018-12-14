@@ -19,7 +19,7 @@
     <v-layout row wrap>
       <v-flex xs12 sm6 d-flex>
         <v-select 
-          :items="liste"
+          :items="client"
           label="Client"
         ></v-select>
       </v-flex>
@@ -93,7 +93,7 @@ export default {
       },
     client(){
       
-      return this.$store.getters.getloadedClients
+      return this.$store.getters.getClientListName
     }  
   },
 };

@@ -49,6 +49,7 @@ const app = new Vue({
     router,
     store: store,
     created() {
-        this.$store.dispatch("loadClients", this.url)        
+        this.$store.dispatch('loadClients')
+        this.$store.dispatch('loadProduits')
     },
 });

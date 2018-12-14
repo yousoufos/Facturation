@@ -12287,7 +12287,8 @@ var app = new Vue({
     router: __WEBPACK_IMPORTED_MODULE_1__router_Router__["a" /* default */],
     store: __WEBPACK_IMPORTED_MODULE_0__store_index__["a" /* store */],
     created: function created() {
-        this.$store.dispatch("loadClients", this.url);
+        this.$store.dispatch('loadClients');
+        this.$store.dispatch('loadProduits');
     }
 });
 
@@ -12566,6 +12567,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__facture__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__client__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__shared__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__produit__ = __webpack_require__(57);
 
 
 
@@ -12575,11 +12577,13 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
 
 
 
+
 var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     modules: {
         facture: __WEBPACK_IMPORTED_MODULE_2__facture__["a" /* default */],
         client: __WEBPACK_IMPORTED_MODULE_3__client__["a" /* default */],
-        shared: __WEBPACK_IMPORTED_MODULE_4__shared__["a" /* default */]
+        shared: __WEBPACK_IMPORTED_MODULE_4__shared__["a" /* default */],
+        produit: __WEBPACK_IMPORTED_MODULE_5__produit__["a" /* default */]
     }
 });
 
@@ -13569,10 +13573,11 @@ var index_esm = {
         }
     },
     actions: {
-        loadClients: function loadClients(_ref, payload) {
-            var commit = _ref.commit;
+        loadClients: function loadClients(_ref) {
+            var commit = _ref.commit,
+                dispatch = _ref.dispatch;
 
-            var uri = payload + '/api/client';
+            var uri = 'http://192.168.1.2:3000/api/client';
             commit('setLoading', true);
             __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(uri).then(function (response) {
                 var client = [];
@@ -13580,7 +13585,7 @@ var index_esm = {
                 for (var key in obj) {
                     //console.log(key);
                     client.push({
-                        id: key,
+                        id: obj[key].id,
                         nom: obj[key].nom,
                         raison: obj[key].raison,
                         matricule: obj[key].matricule,
@@ -13589,6 +13594,7 @@ var index_esm = {
                     });
                 }
                 commit('setLoadedClients', client);
+                dispatch('loadClientListName');
                 commit('setLoading', false);
             }).catch(function (error) {
                 commit('setLoading', false);
@@ -13596,12 +13602,15 @@ var index_esm = {
             });
         },
         loadClientListName: function loadClientListName(_ref2) {
-            var comit = _ref2.comit,
+            var commit = _ref2.commit,
                 getters = _ref2.getters;
 
-            clt = [];
+            var clt = [];
             getters.getloadedClients.forEach(function (element) {
-                clt.push(element.name);
+                clt.push({
+                    id: element.id,
+                    nom: element.nom
+                });
             });
             commit('setClientListName', clt);
         }
@@ -13610,8 +13619,8 @@ var index_esm = {
         getloadedClients: function getloadedClients(state) {
             return state.loadedClients;
         },
-        getClientListName: function getClientListName(state, actions) {
-            actions.loadClientNameList;
+        getClientListName: function getClientListName(state) {
+
             return state.clientListName;
         }
     }
@@ -14555,7 +14564,7 @@ var facturation = __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('factura
 
 /* harmony default export */ __webpack_exports__["a"] = (new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
     mode: 'history',
-    base: Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"}).BASE_URL,
+    base: Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"}).BASE_URL,
     routes: [{
         path: '/facturation/create',
         name: 'create_facture',
@@ -17270,13 +17279,57 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["url"],
   created: function created() {},
   data: function data() {
     return {
-      liste: [],
+      qte: "",
+      remise: "",
+      headers: [{
+        align: "left",
+        sortable: false
+      }, { text: "Id", value: "id" }, { text: "Nom", value: "nom" }],
+      client_id: "",
+      produit_id: "",
       facture: {
         reference: "FACT-TEST",
         statut: "En cours",
@@ -17315,9 +17368,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       });
     },
     test: function test() {
-      //this.client = this.$store.getters.getloadedClients
-
-
+      console.log(this.produit_id);
     }
   },
   computed: {
@@ -17325,8 +17376,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       return this.$store.getters.loading;
     },
     client: function client() {
-
       return this.$store.getters.getClientListName;
+    },
+    produit: function produit() {
+      return this.$store.getters.getProduitListName;
     }
   }
 });
@@ -17341,6 +17394,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-container",
+    { attrs: { "grid-list-md": "" } },
     [
       _vm.loading
         ? _c(
@@ -17406,8 +17460,145 @@ var render = function() {
         [
           _c(
             "v-flex",
-            { attrs: { xs12: "", sm6: "", "d-flex": "" } },
-            [_c("v-select", { attrs: { items: _vm.client, label: "Client" } })],
+            { attrs: { xs12: "", sm4: "", "d-flex": "" } },
+            [
+              _c("v-select", {
+                attrs: {
+                  items: _vm.client,
+                  "item-text": "nom",
+                  "item-value": "id",
+                  label: "Client"
+                },
+                on: { change: function($event) {} },
+                model: {
+                  value: _vm.client_id,
+                  callback: function($$v) {
+                    _vm.client_id = $$v
+                  },
+                  expression: "client_id"
+                }
+              })
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("v-divider"),
+      _vm._v(" "),
+      _c(
+        "v-layout",
+        { attrs: { row: "", wrap: "" } },
+        [
+          _c(
+            "v-flex",
+            { attrs: { xs12: "", sm4: "", md6: "", "d-flex": "" } },
+            [
+              _c("v-select", {
+                attrs: {
+                  items: _vm.produit,
+                  "item-text": "designation",
+                  "item-value": "id",
+                  label: "Produits"
+                },
+                on: { change: function($event) {} },
+                model: {
+                  value: _vm.produit_id,
+                  callback: function($$v) {
+                    _vm.produit_id = $$v
+                  },
+                  expression: "produit_id"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-flex",
+            { attrs: { xs12: "", sm4: "", md2: "" } },
+            [
+              _c("v-text-field", {
+                attrs: { label: "Quantité" },
+                model: {
+                  value: _vm.qte,
+                  callback: function($$v) {
+                    _vm.qte = $$v
+                  },
+                  expression: "qte"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-flex",
+            { attrs: { xs12: "", sm4: "", md2: "" } },
+            [
+              _c("v-text-field", {
+                attrs: { label: "Remise" },
+                model: {
+                  value: _vm.remise,
+                  callback: function($$v) {
+                    _vm.remise = $$v
+                  },
+                  expression: "remise"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-flex",
+            { attrs: { xs12: "", sm4: "", md2: "" } },
+            [
+              _c(
+                "v-btn",
+                { attrs: { fab: "", dark: "", small: "", color: "indigo" } },
+                [_c("v-icon", { attrs: { dark: "" } }, [_vm._v("add")])],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-layout",
+            { attrs: { row: "", wrap: "" } },
+            [
+              _c(
+                "v-flex",
+                { attrs: { xs12: "" } },
+                [
+                  _c("v-data-table", {
+                    staticClass: "elevation-1",
+                    attrs: {
+                      headers: _vm.headers,
+                      items: _vm.client,
+                      "total-items": 50
+                    },
+                    scopedSlots: _vm._u([
+                      {
+                        key: "items",
+                        fn: function(props) {
+                          return [
+                            _c("td", [_vm._v(_vm._s(props.item.name))]),
+                            _vm._v(" "),
+                            _c("td", {}, [_vm._v(_vm._s(props.item.id))]),
+                            _vm._v(" "),
+                            _c("td", {}, [_vm._v(_vm._s(props.item.nom))])
+                          ]
+                        }
+                      }
+                    ])
+                  })
+                ],
+                1
+              )
+            ],
             1
           )
         ],
@@ -40647,6 +40838,83 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 53 */,
+/* 54 */,
+/* 55 */,
+/* 56 */,
+/* 57 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+    state: {
+        loadedProduits: null,
+        produitListName: null
+
+    },
+    mutations: {
+        setLoadedProduits: function setLoadedProduits(state, payload) {
+            state.loadedProduits = payload;
+        },
+        setProduitListName: function setProduitListName(state, payload) {
+            state.produitListName = payload;
+        }
+    },
+    actions: {
+        loadProduits: function loadProduits(_ref) {
+            var commit = _ref.commit,
+                dispatch = _ref.dispatch;
+
+            var uri = 'http://192.168.1.2:3000/api/produit';
+            commit('setLoading', true);
+            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(uri).then(function (response) {
+                var Produit = [];
+                var obj = response.data;
+                for (var key in obj) {
+                    Produit.push({
+                        id: obj[key].id,
+                        designation: obj[key].designation,
+                        tva: obj[key].tva,
+                        prix: obj[key].prix
+                    });
+                }
+                commit('setLoadedProduits', Produit);
+                dispatch('loadProduitListName');
+                commit('setLoading', false);
+            }).catch(function (error) {
+                commit('setLoading', false);
+                console.log(error);
+            });
+        },
+        loadProduitListName: function loadProduitListName(_ref2) {
+            var commit = _ref2.commit,
+                getters = _ref2.getters;
+
+            var clt = [];
+            getters.getloadedProduits.forEach(function (element) {
+                clt.push({
+                    id: element.id,
+                    designation: element.designation
+                });
+            });
+            commit('setProduitListName', clt);
+        }
+    },
+    getters: {
+        getloadedProduits: function getloadedProduits(state) {
+            return state.loadedProduits;
+        },
+        getProduitListName: function getProduitListName(state) {
+
+            return state.produitListName;
+        }
+    }
+});
 
 /***/ })
 /******/ ]);

@@ -1,7 +1,7 @@
 import axios from 'axios'
 export default {
     state: {
-        loadedClients:null,
+        loadedClients: null,
         clientListName: null
 
     },
@@ -9,55 +9,63 @@ export default {
         setLoadedClients(state, payload) {
             state.loadedClients = payload
         },
-        setClientListName(state,payload)
-        {
+        setClientListName(state, payload) {
             state.clientListName = payload
         }
     },
     actions: {
         loadClients({
-            commit
-        }, payload) {
-            let uri = payload + '/api/client'
-            commit('setLoading',true)
+            commit,
+            dispatch
+        }) {
+            let uri = 'http://192.168.1.2:3000/api/client'
+            commit('setLoading', true)
             axios.get(uri).then(response => {
-                const client=[]
+                const client = []
                 const obj = response.data
                 for (let key in obj) {
                     //console.log(key);
                     client.push({
-                        id: key,
+                        id: obj[key].id,
                         nom: obj[key].nom,
                         raison: obj[key].raison,
-                        matricule:obj[key].matricule,
+                        matricule: obj[key].matricule,
                         adresse: obj[key].adresse,
                         tel: obj[key].tel,
-                         })
+                    })
                 }
                 commit('setLoadedClients', client)
-                commit('setLoading',false)
+                dispatch('loadClientListName')
+                commit('setLoading', false)
 
             }).catch((error) => {
-                commit('setLoading',false)
+                commit('setLoading', false)
                 console.log(error)
             })
 
 
         },
-        loadClientListName({comit,getters}){
-            clt = []
+        loadClientListName({
+            commit,
+            getters
+        }) {
+            let clt = []
             getters.getloadedClients.forEach(element => {
-                clt.push(element.name)
+                clt.push({
+                    id: element.id,
+                    nom: element.nom
+                })
             });
-            commit('setClientListName',clt)
+            commit('setClientListName', clt)
         }
     },
     getters: {
         getloadedClients(state) {
             return state.loadedClients
         },
-        getClientListName(state,actions){
-            actions.loadClientNameList
+        getClientListName(state) {
+
+
             return state.clientListName
         }
 

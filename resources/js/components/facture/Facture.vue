@@ -45,18 +45,42 @@
         <v-text-field label="Remise" v-model="remise"></v-text-field>
       </v-flex>
       <v-flex xs12 sm4 md2>
-        <v-btn fab dark small color="indigo">
+        <v-btn fab dark small color="indigo" @click="ajouter">
           <v-icon dark>add</v-icon>
         </v-btn>
       </v-flex>
       <v-layout row wrap>
         <v-flex xs12>
-          <v-data-table :headers="headers" :items="client" class="elevation-1" :total-items="50">
+          <v-data-table :headers="headers" :items="ligne_tab" class="elevation-1" :total-items="50">
             <template slot="items" slot-scope="props">
               <td>{{ props.item.name }}</td>
-              <td class>{{ props.item.id }}</td>
-              <td class>{{ props.item.nom }}</td>
+              <td class>{{ props.item.designation }}</td>
+              <td class>{{ props.item.qte }}</td>
+              <td class>{{ props.item.prix_unitaire }}</td>
+              <td class>{{ props.item.tva }}</td>
+              <td class>{{ props.item.total_ht_ligne }}</td>
+              <td class>{{ props.item.remise }}</td>
+              <td class="justify-center layout px-0">
+              <v-icon
+                small
+                class="mr-2"
+                @click="editItem(props.item)"
+              >
+                edit
+              </v-icon>
+              <v-icon
+              small
+              @click="deleteItem(props.item)"
+              >
+                delete
+              </v-icon>
+              </td>              
             </template>
+            <template slot="footer">
+                <td :colspan="headers.length">
+                  <strong>This is an extra footer</strong>
+                </td>
+              </template>
           </v-data-table>
         </v-flex>
       </v-layout>
@@ -70,15 +94,22 @@ export default {
   created() {},
   data() {
     return {
+      ligne_tab:[],
       qte: "",
       remise: "",
       headers: [
         {
           align: "left",
-          sortable: false
+          sortable: false,
+          value:"name"
         },
-        { text: "Id", value: "id" },
-        { text: "Nom", value: "nom" }
+        { text: "Designation", value: "designation" },
+        { text: "Quantité", value: "qte" },
+        { text: "Prix Unitaire", value: "prix_unitaire" },
+        { text: "TVA", value: "tva" },
+        { text: "Total HT", value: "total_ht_ligne" },
+        { text: "Remise", value: "remise" },
+        { text: 'Actions', value: 'name', sortable: false }
       ],
       client_id: "",
       produit_id: "",
@@ -126,7 +157,22 @@ export default {
         });
     },
     test() {
-      console.log(this.produit_id);
+      console.log(this.ligne_tab);
+    },
+    ajouter(){
+      this.ligne_tab.push({
+        designation : this.$store.getters.getProduitById(this.produit_id).designation,
+        qte : this.qte,
+        prix_unitaire : this.$store.getters.getProduitById(this.produit_id).prix,
+        tva : this.$store.getters.getProduitById(this.produit_id).tva,
+        total_ht_ligne :  this.total_ht_ligne(this.produit_id),
+        remise : this.remise
+      })
+    },
+    total_ht_ligne(id){
+      let a = this.$store.getters.getProduitById(id).prix
+      let b = this.$store.getters.getProduitById(id).tva
+      return  a * b
     }
   },
   computed: {

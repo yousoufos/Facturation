@@ -61,9 +61,14 @@ export default {
             return state.loadedProduits
         },
         getProduitListName(state) {
-
-
             return state.produitListName
+        },
+        getProduitById(state){
+            return (produitId) => {
+                return state.loadedProduits.find((produit) =>{
+                    return produit.id == produitId
+                })
+            }
         }
     }
 }

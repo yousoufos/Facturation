@@ -13729,3 +13729,12 @@ table.v-table tfoot tr td {
   transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
 }
 
+.inputPrice input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+.inputPrice input::-webkit-outer-spin-button,
+.inputPrice input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+

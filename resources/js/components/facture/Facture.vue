@@ -39,10 +39,10 @@
         ></v-select>
       </v-flex>
       <v-flex xs12 sm4 md2>
-        <v-text-field label="Quantité" v-model="qte"></v-text-field>
+        <v-text-field  class="inputPrice" type="number" label="Quantité" v-model="qte"></v-text-field>
       </v-flex>
       <v-flex xs12 sm4 md2>
-        <v-text-field label="Remise" v-model="remise"></v-text-field>
+        <v-text-field  class="inputPrice"type="number" label="Remise" v-model="remise"></v-text-field>
       </v-flex>
       <v-flex xs12 sm4 md2>
         <v-btn fab dark small color="indigo" @click="ajouter">
@@ -61,26 +61,34 @@
               <td class>{{ props.item.total_ht_ligne }}</td>
               <td class>{{ props.item.remise }}</td>
               <td class="justify-center layout px-0">
-              <v-icon
-                small
-                class="mr-2"
-                @click="editItem(props.item)"
-              >
-                edit
-              </v-icon>
-              <v-icon
-              small
-              @click="deleteItem(props.item)"
-              >
-                delete
-              </v-icon>
-              </td>              
+                <v-icon small class="mr-2" @click="editItem(props.item)">edit</v-icon>
+                <v-icon small @click="deleteItem(props.item)">delete</v-icon>
+              </td>
             </template>
             <template slot="footer">
-                <td :colspan="headers.length">
-                  <strong>This is an extra footer</strong>
-                </td>
-              </template>
+              <td :colspan="headers.length">
+                <v-layout row wrap>
+                  <v-flex offset-xs10 xs2>
+                    <v-text-field class="inputPrice" type="number" readonly label="Totale Remise" v-model="total_remise" disabled></v-text-field>
+                  </v-flex>
+                </v-layout>
+                <v-layout row wrap>
+                  <v-flex offset-xs10 xs2>
+                    <v-text-field class="inputPrice" type="number" readonly label="Totale Tva" v-model="total_tva" disabled></v-text-field>
+                  </v-flex>
+                </v-layout>
+                <v-layout row wrap>
+                  <v-flex offset-xs10 xs2>
+                    <v-text-field class="inputPrice" type="number" readonly label="Totale HT" v-model="total_ht" disabled></v-text-field>
+                  </v-flex>
+                </v-layout>
+                <v-layout row wrap>
+                  <v-flex offset-xs10 xs2>
+                    <v-text-field class="inputPrice" type="number" readonly label="Totale TTC" v-model="total_ttc" disabled></v-text-field>
+                  </v-flex>
+                </v-layout>
+              </td>
+            </template>
           </v-data-table>
         </v-flex>
       </v-layout>
@@ -94,14 +102,14 @@ export default {
   created() {},
   data() {
     return {
-      ligne_tab:[],
-      qte: "",
-      remise: "",
+      ligne_tab: [],
+      qte: 0,
+      remise: 0,
       headers: [
         {
           align: "left",
           sortable: false,
-          value:"name"
+          value: "name"
         },
         { text: "Designation", value: "designation" },
         { text: "Quantité", value: "qte" },
@@ -109,39 +117,37 @@ export default {
         { text: "TVA", value: "tva" },
         { text: "Total HT", value: "total_ht_ligne" },
         { text: "Remise", value: "remise" },
-        { text: 'Actions', value: 'name', sortable: false }
+        { text: "Actions", value: "name", sortable: false }
       ],
       client_id: "",
       produit_id: "",
-      facture: {
-        reference: "FACT-TEST",
-        statut: "En cours",
-        reglement: "cheque",
-        date_emission: new Date(),
-        date_echeance: new Date(),
-        client_id: 1,
-        total_ht: 100,
-        total_tva: 20,
-        total_ttc: 120,
-        total_remise: 11,
-        lignes: [
-          {
-            produit_id: 5,
-            qte: 10,
-            remise: 0
-          },
-          {
-            produit_id: 1,
-            qte: 6,
-            remise: 4
-          },
-          {
-            produit_id: 3,
-            qte: 2,
-            remise: 7
-          }
-        ]
-      }
+      reference: "FACT-TEST",
+      statut: "En cours",
+      reglement: "cheque",
+      date_emission: new Date(),
+      date_echeance: new Date(),
+      client_id: 1,
+      total_ht: 0,
+      total_tva: 0,
+      total_ttc: 0,
+      total_remise: 0,
+      lignes: [
+        {
+          produit_id: 5,
+          qte: 10,
+          remise: 0
+        },
+        {
+          produit_id: 1,
+          qte: 6,
+          remise: 4
+        },
+        {
+          produit_id: 3,
+          qte: 2,
+          remise: 7
+        }
+      ]
     };
   },
   methods: {
@@ -159,21 +165,33 @@ export default {
     test() {
       console.log(this.ligne_tab);
     },
-    ajouter(){
+    ajouter() {
       this.ligne_tab.push({
-        designation : this.$store.getters.getProduitById(this.produit_id).designation,
-        qte : this.qte,
-        prix_unitaire : this.$store.getters.getProduitById(this.produit_id).prix,
-        tva : this.$store.getters.getProduitById(this.produit_id).tva,
-        total_ht_ligne :  this.total_ht_ligne(this.produit_id),
-        remise : this.remise
-      })
+        designation: this.$store.getters.getProduitById(this.produit_id)
+          .designation,
+        qte: this.qte,
+        prix_unitaire: this.$store.getters.getProduitById(this.produit_id).prix,
+        tva: this.$store.getters.getProduitById(this.produit_id).tva,
+        total_ht_ligne: this.total_ht_ligne(this.produit_id),
+        remise: this.remise
+      });
+      this.total_remise = eval(this.total_remise) + eval(this.remise)
+      this.total_ht = this.total_ht + this.total_ht_ligne(this.produit_id)
+      this.total_ttc = this.total_ttc + this.total_ttc_ligne(this.produit_id)
+      this.total_tva = this.total_tva + this.total_tva_ligne(this.produit_id)
+
     },
-    total_ht_ligne(id){
-      let a = this.$store.getters.getProduitById(id).prix
-      let b = this.$store.getters.getProduitById(id).tva
-      return  a * b
-    }
+    total_ht_ligne(id) {
+      let a = this.$store.getters.getProduitById(id).prix;      
+      return a * this.qte;
+    },
+    total_ttc_ligne(id){
+      let a = this.$store.getters.getProduitById(id).tva
+      return this.total_ht_ligne(id) * (1+(a/100))
+    },
+    total_tva_ligne(id){
+      return this.total_ttc_ligne(id) - this.total_ht_ligne(id)
+    },
   },
   computed: {
     loading() {
@@ -188,3 +206,4 @@ export default {
   }
 };
 </script>
+

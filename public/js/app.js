@@ -13558,72 +13558,72 @@ var index_esm = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 
+
 /* harmony default export */ __webpack_exports__["a"] = ({
-    state: {
-        loadedClients: null,
-        clientListName: null
+  state: {
+    loadedClients: null,
+    clientListName: null
 
+  },
+  mutations: {
+    setLoadedClients: function setLoadedClients(state, payload) {
+      state.loadedClients = payload;
     },
-    mutations: {
-        setLoadedClients: function setLoadedClients(state, payload) {
-            state.loadedClients = payload;
-        },
-        setClientListName: function setClientListName(state, payload) {
-            state.clientListName = payload;
-        }
-    },
-    actions: {
-        loadClients: function loadClients(_ref) {
-            var commit = _ref.commit,
-                dispatch = _ref.dispatch;
-
-            var uri = 'http://192.168.1.2:3000/api/client';
-            commit('setLoading', true);
-            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(uri).then(function (response) {
-                var client = [];
-                var obj = response.data;
-                for (var key in obj) {
-                    //console.log(key);
-                    client.push({
-                        id: obj[key].id,
-                        nom: obj[key].nom,
-                        raison: obj[key].raison,
-                        matricule: obj[key].matricule,
-                        adresse: obj[key].adresse,
-                        tel: obj[key].tel
-                    });
-                }
-                commit('setLoadedClients', client);
-                dispatch('loadClientListName');
-                commit('setLoading', false);
-            }).catch(function (error) {
-                commit('setLoading', false);
-                console.log(error);
-            });
-        },
-        loadClientListName: function loadClientListName(_ref2) {
-            var commit = _ref2.commit,
-                getters = _ref2.getters;
-
-            var clt = [];
-            getters.getloadedClients.forEach(function (element) {
-                clt.push({
-                    id: element.id,
-                    nom: element.nom
-                });
-            });
-            commit('setClientListName', clt);
-        }
-    },
-    getters: {
-        getloadedClients: function getloadedClients(state) {
-            return state.loadedClients;
-        },
-        getClientListName: function getClientListName(state) {
-
-            return state.clientListName;
-        }
+    setClientListName: function setClientListName(state, payload) {
+      state.clientListName = payload;
     }
+  },
+  actions: {
+    loadClients: function loadClients(_ref) {
+      var commit = _ref.commit,
+          dispatch = _ref.dispatch;
+
+      var uri = 'http://localhost:3000/api/client';
+      commit('setLoading', true);
+      __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(uri).then(function (response) {
+        var client = [];
+        var obj = response.data;
+        for (var key in obj) {
+          // console.log(key);
+          client.push({
+            id: obj[key].id,
+            nom: obj[key].nom,
+            raison: obj[key].raison,
+            matricule: obj[key].matricule,
+            adresse: obj[key].adresse,
+            tel: obj[key].tel
+          });
+        }
+        commit('setLoadedClients', client);
+        dispatch('loadClientListName');
+        commit('setLoading', false);
+      }).catch(function (error) {
+        commit('setLoading', false);
+        console.log(error);
+      });
+    },
+    loadClientListName: function loadClientListName(_ref2) {
+      var commit = _ref2.commit,
+          getters = _ref2.getters;
+
+      var clt = [];
+      getters.getloadedClients.forEach(function (element) {
+        clt.push({
+          id: element.id,
+          nom: element.nom
+        });
+      });
+      commit('setClientListName', clt);
+    }
+  },
+  getters: {
+    getloadedClients: function getloadedClients(state) {
+      return state.loadedClients;
+    },
+    getClientListName: function getClientListName(state) {
+      return state.clientListName;
+    }
+  }
 });
 
 /***/ }),
@@ -14557,74 +14557,74 @@ module.exports = function spread(callback) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 
 /* harmony default export */ __webpack_exports__["a"] = ({
-    state: {
-        loadedProduits: null,
-        produitListName: null
+  state: {
+    loadedProduits: null,
+    produitListName: null
 
+  },
+  mutations: {
+    setLoadedProduits: function setLoadedProduits(state, payload) {
+      state.loadedProduits = payload;
     },
-    mutations: {
-        setLoadedProduits: function setLoadedProduits(state, payload) {
-            state.loadedProduits = payload;
-        },
-        setProduitListName: function setProduitListName(state, payload) {
-            state.produitListName = payload;
-        }
-    },
-    actions: {
-        loadProduits: function loadProduits(_ref) {
-            var commit = _ref.commit,
-                dispatch = _ref.dispatch;
-
-            var uri = 'http://192.168.1.2:3000/api/produit';
-            commit('setLoading', true);
-            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(uri).then(function (response) {
-                var Produit = [];
-                var obj = response.data;
-                for (var key in obj) {
-                    Produit.push({
-                        id: obj[key].id,
-                        designation: obj[key].designation,
-                        tva: obj[key].tva,
-                        prix: obj[key].prix
-                    });
-                }
-                commit('setLoadedProduits', Produit);
-                dispatch('loadProduitListName');
-                commit('setLoading', false);
-            }).catch(function (error) {
-                commit('setLoading', false);
-                console.log(error);
-            });
-        },
-        loadProduitListName: function loadProduitListName(_ref2) {
-            var commit = _ref2.commit,
-                getters = _ref2.getters;
-
-            var clt = [];
-            getters.getloadedProduits.forEach(function (element) {
-                clt.push({
-                    id: element.id,
-                    designation: element.designation
-                });
-            });
-            commit('setProduitListName', clt);
-        }
-    },
-    getters: {
-        getloadedProduits: function getloadedProduits(state) {
-            return state.loadedProduits;
-        },
-        getProduitListName: function getProduitListName(state) {
-            return state.produitListName;
-        },
-        getProduitById: function getProduitById(state) {
-            return function (produitId) {
-                return state.loadedProduits.find(function (produit) {
-                    return produit.id == produitId;
-                });
-            };
-        }
+    setProduitListName: function setProduitListName(state, payload) {
+      state.produitListName = payload;
     }
+  },
+  actions: {
+    loadProduits: function loadProduits(_ref) {
+      var commit = _ref.commit,
+          dispatch = _ref.dispatch;
+
+      var uri = 'http://localhost:3000/api/produit';
+      commit('setLoading', true);
+      __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(uri).then(function (response) {
+        var Produit = [];
+        var obj = response.data;
+        for (var key in obj) {
+          Produit.push({
+            id: obj[key].id,
+            designation: obj[key].designation,
+            tva: obj[key].tva,
+            prix: obj[key].prix
+          });
+        }
+        commit('setLoadedProduits', Produit);
+        dispatch('loadProduitListName');
+        commit('setLoading', false);
+      }).catch(function (error) {
+        commit('setLoading', false);
+        console.log(error);
+      });
+    },
+    loadProduitListName: function loadProduitListName(_ref2) {
+      var commit = _ref2.commit,
+          getters = _ref2.getters;
+
+      var clt = [];
+      getters.getloadedProduits.forEach(function (element) {
+        clt.push({
+          id: element.id,
+          designation: element.designation
+        });
+      });
+      commit('setProduitListName', clt);
+    }
+  },
+  getters: {
+    getloadedProduits: function getloadedProduits(state) {
+      return state.loadedProduits;
+    },
+    getProduitListName: function getProduitListName(state) {
+      return state.produitListName;
+    },
+    getProduitById: function getProduitById(state) {
+      return function (produitId) {
+        return state.loadedProduits.find(function (produit) {
+          return produit.id == produitId;
+        });
+      };
+    }
+  }
 });
 
 /***/ }),
@@ -14643,7 +14643,7 @@ var facturation = __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('factura
 
 /* harmony default export */ __webpack_exports__["a"] = (new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
     mode: 'history',
-    base: Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"}).BASE_URL,
+    base: Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"}).BASE_URL,
     routes: [{
         path: '/facturation/create',
         name: 'create_facture',
@@ -17329,6 +17329,16 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -17424,43 +17434,37 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   props: ["url"],
   created: function created() {},
   data: function data() {
-    return {
+    var _ref;
+
+    return _ref = {
       ligne_tab: [],
-      qte: "",
-      remise: "",
+      qte: 0,
+      remise: 0,
       headers: [{
         align: "left",
         sortable: false,
         value: "name"
-      }, { text: "Designation", value: "designation" }, { text: "Quantité", value: "qte" }, { text: "Prix Unitaire", value: "prix_unitaire" }, { text: "TVA", value: "tva" }, { text: "Total HT", value: "total_ht_ligne" }, { text: "Remise", value: "remise" }, { text: 'Actions', value: 'name', sortable: false }],
+      }, { text: "Designation", value: "designation" }, { text: "Quantité", value: "qte" }, { text: "Prix Unitaire", value: "prix_unitaire" }, { text: "TVA", value: "tva" }, { text: "Total HT", value: "total_ht_ligne" }, { text: "Remise", value: "remise" }, { text: "Actions", value: "name", sortable: false }],
       client_id: "",
       produit_id: "",
-      facture: {
-        reference: "FACT-TEST",
-        statut: "En cours",
-        reglement: "cheque",
-        date_emission: new Date(),
-        date_echeance: new Date(),
-        client_id: 1,
-        total_ht: 100,
-        total_tva: 20,
-        total_ttc: 120,
-        total_remise: 11,
-        lignes: [{
-          produit_id: 5,
-          qte: 10,
-          remise: 0
-        }, {
-          produit_id: 1,
-          qte: 6,
-          remise: 4
-        }, {
-          produit_id: 3,
-          qte: 2,
-          remise: 7
-        }]
-      }
-    };
+      reference: "FACT-TEST",
+      statut: "En cours",
+      reglement: "cheque",
+      date_emission: new Date(),
+      date_echeance: new Date()
+    }, _defineProperty(_ref, "client_id", 1), _defineProperty(_ref, "total_ht", 0), _defineProperty(_ref, "total_tva", 0), _defineProperty(_ref, "total_ttc", 0), _defineProperty(_ref, "total_remise", 0), _defineProperty(_ref, "lignes", [{
+      produit_id: 5,
+      qte: 10,
+      remise: 0
+    }, {
+      produit_id: 1,
+      qte: 6,
+      remise: 4
+    }, {
+      produit_id: 3,
+      qte: 2,
+      remise: 7
+    }]), _ref;
   },
 
   methods: {
@@ -17484,11 +17488,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         total_ht_ligne: this.total_ht_ligne(this.produit_id),
         remise: this.remise
       });
+      this.total_remise = eval(this.total_remise) + eval(this.remise);
+      this.total_ht = this.total_ht + this.total_ht_ligne(this.produit_id);
+      this.total_ttc = this.total_ttc + this.total_ttc_ligne(this.produit_id);
+      this.total_tva = this.total_tva + this.total_tva_ligne(this.produit_id);
     },
     total_ht_ligne: function total_ht_ligne(id) {
       var a = this.$store.getters.getProduitById(id).prix;
-      var b = this.$store.getters.getProduitById(id).tva;
-      return a * b;
+      return a * this.qte;
+    },
+    total_ttc_ligne: function total_ttc_ligne(id) {
+      var a = this.$store.getters.getProduitById(id).tva;
+      return this.total_ht_ligne(id) * (1 + a / 100);
+    },
+    total_tva_ligne: function total_tva_ligne(id) {
+      return this.total_ttc_ligne(id) - this.total_ht_ligne(id);
     }
   },
   computed: {
@@ -17640,7 +17654,8 @@ var render = function() {
             { attrs: { xs12: "", sm4: "", md2: "" } },
             [
               _c("v-text-field", {
-                attrs: { label: "Quantité" },
+                staticClass: "inputPrice",
+                attrs: { type: "number", label: "Quantité" },
                 model: {
                   value: _vm.qte,
                   callback: function($$v) {
@@ -17658,7 +17673,8 @@ var render = function() {
             { attrs: { xs12: "", sm4: "", md2: "" } },
             [
               _c("v-text-field", {
-                attrs: { label: "Remise" },
+                staticClass: "inputPrice",
+                attrs: { type: "number", label: "Remise" },
                 model: {
                   value: _vm.remise,
                   callback: function($$v) {
@@ -17745,11 +17761,7 @@ var render = function() {
                                         }
                                       }
                                     },
-                                    [
-                                      _vm._v(
-                                        "\n              edit\n            "
-                                      )
-                                    ]
+                                    [_vm._v("edit")]
                                   ),
                                   _vm._v(" "),
                                   _c(
@@ -17762,11 +17774,7 @@ var render = function() {
                                         }
                                       }
                                     },
-                                    [
-                                      _vm._v(
-                                        "\n              delete\n            "
-                                      )
-                                    ]
+                                    [_vm._v("delete")]
                                   )
                                 ],
                                 1
@@ -17778,9 +17786,136 @@ var render = function() {
                     },
                     [
                       _c("template", { slot: "footer" }, [
-                        _c("td", { attrs: { colspan: _vm.headers.length } }, [
-                          _c("strong", [_vm._v("This is an extra footer")])
-                        ])
+                        _c(
+                          "td",
+                          { attrs: { colspan: _vm.headers.length } },
+                          [
+                            _c(
+                              "v-layout",
+                              { attrs: { row: "", wrap: "" } },
+                              [
+                                _c(
+                                  "v-flex",
+                                  { attrs: { "offset-xs10": "", xs2: "" } },
+                                  [
+                                    _c("v-text-field", {
+                                      staticClass: "inputPrice",
+                                      attrs: {
+                                        type: "number",
+                                        readonly: "",
+                                        label: "Totale Remise",
+                                        disabled: ""
+                                      },
+                                      model: {
+                                        value: _vm.total_remise,
+                                        callback: function($$v) {
+                                          _vm.total_remise = $$v
+                                        },
+                                        expression: "total_remise"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "v-layout",
+                              { attrs: { row: "", wrap: "" } },
+                              [
+                                _c(
+                                  "v-flex",
+                                  { attrs: { "offset-xs10": "", xs2: "" } },
+                                  [
+                                    _c("v-text-field", {
+                                      staticClass: "inputPrice",
+                                      attrs: {
+                                        type: "number",
+                                        readonly: "",
+                                        label: "Totale Tva",
+                                        disabled: ""
+                                      },
+                                      model: {
+                                        value: _vm.total_tva,
+                                        callback: function($$v) {
+                                          _vm.total_tva = $$v
+                                        },
+                                        expression: "total_tva"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "v-layout",
+                              { attrs: { row: "", wrap: "" } },
+                              [
+                                _c(
+                                  "v-flex",
+                                  { attrs: { "offset-xs10": "", xs2: "" } },
+                                  [
+                                    _c("v-text-field", {
+                                      staticClass: "inputPrice",
+                                      attrs: {
+                                        type: "number",
+                                        readonly: "",
+                                        label: "Totale HT",
+                                        disabled: ""
+                                      },
+                                      model: {
+                                        value: _vm.total_ht,
+                                        callback: function($$v) {
+                                          _vm.total_ht = $$v
+                                        },
+                                        expression: "total_ht"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "v-layout",
+                              { attrs: { row: "", wrap: "" } },
+                              [
+                                _c(
+                                  "v-flex",
+                                  { attrs: { "offset-xs10": "", xs2: "" } },
+                                  [
+                                    _c("v-text-field", {
+                                      staticClass: "inputPrice",
+                                      attrs: {
+                                        type: "number",
+                                        readonly: "",
+                                        label: "Totale TTC",
+                                        disabled: ""
+                                      },
+                                      model: {
+                                        value: _vm.total_ttc,
+                                        callback: function($$v) {
+                                          _vm.total_ttc = $$v
+                                        },
+                                        expression: "total_ttc"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
                       ])
                     ],
                     2

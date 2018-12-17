@@ -19,3 +19,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/facturation/create', 'FactureController@store');
 Route::get('/client', 'ClientController@index');
 Route::get('/produit', 'ProduitController@index');
+Route::get('/facture', 'FactureController@index');
+Route::get('/facture/lignesfacture', 'LigneFactureController@index');

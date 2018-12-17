@@ -1,6 +1,4 @@
 import axios from 'axios'
-
-
 export default {
   state: {
     loadedClients: null,
@@ -25,17 +23,17 @@ export default {
       axios.get(uri).then((response) => {
         const client = [];
         const obj = response.data;
-        for (const key in obj) {
-          // console.log(key);
-          client.push({
-            id: obj[key].id,
-            nom: obj[key].nom,
-            raison: obj[key].raison,
-            matricule: obj[key].matricule,
-            adresse: obj[key].adresse,
-            tel: obj[key].tel,
-          });
-        }
+        Object.keys(obj).forEach((key) => {
+            const value = obj[key];
+            client.push({
+                id: obj[key].id,
+                nom: obj[key].nom,
+                raison: obj[key].raison,
+                matricule: obj[key].matricule,
+                adresse: obj[key].adresse,
+                tel: obj[key].tel,
+              });
+        })
         commit('setLoadedClients', client);
         dispatch('loadClientListName');
         commit('setLoading', false);

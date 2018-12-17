@@ -33,6 +33,7 @@ Vue.use(VueAxios, axios)
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 Vue.component('app', require('./components/App.vue'));
+Vue.component('date', require('./components/date/date.vue'));
 
 
 /**
@@ -51,5 +52,7 @@ const app = new Vue({
     created() {
         this.$store.dispatch('loadClients')
         this.$store.dispatch('loadProduits')
+        this.$store.dispatch('loadLignesFacture')
+        this.$store.dispatch('loadFactures')
     },
 });

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Facture;
 use App\LigneFacture;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class FactureController extends Controller
 {
@@ -15,9 +16,13 @@ class FactureController extends Controller
      */
     public function index()
     {
-        //
+        $facture = Facture::All();
+        return response()->json($facture);
     }
-
+    public function count(){
+        $count = DB::table('factures')->whereYear('date_emission','=',2018)->count();
+        dd($count);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -50,7 +55,7 @@ class FactureController extends Controller
         $facture->save();
 
          $lignes = $request->lignes;
-       
+
          foreach($lignes as $key=>$ligne)
          {
             $l = new LigneFacture;

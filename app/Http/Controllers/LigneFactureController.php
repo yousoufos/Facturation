@@ -14,7 +14,8 @@ class LigneFactureController extends Controller
      */
     public function index()
     {
-        //
+        $lf = LigneFacture::All();
+        return response()->json($lf);
     }
 
     /**

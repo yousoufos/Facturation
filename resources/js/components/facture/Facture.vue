@@ -1,21 +1,46 @@
-
 <template>
   <v-container grid-list-md>
-    <v-layout row wrap v-if="loading">
-      <v-flex xs12 class="text-xs-center">
-        <v-progress-circular indeterminate color="primary"></v-progress-circular>
+    <v-layout
+      row
+      wrap
+      v-if="loading"
+    >
+      <v-flex
+        xs12
+        class="text-xs-center"
+      >
+        <v-progress-circular
+          indeterminate
+          color="primary"
+        ></v-progress-circular>
       </v-flex>
     </v-layout>
     <v-layout>
       <v-flex xs12>
-        <v-btn color="success" @click="submit" block>Save</v-btn>
+        <v-btn
+          color="success"
+          @click="submit"
+          block
+        >Save</v-btn>
       </v-flex>
       <v-flex xs12>
-        <v-btn color="primary" @click="test" block>Vuex</v-btn>
+        <v-btn
+          color="primary"
+          @click="test"
+          block
+        >Vuex</v-btn>
       </v-flex>
     </v-layout>
-    <v-layout row wrap>
-      <v-flex xs12 sm4 d-flex>
+    <v-layout
+      row
+      wrap
+    >
+      <v-flex
+        xs12
+        sm4
+        md4
+        d-flex
+      >
         <v-select
           :items="client "
           item-text="nom"
@@ -25,10 +50,20 @@
           @change
         ></v-select>
       </v-flex>
+      <date :date_facture="'Date Facturation'" ref="datefacture"></date>
+      <date :date_facture="'Date Echeance'" ref="dateecheance"></date>
     </v-layout>
     <v-divider></v-divider>
-    <v-layout row wrap>
-      <v-flex xs12 sm4 md6 d-flex>
+    <v-layout
+      row
+      wrap
+    >
+      <v-flex
+        xs12
+        sm4
+        md6
+        d-flex
+      >
         <v-select
           :items="produit "
           item-text="designation"
@@ -38,21 +73,61 @@
           @change
         ></v-select>
       </v-flex>
-      <v-flex xs12 sm4 md2>
-        <v-text-field  class="inputPrice" type="number" label="Quantité" v-model="qte"></v-text-field>
+      <v-flex
+        xs12
+        sm4
+        md2
+      >
+        <v-text-field
+          min="0"
+          step="1"
+          type="number"
+          label="Quantité"
+          v-model="qte"
+        ></v-text-field>
       </v-flex>
-      <v-flex xs12 sm4 md2>
-        <v-text-field  class="inputPrice"type="number" label="Remise" v-model="remise"></v-text-field>
+      <v-flex
+        xs12
+        sm4
+        md2
+      >
+        <v-text-field
+          class="inputPrice"
+          type="number"
+          label="Remise"
+          v-model="remise"
+        ></v-text-field>
       </v-flex>
-      <v-flex xs12 sm4 md2>
-        <v-btn fab dark small color="indigo" @click="ajouter">
+      <v-flex
+        xs12
+        sm4
+        md2
+      >
+        <v-btn
+          fab
+          dark
+          small
+          color="indigo"
+          @click="ajouter"
+        >
           <v-icon dark>add</v-icon>
         </v-btn>
       </v-flex>
-      <v-layout row wrap>
+      <v-layout
+        row
+        wrap
+      >
         <v-flex xs12>
-          <v-data-table :headers="headers" :items="ligne_tab" class="elevation-1" :total-items="50">
-            <template slot="items" slot-scope="props">
+          <v-data-table
+            :headers="headers"
+            :items="ligne_tab"
+            class="elevation-1"
+            :total-items="50"
+          >
+            <template
+              slot="items"
+              slot-scope="props"
+            >
               <td>{{ props.item.name }}</td>
               <td class>{{ props.item.designation }}</td>
               <td class>{{ props.item.qte }}</td>
@@ -61,30 +136,90 @@
               <td class>{{ props.item.total_ht_ligne }}</td>
               <td class>{{ props.item.remise }}</td>
               <td class="justify-center layout px-0">
-                <v-icon small class="mr-2" @click="editItem(props.item)">edit</v-icon>
-                <v-icon small @click="deleteItem(props.item)">delete</v-icon>
+                <v-icon
+                  small
+                  class="mr-2"
+                  @click="editItem(props.item)"
+                >edit</v-icon>
+                <v-icon
+                  small
+                  @click="deleteItem(props.item)"
+                >delete</v-icon>
               </td>
             </template>
             <template slot="footer">
               <td :colspan="headers.length">
-                <v-layout row wrap>
-                  <v-flex offset-xs10 xs2>
-                    <v-text-field class="inputPrice" type="number" readonly label="Totale Remise" v-model="total_remise" disabled></v-text-field>
+                <v-layout
+                  row
+                  wrap
+                >
+                  <v-flex
+                    offset-xs10
+                    xs2
+                  >
+                    <v-text-field
+                      class="inputPrice"
+                      type="number"
+                      readonly
+                      label="Totale Remise"
+                      v-model="total_remise"
+                      disabled
+                    ></v-text-field>
                   </v-flex>
                 </v-layout>
-                <v-layout row wrap>
-                  <v-flex offset-xs10 xs2>
-                    <v-text-field class="inputPrice" type="number" readonly label="Totale Tva" v-model="total_tva" disabled></v-text-field>
+                <v-layout
+                  row
+                  wrap
+                >
+                  <v-flex
+                    offset-xs10
+                    xs2
+                  >
+                    <v-text-field
+                      class="inputPrice"
+                      type="number"
+                      readonly
+                      label="Totale Tva"
+                      v-model="total_tva"
+                      disabled
+                    ></v-text-field>
                   </v-flex>
                 </v-layout>
-                <v-layout row wrap>
-                  <v-flex offset-xs10 xs2>
-                    <v-text-field class="inputPrice" type="number" readonly label="Totale HT" v-model="total_ht" disabled></v-text-field>
+                <v-layout
+                  row
+                  wrap
+                >
+                  <v-flex
+                    offset-xs10
+                    xs2
+                  >
+                    <v-text-field
+                      class="inputPrice"
+                      type="number"
+                      readonly
+                      label="Totale HT"
+                      v-model="total_ht"
+                      disabled
+                    ></v-text-field>
                   </v-flex>
                 </v-layout>
-                <v-layout row wrap>
-                  <v-flex offset-xs10 xs2>
-                    <v-text-field class="inputPrice" type="number" readonly label="Totale TTC" v-model="total_ttc" disabled></v-text-field>
+                <v-layout
+                  row
+                  wrap
+                >
+                  <v-flex
+                    offset-xs10
+                    xs2
+                  >
+                    <v-text-field
+                      outline
+                      class="inputPrice is-bold"
+                      type="number"
+                      readonly
+                      label="Totale TTC"
+                      v-model="total_ttc"
+                      disabled
+                    ></v-text-field>
                   </v-flex>
                 </v-layout>
               </td>
@@ -99,8 +234,8 @@
 <script>
 export default {
   props: ["url"],
-  created() {},
-  data() {
+  created () { },
+  data () {
     return {
       ligne_tab: [],
       qte: 0,
@@ -151,7 +286,7 @@ export default {
     };
   },
   methods: {
-    submit() {
+    submit () {
       let uri = this.url + "/api/facturation/create";
       this.axios
         .post(uri, this.facture)
@@ -162,10 +297,10 @@ export default {
           console.log(error);
         });
     },
-    test() {
-      console.log(this.ligne_tab);
+    test () {
+      console.log(this.$refs['datefacture'].computedDateFormatted);
     },
-    ajouter() {
+    ajouter () {
       this.ligne_tab.push({
         designation: this.$store.getters.getProduitById(this.produit_id)
           .designation,
@@ -175,35 +310,41 @@ export default {
         total_ht_ligne: this.total_ht_ligne(this.produit_id),
         remise: this.remise
       });
-      this.total_remise = eval(this.total_remise) + eval(this.remise)
-      this.total_ht = this.total_ht + this.total_ht_ligne(this.produit_id)
-      this.total_ttc = this.total_ttc + this.total_ttc_ligne(this.produit_id)
-      this.total_tva = this.total_tva + this.total_tva_ligne(this.produit_id)
+      this.total_remise = (eval(this.total_remise) + eval(this.remise)).toFixed(3)
+      this.total_ht = (eval(this.total_ht) + eval(this.total_ht_ligne(this.produit_id))).toFixed(3)
+      this.total_ttc = (eval(this.total_ttc) + eval(this.total_ttc_ligne(this.produit_id))).toFixed(3)
+      this.total_tva = (eval(this.total_tva) + eval(this.total_tva_ligne(this.produit_id))).toFixed(3)
 
     },
-    total_ht_ligne(id) {
-      let a = this.$store.getters.getProduitById(id).prix;      
+    total_ht_ligne (id) {
+      let a = this.$store.getters.getProduitById(id).prix;
       return a * this.qte;
     },
-    total_ttc_ligne(id){
+    total_ttc_ligne (id) {
       let a = this.$store.getters.getProduitById(id).tva
-      return this.total_ht_ligne(id) * (1+(a/100))
+      return this.total_ht_ligne(id) * (1 + (a / 100))
     },
-    total_tva_ligne(id){
+    total_tva_ligne (id) {
       return this.total_ttc_ligne(id) - this.total_ht_ligne(id)
     },
   },
   computed: {
-    loading() {
+    loading () {
       return this.$store.getters.loading;
     },
-    client() {
+    client () {
       return this.$store.getters.getClientListName;
     },
-    produit() {
+    produit () {
       return this.$store.getters.getProduitListName;
     }
   }
 };
 </script>
+<style scoped>
+    .is-bold{
+        font-weight:bold;
+    }
+
+</style>
 

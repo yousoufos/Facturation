@@ -20,8 +20,8 @@ class FactureController extends Controller
         return response()->json($facture);
     }
     public function count(){
-        $count = DB::table('factures')->whereYear('date_emission','=',2018)->count();
-        dd($count);
+        $count = DB::table('factures')->whereYear('date_emission','=',date('Y'))->count();
+        echo('Fact-'.date('Y').'-'.$count);
     }
     /**
      * Show the form for creating a new resource.

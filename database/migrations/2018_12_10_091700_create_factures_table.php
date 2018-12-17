@@ -17,8 +17,8 @@ class CreateFacturesTable extends Migration
             $table->increments('id');
             $table->string('reference',50)->unique();
             $table->unsignedInteger('client_id');
-            $table->date('date_emission');
-            $table->date('date_echeance');
+            $table->dateTime('date_emission');
+            $table->dateTime('date_echeance');
             $table->decimal('total_ht');
             $table->decimal('total_ttc');
             $table->decimal('total_remise');

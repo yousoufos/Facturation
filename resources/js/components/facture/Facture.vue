@@ -123,6 +123,7 @@
             :items="ligne_tab"
             class="elevation-1"
             :total-items="50"
+            rows-per-page-text="Lignes par page"
           >
             <template
               slot="items"
@@ -259,46 +260,32 @@ export default {
       reference: "FACT-TEST",
       statut: "En cours",
       reglement: "cheque",
-      date_emission: new Date(),
-      date_echeance: new Date(),
-      client_id: 1,
+      client_id: null,
       total_ht: 0,
       total_tva: 0,
       total_ttc: 0,
       total_remise: 0,
-      lignes: [
-        {
-          produit_id: 5,
-          qte: 10,
-          remise: 0
-        },
-        {
-          produit_id: 1,
-          qte: 6,
-          remise: 4
-        },
-        {
-          produit_id: 3,
-          qte: 2,
-          remise: 7
-        }
-      ]
+      lignes:[],
     };
   },
   methods: {
     submit () {
-      let uri = this.url + "/api/facturation/create";
-      this.axios
-        .post(uri, this.facture)
-        .then(response => {
-          console.log(response);
-        })
-        .catch(error => {
-          console.log(error);
-        });
+        let facture = {
+          client_id : this.client_id,
+          date_emission : this.$refs['datefacture'].date,
+          date_echeance : this.$refs['dateecheance'].date,
+          reglement : this.reglement,
+          statut : this.statut,
+          total_ht : this.total_ht,
+          total_ttc :this.total_ttc,
+          total_remise : this.total_remise,
+          total_tva : this.total_tva,
+          lignes : this.lignes
+        }
+        this.$store.dispatch('saveFacture',facture)
     },
     test () {
-      console.log(this.$refs['datefacture'].computedDateFormatted);
+      console.log(this.$refs['datefacture'].date);
     },
     ajouter () {
       this.ligne_tab.push({
@@ -314,6 +301,11 @@ export default {
       this.total_ht = (eval(this.total_ht) + eval(this.total_ht_ligne(this.produit_id))).toFixed(3)
       this.total_ttc = (eval(this.total_ttc) + eval(this.total_ttc_ligne(this.produit_id))).toFixed(3)
       this.total_tva = (eval(this.total_tva) + eval(this.total_tva_ligne(this.produit_id))).toFixed(3)
+      this.lignes.push({
+        produit_id : this.produit_id,
+        qte : this.qte,
+        remise : this.remise
+      })
 
     },
     total_ht_ligne (id) {

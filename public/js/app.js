@@ -13591,6 +13591,37 @@ var index_esm = {
         commit('setLoading', false);
         console.log(error);
       });
+    },
+    saveFacture: function saveFacture(_ref2, payload) {
+      var commit = _ref2.commit;
+
+      var uri = 'http://localhost:3000/api/facture/create';
+      commit('setLoading', true);
+      __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(uri, payload).then(function (response) {
+        var facture = {
+          client_id: payload.client_id,
+          date_emission: payload.date_emission,
+          date_echeance: payload.date_echeance,
+          reglement: payload.reglement,
+          statut: payload.statut,
+          total_ht: payload.total_ht,
+          total_ttc: payload.total_ttc,
+          total_remise: payload.total_remise,
+          total_tva: payload.total_tva
+        };
+        var lignes = {
+          produit_id: payload.lignes.produit_id,
+          qte: payload.lignes.qte,
+          remise: payload.lignes.remise
+        };
+        commit('setLoadedFactures', facture);
+        commit('setLoadedLignesFacture', lignes);
+        commit('setLoading', false);
+        console.log(response);
+      }).catch(function (error) {
+        commit('setLoading', false);
+        console.log(error);
+      });
     }
   },
   getters: {
@@ -17619,6 +17650,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["url"],
@@ -17639,35 +17671,28 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       produit_id: "",
       reference: "FACT-TEST",
       statut: "En cours",
-      reglement: "cheque",
-      date_emission: new Date(),
-      date_echeance: new Date()
-    }, _defineProperty(_ref, "client_id", 1), _defineProperty(_ref, "total_ht", 0), _defineProperty(_ref, "total_tva", 0), _defineProperty(_ref, "total_ttc", 0), _defineProperty(_ref, "total_remise", 0), _defineProperty(_ref, "lignes", [{
-      produit_id: 5,
-      qte: 10,
-      remise: 0
-    }, {
-      produit_id: 1,
-      qte: 6,
-      remise: 4
-    }, {
-      produit_id: 3,
-      qte: 2,
-      remise: 7
-    }]), _ref;
+      reglement: "cheque"
+    }, _defineProperty(_ref, "client_id", null), _defineProperty(_ref, "total_ht", 0), _defineProperty(_ref, "total_tva", 0), _defineProperty(_ref, "total_ttc", 0), _defineProperty(_ref, "total_remise", 0), _defineProperty(_ref, "lignes", []), _ref;
   },
 
   methods: {
     submit: function submit() {
-      var uri = this.url + "/api/facturation/create";
-      this.axios.post(uri, this.facture).then(function (response) {
-        console.log(response);
-      }).catch(function (error) {
-        console.log(error);
-      });
+      var facture = {
+        client_id: this.client_id,
+        date_emission: this.$refs['datefacture'].date,
+        date_echeance: this.$refs['dateecheance'].date,
+        reglement: this.reglement,
+        statut: this.statut,
+        total_ht: this.total_ht,
+        total_ttc: this.total_ttc,
+        total_remise: this.total_remise,
+        total_tva: this.total_tva,
+        lignes: this.lignes
+      };
+      this.$store.dispatch('saveFacture', facture);
     },
     test: function test() {
-      console.log(this.$refs['datefacture'].computedDateFormatted);
+      console.log(this.$refs['datefacture'].date);
     },
     ajouter: function ajouter() {
       this.ligne_tab.push({
@@ -17682,6 +17707,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.total_ht = (eval(this.total_ht) + eval(this.total_ht_ligne(this.produit_id))).toFixed(3);
       this.total_ttc = (eval(this.total_ttc) + eval(this.total_ttc_ligne(this.produit_id))).toFixed(3);
       this.total_tva = (eval(this.total_tva) + eval(this.total_tva_ligne(this.produit_id))).toFixed(3);
+      this.lignes.push({
+        produit_id: this.produit_id,
+        qte: this.qte,
+        remise: this.remise
+      });
     },
     total_ht_ligne: function total_ht_ligne(id) {
       var a = this.$store.getters.getProduitById(id).prix;
@@ -41586,7 +41616,8 @@ var render = function() {
                       attrs: {
                         headers: _vm.headers,
                         items: _vm.ligne_tab,
-                        "total-items": 50
+                        "total-items": 50,
+                        "rows-per-page-text": "Lignes par page"
                       },
                       scopedSlots: _vm._u([
                         {
@@ -41864,9 +41895,6 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-//
 //
 //
 //
@@ -41895,50 +41923,13 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['date_facture'],
-  data: function data(vm) {
+  data: function data() {
     return {
       date: new Date().toISOString().substr(0, 10),
-      dateFormatted: vm.formatDate(new Date().toISOString().substr(0, 10)),
-      menu1: false,
+      menu: false,
+      modal: false,
       menu2: false
     };
-  },
-
-  computed: {
-    computedDateFormatted: function computedDateFormatted() {
-      return this.formatDate(this.date);
-    }
-  },
-
-  watch: {
-    date: function date(val) {
-      this.dateFormatted = this.formatDate(this.date);
-    }
-  },
-
-  methods: {
-    formatDate: function formatDate(date) {
-      if (!date) return null;
-
-      var _date$split = date.split('-'),
-          _date$split2 = _slicedToArray(_date$split, 3),
-          year = _date$split2[0],
-          month = _date$split2[1],
-          day = _date$split2[2];
-
-      return month + '/' + day + '/' + year;
-    },
-    parseDate: function parseDate(date) {
-      if (!date) return null;
-
-      var _date$split3 = date.split('/'),
-          _date$split4 = _slicedToArray(_date$split3, 3),
-          month = _date$split4[0],
-          day = _date$split4[1],
-          year = _date$split4[2];
-
-      return year + '-' + month.padStart(2, '0') + '-' + day.padStart(2, '0');
-    }
   }
 });
 
@@ -41957,9 +41948,9 @@ var render = function() {
       _c(
         "v-menu",
         {
-          ref: "menu1",
+          ref: "menu",
           attrs: {
-            "close-on-content-click": false,
+            "close-on-content-click": true,
             "nudge-right": 40,
             lazy: "",
             transition: "scale-transition",
@@ -41969,11 +41960,11 @@ var render = function() {
             "min-width": "290px"
           },
           model: {
-            value: _vm.menu1,
+            value: _vm.menu,
             callback: function($$v) {
-              _vm.menu1 = $$v
+              _vm.menu = $$v
             },
-            expression: "menu1"
+            expression: "menu"
           }
         },
         [
@@ -41984,18 +41975,13 @@ var render = function() {
               "persistent-hint": "",
               "prepend-icon": "event"
             },
-            on: {
-              blur: function($event) {
-                _vm.date = _vm.parseDate(_vm.dateFormatted)
-              }
-            },
             slot: "activator",
             model: {
-              value: _vm.dateFormatted,
+              value: _vm.date,
               callback: function($$v) {
-                _vm.dateFormatted = $$v
+                _vm.date = $$v
               },
-              expression: "dateFormatted"
+              expression: "date"
             }
           }),
           _vm._v(" "),

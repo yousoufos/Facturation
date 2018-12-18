@@ -19,9 +19,9 @@ class FactureController extends Controller
         $facture = Facture::All();
         return response()->json($facture);
     }
-    public function count(){
+    public function reference(){
         $count = DB::table('factures')->whereYear('date_emission','=',date('Y'))->count();
-        echo('Fact-'.date('Y').'-'.$count);
+        return ('Fact-'.date('Y').'-'.$count);
     }
     /**
      * Show the form for creating a new resource.
@@ -42,7 +42,7 @@ class FactureController extends Controller
     public function store(Request $request)
     {
         $facture = new Facture;
-        $facture->reference = $request->reference;
+        $facture->reference = $this->reference();
         $facture->statut = $request->statut;
         $facture->mode_reglement = $request->reglement;
         $facture->date_emission = $request->date_emission;

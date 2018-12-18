@@ -38,6 +38,37 @@ loadFactures({commit,getters}){
       commit('setLoading', false);
       console.log(error);
     });
+},
+saveFacture({commit},payload){
+  const uri = 'http://localhost:3000/api/facture/create'
+    commit('setLoading', true)
+    axios.post(uri,payload)
+        .then(response => {
+          let facture = {
+            client_id : payload.client_id,
+            date_emission : payload.date_emission,
+            date_echeance : payload.date_echeance,
+            reglement : payload.reglement,
+            statut : payload.statut,
+            total_ht : payload.total_ht,
+            total_ttc :payload.total_ttc,
+            total_remise : payload.total_remise,
+            total_tva : payload.total_tva,
+          }
+          let lignes = {
+            produit_id : payload.lignes.produit_id,
+            qte : payload.lignes.qte,
+            remise : payload.lignes.remise
+          }
+          commit('setLoadedFactures',facture)
+          commit('setLoadedLignesFacture',lignes)
+          commit('setLoading', false)
+          console.log(response);
+        })
+        .catch(error => {
+          commit('setLoading', false)
+          console.log(error);
+        });
 }
   },
   getters: {

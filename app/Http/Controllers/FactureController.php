@@ -40,6 +40,16 @@ class FactureController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'statut' => 'required|',
+            'date_emission' => 'required|date',
+            'date_echeance' => 'required|date',
+            'client_id' => 'required',
+            'total_ht' => 'required',
+            'total_ttc' => 'required',
+            'total_remise' => 'required',
+            'total_tva' => 'required',
+        ]);
         $facture = new Facture;
         $facture->save();
         $facture->reference = $this->reference($facture->id);

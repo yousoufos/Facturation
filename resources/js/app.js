@@ -8,7 +8,9 @@ import {
     store
 } from './store/index'
 import router from './router/Router'
+import VeeValidate from 'vee-validate';
 
+Vue.use(VeeValidate);
 
 
 import Vuetify from 'vuetify'

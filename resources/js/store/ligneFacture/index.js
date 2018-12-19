@@ -6,6 +6,9 @@ export default {
     mutations: {
         setLoadedLignesFacture(state,payload){
         state.loadedLignesFacture = payload
+},
+createLignesFacture(state,payload){
+state.loadedLignesFacture.push(payload)
 }
     },
     actions: {

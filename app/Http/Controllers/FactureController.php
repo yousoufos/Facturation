@@ -19,9 +19,8 @@ class FactureController extends Controller
         $facture = Facture::All();
         return response()->json($facture);
     }
-    public function reference(){
-        $count = DB::table('factures')->whereYear('date_emission','=',date('Y'))->count();
-        return ('Fact-'.date('Y').'-'.$count);
+    public function reference($id){
+        return ('Fact-'.date('Y').'-'.$id);
     }
     /**
      * Show the form for creating a new resource.
@@ -42,9 +41,9 @@ class FactureController extends Controller
     public function store(Request $request)
     {
         $facture = new Facture;
-        $facture->reference = $this->reference();
+        $facture->save();
+        $facture->reference = $this->reference($facture->id);
         $facture->statut = $request->statut;
-        $facture->mode_reglement = $request->reglement;
         $facture->date_emission = $request->date_emission;
         $facture->date_echeance = $request->date_echeance;
         $facture->client_id = $request->client_id;
@@ -53,9 +52,8 @@ class FactureController extends Controller
         $facture->total_remise = $request->total_remise;
         $facture->total_tva = $request->total_tva;
         $facture->save();
-
-         $lignes = $request->lignes;
-
+        $lignes = $request->lignes;
+        $li=array();
          foreach($lignes as $key=>$ligne)
          {
             $l = new LigneFacture;
@@ -64,9 +62,10 @@ class FactureController extends Controller
             $l->qte = $ligne['qte'];
             $l->remise = $ligne['remise'];
             $l->save();
+            array_push($li,$l);
          }
 
-        return response()->json('Facture enregistrée avec sucees');
+        return response()->json($li);
     }
 
     /**

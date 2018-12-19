@@ -259,7 +259,6 @@ export default {
       produit_id: "",
       reference: "FACT-TEST",
       statut: "En cours",
-      reglement: "cheque",
       client_id: null,
       total_ht: 0,
       total_tva: 0,
@@ -272,9 +271,8 @@ export default {
     submit () {
         let facture = {
           client_id : this.client_id,
-          date_emission : this.$refs['datefacture'].date,
-          date_echeance : this.$refs['dateecheance'].date,
-          reglement : this.reglement,
+          date_emission : this.$refs['datefacture'].computedDateFormatted,
+          date_echeance : this.$refs['dateecheance'].computedDateFormatted ,
           statut : this.statut,
           total_ht : this.total_ht,
           total_ttc :this.total_ttc,
@@ -285,7 +283,7 @@ export default {
         this.$store.dispatch('saveFacture',facture)
     },
     test () {
-      console.log(this.$refs['datefacture'].date);
+      console.log(this.$refs['datefacture'].computedDateFormatted);
     },
     ajouter () {
       this.ligne_tab.push({

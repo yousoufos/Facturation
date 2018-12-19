@@ -6,7 +6,11 @@ export default {
   mutations: {
 setLoadedFactures(state,payload){
     state.loadedFactures = payload
+},
+createFacture(state,payload){
+state.loadedFactures.push(payload)
 }
+
   },
   actions: {
 loadFactures({commit,getters}){
@@ -44,26 +48,36 @@ saveFacture({commit},payload){
     commit('setLoading', true)
     axios.post(uri,payload)
         .then(response => {
+            const lignes = [];
+              const obj = response.data;
+              console.log(response.data);
+
+              Object.keys(obj).forEach((key) => {
+                  const value = obj[key];
+                  lignes.push({
+                      id: value.id,
+                      produit_id: value.produit_id,
+                      facture_id: value.facture_id,
+                      qte: value.qte,
+                      remise: value.remise,
+                    });
+              })
           let facture = {
             client_id : payload.client_id,
             date_emission : payload.date_emission,
             date_echeance : payload.date_echeance,
-            reglement : payload.reglement,
             statut : payload.statut,
             total_ht : payload.total_ht,
             total_ttc :payload.total_ttc,
             total_remise : payload.total_remise,
             total_tva : payload.total_tva,
+            lignes:lignes
           }
-          let lignes = {
-            produit_id : payload.lignes.produit_id,
-            qte : payload.lignes.qte,
-            remise : payload.lignes.remise
-          }
-          commit('setLoadedFactures',facture)
-          commit('setLoadedLignesFacture',lignes)
+
+          commit('createFacture',facture)
+          commit('createLignesFacture',lignes)
           commit('setLoading', false)
-          console.log(response);
+          console.log('Ajout de facture avec succee');
         })
         .catch(error => {
           commit('setLoading', false)

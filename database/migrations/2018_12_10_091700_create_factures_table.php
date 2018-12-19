@@ -15,20 +15,19 @@ class CreateFacturesTable extends Migration
     {
         Schema::create('factures', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('reference',50)->unique();
-            $table->unsignedInteger('client_id');
-            $table->dateTime('date_emission');
-            $table->dateTime('date_echeance');
-            $table->decimal('total_ht');
-            $table->decimal('total_ttc');
-            $table->decimal('total_remise');
-            $table->decimal('total_tva');
-            $table->string('statut');
-            $table->string('mode_reglement');
+            $table->string('reference',50)->unique()->nullable();
+            $table->unsignedInteger('client_id')->nullable();
+            $table->dateTime('date_emission')->nullable();
+            $table->dateTime('date_echeance')->nullable();
+            $table->decimal('total_ht')->nullable();
+            $table->decimal('total_ttc')->nullable();
+            $table->decimal('total_remise')->nullable();
+            $table->decimal('total_tva')->nullable();
+            $table->string('statut')->nullable();
             $table->timestamps();
-            
+
         });
-        
+
     }
 
     /**

@@ -27,8 +27,7 @@ class FacturesTableSeeder extends Seeder
                 'total_tva' => mt_rand(100,999),
                 'total_remise' => mt_rand(0,50),
                 'statut' =>$faker->randomElement($array = array('en cours','clos','en attente')),
-                'mode_reglement' =>$faker->randomElement($array = array('espece','cheque','CB')),
-                
+
             ]);
             $b++;
             foreach(range(1,mt_rand(2,4))as$i){

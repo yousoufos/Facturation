@@ -1,33 +1,43 @@
 export default{
     state:{
         loading: false,
-        authError: null,
-        
+        errors: false,
+        youssef: null,
+
     },
     mutations:{
         setLoading(state,payload){
             state.loading = payload
         },
-        setError(state,payload){
-            state.authError = payload
+        setyoussef(state,payload){
+            state.youssef = payload
         },
-        clearError (state){
-            state.authError = null
+        setErrors(state,payload){
+            state.errors = payload
+
+
+        },
+        clearErrors (state){
+            state.errors = null
         }
     },
-    actions:{        
-        clearError ({commit}){
-           commit('clearError')
+    actions:{
+        clearErrors ({commit}){
+           commit('clearErrors')
         },
     },
 
     getters:{
-        authError(state){
-            return state.authError
+        getErrors(state){
+
+            return state.errors
         },
         loading(state){
             return state.loading
         },
-     
-    }   
+        youssef(state){
+            return state.youssef
+        },
+
+    }
 }

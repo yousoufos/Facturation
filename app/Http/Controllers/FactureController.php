@@ -6,6 +6,7 @@ use App\Facture;
 use App\LigneFacture;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\StoreFactureRequest;
 
 class FactureController extends Controller
 {
@@ -38,31 +39,22 @@ class FactureController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreFactureRequest $request)
     {
-        $request->validate([
-            'statut' => 'required|',
-            'date_emission' => 'required|date',
-            'date_echeance' => 'required|date',
-            'client_id' => 'required',
-            'total_ht' => 'required',
-            'total_ttc' => 'required',
-            'total_remise' => 'required',
-            'total_tva' => 'required',
-        ]);
+
         $facture = new Facture;
         $facture->save();
         $facture->reference = $this->reference($facture->id);
-        $facture->statut = $request->statut;
-        $facture->date_emission = $request->date_emission;
-        $facture->date_echeance = $request->date_echeance;
-        $facture->client_id = $request->client_id;
-        $facture->total_ht = $request->total_ht;
-        $facture->total_ttc = $request->total_ttc;
-        $facture->total_remise = $request->total_remise;
-        $facture->total_tva = $request->total_tva;
+        $facture->statut = $request->get('statut');
+        $facture->date_emission = $request->get('date_emission');
+        $facture->date_echeance = $request->get('date_echeance');
+        $facture->client_id = $request->get('client_id');
+        $facture->total_ht = $request->get('total_ht');
+        $facture->total_ttc = $request->get('total_ttc');
+        $facture->total_remise = $request->get('total_remise');
+        $facture->total_tva = $request->get('total_tva');
         $facture->save();
-        $lignes = $request->lignes;
+        $lignes = $request->get('lignes');
         $li=array();
          foreach($lignes as $key=>$ligne)
          {
@@ -75,7 +67,7 @@ class FactureController extends Controller
             array_push($li,$l);
          }
 
-        return response()->json($li);
+        return response()->json($li,201);
     }
 
     /**

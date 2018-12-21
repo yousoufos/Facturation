@@ -1,5 +1,18 @@
 <template>
   <v-container grid-list-md>
+    <v-layout row wrap >
+
+      <v-flex xs12>
+        <v-alert
+      :value="haveErrors"
+      type="error"
+      dismissible
+      @click="test"
+    >
+        {{ youssef }}
+    </v-alert>
+      </v-flex>
+    </v-layout>
     <v-layout row wrap v-if="loading">
       <v-flex xs12 class="text-xs-center">
         <v-progress-circular indeterminate color="primary"></v-progress-circular>
@@ -21,11 +34,24 @@
           item-value="id"
           label="Client"
           v-model="client_id"
-          :rules="[rules.required]"
         ></v-select>
+        <v-alert
+      :value="true"
+      type="error"
+      v-if="validation_client"
+    >
+      Vous devez choisir un client.
+    </v-alert>
       </v-flex>
       <date :date_facture="'Date Facturation'" ref="datefacture"></date>
       <date :date_facture="'Date Echeance'" ref="dateecheance"></date>
+      <v-alert
+      :value="true"
+      type="error"
+      v-if="validation_date"
+    >
+      La date d'echeance doit etre superieur a celle d'emission.
+    </v-alert>
     </v-layout>
     <v-divider></v-divider>
     <v-layout row wrap>
@@ -36,14 +62,34 @@
           item-value="id"
           label="Produits"
           v-model="produit_id"
-          @change
         ></v-select>
+        <v-alert
+      :value="true"
+      type="error"
+      v-if="validation_produit"
+    >
+      Vous devez choisir un produit.
+    </v-alert>
       </v-flex>
       <v-flex xs12 sm4 md2>
         <v-text-field min="0" step="1" type="number" label="Quantité" v-model="qte"></v-text-field>
+        <v-alert
+      :value="true"
+      type="error"
+      v-if="validation_qte"
+    >
+      La valeur de la quantité doit etre superieur ou egale à 0.
+    </v-alert>
       </v-flex>
       <v-flex xs12 sm4 md2>
         <v-text-field class="inputPrice" type="number" label="Remise" v-model="remise"></v-text-field>
+        <v-alert
+      :value="true"
+      type="error"
+      v-if="validation_remise"
+    >
+      La valeur de la remise doit etre superieur ou egale à 0.
+    </v-alert>
       </v-flex>
       <v-flex xs12 sm4 md2>
         <v-btn fab dark small color="indigo" @click="ajouter">
@@ -52,6 +98,13 @@
       </v-flex>
       <v-layout row wrap>
         <v-flex xs12>
+            <v-alert
+      :value="true"
+      type="error"
+      v-if="validation_lignes"
+    >
+      La facture ne n'a pas de de data
+    </v-alert>
           <v-data-table
             :headers="headers"
             :items="ligne_tab"
@@ -80,7 +133,7 @@
                       class="inputPrice"
                       type="number"
                       readonly
-                      label="Totale Remise"
+                      label="Total Remise"
                       v-model="total_remise"
                       disabled
                     ></v-text-field>
@@ -92,7 +145,7 @@
                       class="inputPrice"
                       type="number"
                       readonly
-                      label="Totale Tva"
+                      label="Total Tva"
                       v-model="total_tva"
                       disabled
                     ></v-text-field>
@@ -104,7 +157,7 @@
                       class="inputPrice"
                       type="number"
                       readonly
-                      label="Totale HT"
+                      label="Total HT"
                       v-model="total_ht"
                       disabled
                     ></v-text-field>
@@ -117,7 +170,7 @@
                       class="inputPrice is-bold"
                       type="number"
                       readonly
-                      label="Totale TTC"
+                      label="Total TTC"
                       v-model="total_ttc"
                       disabled
                     ></v-text-field>
@@ -133,7 +186,9 @@
 </template>
 
 <script>
-export default {
+ var moment = require('moment');
+ export default {
+
   props: ["url"],
   created() {},
   data() {
@@ -158,8 +213,7 @@ export default {
         { text: "Remise", value: "remise" },
         { text: "Actions", value: "name", sortable: false }
       ],
-      client_id: "",
-      produit_id: "",
+      produit_id: null,
       reference: "FACT-TEST",
       statut: "En cours",
       client_id: null,
@@ -167,12 +221,27 @@ export default {
       total_tva: 0,
       total_ttc: 0,
       total_remise: 0,
-      lignes: []
+      lignes: [],
+      validation_client: false,
+      validation_date: false,
+      validation_produit: false,
+      validation_qte: false,
+      validation_remise: false,
+      validation_lignes: false,
+      err:''
     };
   },
   methods: {
     submit() {
-      let facture = {
+    // this.validation_client = this.client_id === null ? true : false
+    // this.validation_date = moment(this.$refs["datefacture"].date) <= moment(this.$refs["dateecheance"].date) ? false :true
+    // this.validation_qte = this.qte < 0 ? true : false
+    // this.validation_remise = this.remise < 0 ? true : false
+    // this.validation_produit = this.produit_id === null ? true : false
+    // this.validation_lignes = this.ligne_tab.length == 0 ? true : false
+    // if(this.validation_client && this.validation_date && this.validation_qte && this.validation_remise && this.validation_lignes && this.validation_produit)
+    {
+        let facture = {
         client_id: this.client_id,
         date_emission: this.$refs["datefacture"].computedDateFormatted,
         date_echeance: this.$refs["dateecheance"].computedDateFormatted,
@@ -184,9 +253,15 @@ export default {
         lignes: this.lignes
       };
       this.$store.dispatch("saveFacture", facture);
+
+
+
+    }
+
     },
     test() {
-      console.log(this.$refs["datefacture"].computedDateFormatted);
+       console.log(errors);
+
     },
     ajouter() {
       this.ligne_tab.push({
@@ -232,11 +307,20 @@ export default {
     loading() {
       return this.$store.getters.loading;
     },
+    youssef() {
+      return this.$store.getters.youssef;
+    },
     client() {
       return this.$store.getters.getClientListName;
     },
     produit() {
       return this.$store.getters.getProduitListName;
+    },
+    errors: function(){
+        return this.$store.getters.getErrors;
+    },
+    haveErrors(){
+        return this.$store.getters.youssef !== null && this.$store.getters.youssef !== undefined
     }
   }
 };

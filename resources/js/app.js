@@ -9,16 +9,12 @@ import {
 } from './store/index'
 import router from './router/Router'
 import VeeValidate from 'vee-validate';
-
-Vue.use(VeeValidate);
-
-
+Vue.use(VeeValidate)
 import Vuetify from 'vuetify'
 Vue.use(Vuetify)
 import App from './components/App.vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-
 Vue.use(VueAxios, axios)
 
 

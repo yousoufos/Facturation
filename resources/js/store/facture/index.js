@@ -80,7 +80,10 @@ saveFacture({commit},payload){
           console.log('Ajout de facture avec succee');
         })
         .catch(error => {
+
           commit('setLoading', false)
+          commit('setyoussef', 'test')
+
           console.log(error);
         });
 }

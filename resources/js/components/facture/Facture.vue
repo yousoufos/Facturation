@@ -1,33 +1,70 @@
 <template>
   <v-container grid-list-md>
-    <v-layout row wrap >
+    <v-layout
+      row
+      wrap
+    >
 
       <v-flex xs12>
+          <v-alert
+          :value="saved"
+          type="success"
+          dismissible
+          @click="clearSavedStatut"
+        >
+          Facture enregistrée.
+        </v-alert>
         <v-alert
-      :value="haveErrors"
-      type="error"
-      dismissible
-      @click="test"
-    >
-        {{ youssef }}
-    </v-alert>
+          :value="haveErrors"
+          type="error"
+          dismissible
+          @click="clearErrors"
+        >
+          {{ erreurs }}
+        </v-alert>
       </v-flex>
     </v-layout>
-    <v-layout row wrap v-if="loading">
-      <v-flex xs12 class="text-xs-center">
-        <v-progress-circular indeterminate color="primary"></v-progress-circular>
+    <v-layout
+      row
+      wrap
+      v-if="loading"
+    >
+      <v-flex
+        xs12
+        class="text-xs-center"
+      >
+        <v-progress-circular
+          indeterminate
+          color="primary"
+        ></v-progress-circular>
       </v-flex>
     </v-layout>
     <v-layout>
       <v-flex xs12>
-        <v-btn color="success" @click="submit" block>Save</v-btn>
+        <v-btn
+          color="success"
+          @click="submit"
+          block
+        >Save</v-btn>
       </v-flex>
       <v-flex xs12>
-        <v-btn color="primary" @click="test" block>Vuex</v-btn>
+        <v-btn
+          color="primary"
+          @click="test"
+          block
+        >Vuex</v-btn>
       </v-flex>
     </v-layout>
-    <v-layout row wrap>
-      <v-flex xs12 sm4 md4 d-flex>
+    <v-layout
+      row
+      wrap
+    >
+      <v-flex
+        xs12
+        sm4
+        md4
+        d-flex
+      >
         <v-select
           :items="client "
           item-text="nom"
@@ -36,26 +73,38 @@
           v-model="client_id"
         ></v-select>
         <v-alert
-      :value="true"
-      type="error"
-      v-if="validation_client"
-    >
-      Vous devez choisir un client.
-    </v-alert>
+          :value="validation_client"
+          type="error"
+        >
+          Vous devez choisir un client.
+        </v-alert>
       </v-flex>
-      <date :date_facture="'Date Facturation'" ref="datefacture"></date>
-      <date :date_facture="'Date Echeance'" ref="dateecheance"></date>
+      <date
+        :date_facture="'Date Facturation'"
+        ref="datefacture"
+      ></date>
+      <date
+        :date_facture="'Date Echeance'"
+        ref="dateecheance"
+      ></date>
       <v-alert
-      :value="true"
-      type="error"
-      v-if="validation_date"
-    >
-      La date d'echeance doit etre superieur a celle d'emission.
-    </v-alert>
+        :value="validation_date"
+        type="error"
+      >
+        La date d'echeance doit etre superieur a celle d'emission.
+      </v-alert>
     </v-layout>
     <v-divider></v-divider>
-    <v-layout row wrap>
-      <v-flex xs12 sm4 md6 d-flex>
+    <v-layout
+      row
+      wrap
+    >
+      <v-flex
+        xs12
+        sm4
+        md6
+        d-flex
+      >
         <v-select
           :items="produit "
           item-text="designation"
@@ -64,47 +113,75 @@
           v-model="produit_id"
         ></v-select>
         <v-alert
-      :value="true"
-      type="error"
-      v-if="validation_produit"
-    >
-      Vous devez choisir un produit.
-    </v-alert>
+          :value="validation_produit"
+          type="error"
+        >
+          Vous devez choisir un produit.
+        </v-alert>
       </v-flex>
-      <v-flex xs12 sm4 md2>
-        <v-text-field min="0" step="1" type="number" label="Quantité" v-model="qte"></v-text-field>
+      <v-flex
+        xs12
+        sm4
+        md2
+      >
+        <v-text-field
+          min="0"
+          step="1"
+          type="number"
+          label="Quantité"
+          v-model="qte"
+        ></v-text-field>
         <v-alert
-      :value="true"
-      type="error"
-      v-if="validation_qte"
-    >
-      La valeur de la quantité doit etre superieur ou egale à 0.
-    </v-alert>
+          :value="validation_qte"
+          type="error"
+        >
+          La valeur de la quantité doit etre superieur ou egale à 0.
+        </v-alert>
       </v-flex>
-      <v-flex xs12 sm4 md2>
-        <v-text-field class="inputPrice" type="number" label="Remise" v-model="remise"></v-text-field>
+      <v-flex
+        xs12
+        sm4
+        md2
+      >
+        <v-text-field
+          class="inputPrice"
+          type="number"
+          label="Remise"
+          v-model="remise"
+        ></v-text-field>
         <v-alert
-      :value="true"
-      type="error"
-      v-if="validation_remise"
-    >
-      La valeur de la remise doit etre superieur ou egale à 0.
-    </v-alert>
+          :value="validation_remise"
+          type="error"
+        >
+          La valeur de la remise doit etre superieur ou egale à 0.
+        </v-alert>
       </v-flex>
-      <v-flex xs12 sm4 md2>
-        <v-btn fab dark small color="indigo" @click="ajouter">
+      <v-flex
+        xs12
+        sm4
+        md2
+      >
+        <v-btn
+          fab
+          dark
+          small
+          color="indigo"
+          @click="ajouter"
+        >
           <v-icon dark>add</v-icon>
         </v-btn>
       </v-flex>
-      <v-layout row wrap>
+      <v-layout
+        row
+        wrap
+      >
         <v-flex xs12>
-            <v-alert
-      :value="true"
-      type="error"
-      v-if="validation_lignes"
-    >
-      La facture ne n'a pas de de data
-    </v-alert>
+          <v-alert
+            :value="validation_lignes"
+            type="error"
+          >
+            La facture ne n'a pas de de data
+          </v-alert>
           <v-data-table
             :headers="headers"
             :items="ligne_tab"
@@ -112,7 +189,10 @@
             :total-items="50"
             rows-per-page-text="Lignes par page"
           >
-            <template slot="items" slot-scope="props">
+            <template
+              slot="items"
+              slot-scope="props"
+            >
               <td>{{ props.item.name }}</td>
               <td class>{{ props.item.designation }}</td>
               <td class>{{ props.item.qte }}</td>
@@ -121,14 +201,27 @@
               <td class>{{ props.item.total_ht_ligne }}</td>
               <td class>{{ props.item.remise }}</td>
               <td class="justify-center layout px-0">
-                <v-icon small class="mr-2" @click="editItem(props.item)">edit</v-icon>
-                <v-icon small @click="deleteItem(props.item)">delete</v-icon>
+                <v-icon
+                  small
+                  class="mr-2"
+                  @click="editItem(props.item)"
+                >edit</v-icon>
+                <v-icon
+                  small
+                  @click="deleteItem(props.item)"
+                >delete</v-icon>
               </td>
             </template>
             <template slot="footer">
               <td :colspan="headers.length">
-                <v-layout row wrap>
-                  <v-flex offset-xs10 xs2>
+                <v-layout
+                  row
+                  wrap
+                >
+                  <v-flex
+                    offset-xs10
+                    xs2
+                  >
                     <v-text-field
                       class="inputPrice"
                       type="number"
@@ -139,8 +232,14 @@
                     ></v-text-field>
                   </v-flex>
                 </v-layout>
-                <v-layout row wrap>
-                  <v-flex offset-xs10 xs2>
+                <v-layout
+                  row
+                  wrap
+                >
+                  <v-flex
+                    offset-xs10
+                    xs2
+                  >
                     <v-text-field
                       class="inputPrice"
                       type="number"
@@ -151,8 +250,14 @@
                     ></v-text-field>
                   </v-flex>
                 </v-layout>
-                <v-layout row wrap>
-                  <v-flex offset-xs10 xs2>
+                <v-layout
+                  row
+                  wrap
+                >
+                  <v-flex
+                    offset-xs10
+                    xs2
+                  >
                     <v-text-field
                       class="inputPrice"
                       type="number"
@@ -163,8 +268,14 @@
                     ></v-text-field>
                   </v-flex>
                 </v-layout>
-                <v-layout row wrap>
-                  <v-flex offset-xs10 xs2>
+                <v-layout
+                  row
+                  wrap
+                >
+                  <v-flex
+                    offset-xs10
+                    xs2
+                  >
                     <v-text-field
                       outline
                       class="inputPrice is-bold"
@@ -186,12 +297,12 @@
 </template>
 
 <script>
- var moment = require('moment');
- export default {
+var moment = require('moment');
+export default {
 
   props: ["url"],
-  created() {},
-  data() {
+  created () { },
+  data () {
     return {
       rules: {
         required: value => !!value || "Required."
@@ -228,43 +339,54 @@
       validation_qte: false,
       validation_remise: false,
       validation_lignes: false,
-      err:''
     };
   },
   methods: {
-    submit() {
-    // this.validation_client = this.client_id === null ? true : false
-    // this.validation_date = moment(this.$refs["datefacture"].date) <= moment(this.$refs["dateecheance"].date) ? false :true
-    // this.validation_qte = this.qte < 0 ? true : false
-    // this.validation_remise = this.remise < 0 ? true : false
-    // this.validation_produit = this.produit_id === null ? true : false
-    // this.validation_lignes = this.ligne_tab.length == 0 ? true : false
-    // if(this.validation_client && this.validation_date && this.validation_qte && this.validation_remise && this.validation_lignes && this.validation_produit)
-    {
+    deleteItem (item) {
+      const index = this.ligne_tab.indexOf(item)
+      confirm('Etes vous sur de vouloir supprimer cette ligne') && this.ligne_tab.splice(index, 1)
+    },
+    submit () {
+      this.validation_client = this.client_id === null ? true : false
+      this.validation_date = moment(this.$refs["datefacture"].date) <= moment(this.$refs["dateecheance"].date) ? false : true
+      this.validation_lignes = this.ligne_tab.length == 0 ? true : false
+      if (this.validation_client==false && this.validation_date==false && this.validation_qte==false && this.validation_remise==false && this.validation_lignes==false && this.validation_produit==false) {
         let facture = {
-        client_id: this.client_id,
-        date_emission: this.$refs["datefacture"].computedDateFormatted,
-        date_echeance: this.$refs["dateecheance"].computedDateFormatted,
-        statut: this.statut,
-        total_ht: this.total_ht,
-        total_ttc: this.total_ttc,
-        total_remise: this.total_remise,
-        total_tva: this.total_tva,
-        lignes: this.lignes
-      };
-      this.$store.dispatch("saveFacture", facture);
+          client_id: this.client_id,
+          date_emission: this.$refs["datefacture"].computedDateFormatted,
+          date_echeance: this.$refs["dateecheance"].computedDateFormatted,
+          statut: this.statut,
+          total_ht: this.total_ht,
+          total_ttc: this.total_ttc,
+          total_remise: this.total_remise,
+          total_tva: this.total_tva,
+          lignes: this.lignes
+        };
+        this.$store.dispatch("saveFacture", facture);
 
 
 
-    }
-
-    },
-    test() {
-       console.log(errors);
+      }
 
     },
-    ajouter() {
-      this.ligne_tab.push({
+    test () {
+      window.print()
+
+    },
+    clearErrors () {
+      this.$store.dispatch('clearErrors')
+
+    },
+    clearSavedStatut () {
+      this.$store.dispatch('clearSavedStatut')
+
+    },
+    ajouter () {
+        this.validation_qte = this.qte < 0 ? true : false
+        this.validation_remise = this.remise < 0 ? true : false
+        this.validation_produit = this.produit_id === null ? true : false
+        if ( this.validation_qte==false && this.validation_remise==false && this.validation_produit==false){
+            this.ligne_tab.push({
         designation: this.$store.getters.getProduitById(this.produit_id)
           .designation,
         qte: this.qte,
@@ -290,37 +412,40 @@
         qte: this.qte,
         remise: this.remise
       });
+        }
+
+
     },
-    total_ht_ligne(id) {
+    total_ht_ligne (id) {
       let a = this.$store.getters.getProduitById(id).prix;
       return a * this.qte;
     },
-    total_ttc_ligne(id) {
+    total_ttc_ligne (id) {
       let a = this.$store.getters.getProduitById(id).tva;
       return this.total_ht_ligne(id) * (1 + a / 100);
     },
-    total_tva_ligne(id) {
+    total_tva_ligne (id) {
       return this.total_ttc_ligne(id) - this.total_ht_ligne(id);
     }
   },
   computed: {
-    loading() {
+    loading () {
       return this.$store.getters.loading;
     },
-    youssef() {
-      return this.$store.getters.youssef;
+    erreurs () {
+      return this.$store.getters.erreurs;
     },
-    client() {
+    client () {
       return this.$store.getters.getClientListName;
     },
-    produit() {
+    produit () {
       return this.$store.getters.getProduitListName;
     },
-    errors: function(){
-        return this.$store.getters.getErrors;
+    haveErrors () {
+      return this.$store.getters.erreurs !== null && this.$store.getters.erreurs !== undefined
     },
-    haveErrors(){
-        return this.$store.getters.youssef !== null && this.$store.getters.youssef !== undefined
+    saved(){
+       return this.$store.getters.savedStatut;
     }
   }
 };

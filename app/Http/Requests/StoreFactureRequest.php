@@ -32,8 +32,16 @@ class StoreFactureRequest extends FormRequest
             'total_ttc' => 'required',
             'total_remise' => 'required',
             'total_tva' => 'required',
+            'lignes' => 'array|min:1',
+
         ];
     }
+    public function attributes()
+{
+    return [
+        'client_id' => 'Client',
+    ];
+}
     public function messages()
 {
     return [
@@ -47,6 +55,7 @@ class StoreFactureRequest extends FormRequest
         'total_ht.required'     => "Le total TTC doit etre defini",
         'total_tva.required'     => "Le total TVA doit etre defini",
         'total_remise.required'     => "Le total remise doit etre defini",
+        'lignes.min'     => "La facture ne contient aucun produit",
     ];
 }
 }

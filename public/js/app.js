@@ -30117,11 +30117,12 @@ var index_esm = {
         commit('createFacture', facture);
         commit('createLignesFacture', lignes);
         commit('setLoading', false);
+        commit('setSavedStatut', true);
         console.log('Ajout de facture avec succee');
       }).catch(function (error) {
 
         commit('setLoading', false);
-        commit('setyoussef', 'test');
+        commit('seterreurs', error.response.data.errors);
 
         console.log(error);
       });
@@ -31099,22 +31100,25 @@ module.exports = function spread(callback) {
 /* harmony default export */ __webpack_exports__["a"] = ({
     state: {
         loading: false,
-        errors: false,
-        youssef: null
+        erreurs: null,
+        savedStatut: false
 
     },
     mutations: {
         setLoading: function setLoading(state, payload) {
             state.loading = payload;
         },
-        setyoussef: function setyoussef(state, payload) {
-            state.youssef = payload;
-        },
-        setErrors: function setErrors(state, payload) {
-            state.errors = payload;
+        seterreurs: function seterreurs(state, payload) {
+            state.erreurs = payload;
         },
         clearErrors: function clearErrors(state) {
-            state.errors = null;
+            state.erreurs = null;
+        },
+        clearSavedStatut: function clearSavedStatut(state) {
+            state.savedStatut = false;
+        },
+        setSavedStatut: function setSavedStatut(state, payload) {
+            state.savedStatut = payload;
         }
     },
     actions: {
@@ -31122,19 +31126,27 @@ module.exports = function spread(callback) {
             var commit = _ref.commit;
 
             commit('clearErrors');
+        },
+        clearSavedStatut: function clearSavedStatut(_ref2) {
+            var commit = _ref2.commit;
+
+            commit('clearSavedStatut');
         }
     },
 
     getters: {
         getErrors: function getErrors(state) {
 
-            return state.errors;
+            return state.erreurs;
         },
         loading: function loading(state) {
             return state.loading;
         },
-        youssef: function youssef(state) {
-            return state.youssef;
+        erreurs: function erreurs(state) {
+            return state.erreurs;
+        },
+        savedStatut: function savedStatut(state) {
+            return state.savedStatut;
         }
     }
 });
@@ -34554,6 +34566,117 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 var moment = __webpack_require__(0);
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -34589,21 +34712,20 @@ var moment = __webpack_require__(0);
       validation_produit: false,
       validation_qte: false,
       validation_remise: false,
-      validation_lignes: false,
-      err: ''
+      validation_lignes: false
     };
   },
 
   methods: {
+    deleteItem: function deleteItem(item) {
+      var index = this.ligne_tab.indexOf(item);
+      confirm('Etes vous sur de vouloir supprimer cette ligne') && this.ligne_tab.splice(index, 1);
+    },
     submit: function submit() {
-      // this.validation_client = this.client_id === null ? true : false
-      // this.validation_date = moment(this.$refs["datefacture"].date) <= moment(this.$refs["dateecheance"].date) ? false :true
-      // this.validation_qte = this.qte < 0 ? true : false
-      // this.validation_remise = this.remise < 0 ? true : false
-      // this.validation_produit = this.produit_id === null ? true : false
-      // this.validation_lignes = this.ligne_tab.length == 0 ? true : false
-      // if(this.validation_client && this.validation_date && this.validation_qte && this.validation_remise && this.validation_lignes && this.validation_produit)
-      {
+      this.validation_client = this.client_id === null ? true : false;
+      this.validation_date = moment(this.$refs["datefacture"].date) <= moment(this.$refs["dateecheance"].date) ? false : true;
+      this.validation_lignes = this.ligne_tab.length == 0 ? true : false;
+      if (this.validation_client == false && this.validation_date == false && this.validation_qte == false && this.validation_remise == false && this.validation_lignes == false && this.validation_produit == false) {
         var facture = {
           client_id: this.client_id,
           date_emission: this.$refs["datefacture"].computedDateFormatted,
@@ -34619,26 +34741,37 @@ var moment = __webpack_require__(0);
       }
     },
     test: function test() {
-      console.log(errors);
+      window.print();
+    },
+    clearErrors: function clearErrors() {
+      this.$store.dispatch('clearErrors');
+    },
+    clearSavedStatut: function clearSavedStatut() {
+      this.$store.dispatch('clearSavedStatut');
     },
     ajouter: function ajouter() {
-      this.ligne_tab.push({
-        designation: this.$store.getters.getProduitById(this.produit_id).designation,
-        qte: this.qte,
-        prix_unitaire: this.$store.getters.getProduitById(this.produit_id).prix,
-        tva: this.$store.getters.getProduitById(this.produit_id).tva,
-        total_ht_ligne: this.total_ht_ligne(this.produit_id),
-        remise: this.remise
-      });
-      this.total_remise = (eval(this.total_remise) + eval(this.remise)).toFixed(3);
-      this.total_ht = (eval(this.total_ht) + eval(this.total_ht_ligne(this.produit_id))).toFixed(3);
-      this.total_ttc = (eval(this.total_ttc) + eval(this.total_ttc_ligne(this.produit_id))).toFixed(3);
-      this.total_tva = (eval(this.total_tva) + eval(this.total_tva_ligne(this.produit_id))).toFixed(3);
-      this.lignes.push({
-        produit_id: this.produit_id,
-        qte: this.qte,
-        remise: this.remise
-      });
+      this.validation_qte = this.qte < 0 ? true : false;
+      this.validation_remise = this.remise < 0 ? true : false;
+      this.validation_produit = this.produit_id === null ? true : false;
+      if (this.validation_qte == false && this.validation_remise == false && this.validation_produit == false) {
+        this.ligne_tab.push({
+          designation: this.$store.getters.getProduitById(this.produit_id).designation,
+          qte: this.qte,
+          prix_unitaire: this.$store.getters.getProduitById(this.produit_id).prix,
+          tva: this.$store.getters.getProduitById(this.produit_id).tva,
+          total_ht_ligne: this.total_ht_ligne(this.produit_id),
+          remise: this.remise
+        });
+        this.total_remise = (eval(this.total_remise) + eval(this.remise)).toFixed(3);
+        this.total_ht = (eval(this.total_ht) + eval(this.total_ht_ligne(this.produit_id))).toFixed(3);
+        this.total_ttc = (eval(this.total_ttc) + eval(this.total_ttc_ligne(this.produit_id))).toFixed(3);
+        this.total_tva = (eval(this.total_tva) + eval(this.total_tva_ligne(this.produit_id))).toFixed(3);
+        this.lignes.push({
+          produit_id: this.produit_id,
+          qte: this.qte,
+          remise: this.remise
+        });
+      }
     },
     total_ht_ligne: function total_ht_ligne(id) {
       var a = this.$store.getters.getProduitById(id).prix;
@@ -34656,8 +34789,8 @@ var moment = __webpack_require__(0);
     loading: function loading() {
       return this.$store.getters.loading;
     },
-    youssef: function youssef() {
-      return this.$store.getters.youssef;
+    erreurs: function erreurs() {
+      return this.$store.getters.erreurs;
     },
     client: function client() {
       return this.$store.getters.getClientListName;
@@ -34665,12 +34798,11 @@ var moment = __webpack_require__(0);
     produit: function produit() {
       return this.$store.getters.getProduitListName;
     },
-
-    errors: function errors() {
-      return this.$store.getters.getErrors;
-    },
     haveErrors: function haveErrors() {
-      return this.$store.getters.youssef !== null && this.$store.getters.youssef !== undefined;
+      return this.$store.getters.erreurs !== null && this.$store.getters.erreurs !== undefined;
+    },
+    saved: function saved() {
+      return this.$store.getters.savedStatut;
     }
   }
 });
@@ -34996,14 +35128,23 @@ var render = function() {
               _c(
                 "v-alert",
                 {
+                  attrs: { value: _vm.saved, type: "success", dismissible: "" },
+                  on: { click: _vm.clearSavedStatut }
+                },
+                [_vm._v("\n        Facture enregistrée.\n      ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "v-alert",
+                {
                   attrs: {
                     value: _vm.haveErrors,
                     type: "error",
                     dismissible: ""
                   },
-                  on: { click: _vm.test }
+                  on: { click: _vm.clearErrors }
                 },
-                [_vm._v("\n      " + _vm._s(_vm.youssef) + "\n  ")]
+                [_vm._v("\n        " + _vm._s(_vm.erreurs) + "\n      ")]
               )
             ],
             1
@@ -35094,11 +35235,11 @@ var render = function() {
                 }
               }),
               _vm._v(" "),
-              _vm.validation_client
-                ? _c("v-alert", { attrs: { value: true, type: "error" } }, [
-                    _vm._v("\n    Vous devez choisir un client.\n  ")
-                  ])
-                : _vm._e()
+              _c(
+                "v-alert",
+                { attrs: { value: _vm.validation_client, type: "error" } },
+                [_vm._v("\n        Vous devez choisir un client.\n      ")]
+              )
             ],
             1
           ),
@@ -35113,13 +35254,15 @@ var render = function() {
             attrs: { date_facture: "Date Echeance" }
           }),
           _vm._v(" "),
-          _vm.validation_date
-            ? _c("v-alert", { attrs: { value: true, type: "error" } }, [
-                _vm._v(
-                  "\n    La date d'echeance doit etre superieur a celle d'emission.\n  "
-                )
-              ])
-            : _vm._e()
+          _c(
+            "v-alert",
+            { attrs: { value: _vm.validation_date, type: "error" } },
+            [
+              _vm._v(
+                "\n      La date d'echeance doit etre superieur a celle d'emission.\n    "
+              )
+            ]
+          )
         ],
         1
       ),
@@ -35150,11 +35293,11 @@ var render = function() {
                 }
               }),
               _vm._v(" "),
-              _vm.validation_produit
-                ? _c("v-alert", { attrs: { value: true, type: "error" } }, [
-                    _vm._v("\n    Vous devez choisir un produit.\n  ")
-                  ])
-                : _vm._e()
+              _c(
+                "v-alert",
+                { attrs: { value: _vm.validation_produit, type: "error" } },
+                [_vm._v("\n        Vous devez choisir un produit.\n      ")]
+              )
             ],
             1
           ),
@@ -35179,13 +35322,15 @@ var render = function() {
                 }
               }),
               _vm._v(" "),
-              _vm.validation_qte
-                ? _c("v-alert", { attrs: { value: true, type: "error" } }, [
-                    _vm._v(
-                      "\n    La valeur de la quantité doit etre superieur ou egale à 0.\n  "
-                    )
-                  ])
-                : _vm._e()
+              _c(
+                "v-alert",
+                { attrs: { value: _vm.validation_qte, type: "error" } },
+                [
+                  _vm._v(
+                    "\n        La valeur de la quantité doit etre superieur ou egale à 0.\n      "
+                  )
+                ]
+              )
             ],
             1
           ),
@@ -35206,13 +35351,15 @@ var render = function() {
                 }
               }),
               _vm._v(" "),
-              _vm.validation_remise
-                ? _c("v-alert", { attrs: { value: true, type: "error" } }, [
-                    _vm._v(
-                      "\n    La valeur de la remise doit etre superieur ou egale à 0.\n  "
-                    )
-                  ])
-                : _vm._e()
+              _c(
+                "v-alert",
+                { attrs: { value: _vm.validation_remise, type: "error" } },
+                [
+                  _vm._v(
+                    "\n        La valeur de la remise doit etre superieur ou egale à 0.\n      "
+                  )
+                ]
+              )
             ],
             1
           ),
@@ -35242,11 +35389,15 @@ var render = function() {
                 "v-flex",
                 { attrs: { xs12: "" } },
                 [
-                  _vm.validation_lignes
-                    ? _c("v-alert", { attrs: { value: true, type: "error" } }, [
-                        _vm._v("\n    La facture ne n'a pas de de data\n  ")
-                      ])
-                    : _vm._e(),
+                  _c(
+                    "v-alert",
+                    { attrs: { value: _vm.validation_lignes, type: "error" } },
+                    [
+                      _vm._v(
+                        "\n          La facture ne n'a pas de de data\n        "
+                      )
+                    ]
+                  ),
                   _vm._v(" "),
                   _c(
                     "v-data-table",

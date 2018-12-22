@@ -77,12 +77,13 @@ saveFacture({commit},payload){
           commit('createFacture',facture)
           commit('createLignesFacture',lignes)
           commit('setLoading', false)
+          commit('setSavedStatut', true)
           console.log('Ajout de facture avec succee');
         })
         .catch(error => {
 
           commit('setLoading', false)
-          commit('setyoussef', 'test')
+          commit('seterreurs', error.response.data.errors)
 
           console.log(error);
         });

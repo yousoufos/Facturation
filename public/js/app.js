@@ -30037,102 +30037,100 @@ var index_esm = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 
 /* harmony default export */ __webpack_exports__["a"] = ({
-  state: {
-    loadedFactures: null
-  },
-  mutations: {
-    setLoadedFactures: function setLoadedFactures(state, payload) {
-      state.loadedFactures = payload;
+    state: {
+        loadedFactures: null
     },
-    createFacture: function createFacture(state, payload) {
-      state.loadedFactures.push(payload);
-    }
-  },
-  actions: {
-    loadFactures: function loadFactures(_ref) {
-      var commit = _ref.commit,
-          getters = _ref.getters;
-
-      var uri = 'http://localhost:3000/api/facture';
-      commit('setLoading', true);
-      __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(uri).then(function (response) {
-        var facture = [];
-        var obj = response.data;
-        Object.keys(obj).forEach(function (key) {
-          var value = obj[key];
-          facture.push({
-            id: value.id,
-            reference: value.reference,
-            statut: value.statut,
-            date_emission: value.date_emission,
-            date_echeance: value.date_echeance,
-            client_id: value.client_id,
-            mode_reglement: value.mode_reglement,
-            total_remise: value.total_remise,
-            total_tva: value.total_tva,
-            total_ttc: value.total_ttc,
-            total_ht: value.total_ht,
-            lignes: getters.getLignesFactureById(value.id.toString())
-          });
-        });
-        commit('setLoadedFactures', facture);
-        commit('setLoading', false);
-      }).catch(function (error) {
-        commit('setLoading', false);
-        console.log(error);
-      });
+    mutations: {
+        setLoadedFactures: function setLoadedFactures(state, payload) {
+            state.loadedFactures = payload;
+        },
+        createFacture: function createFacture(state, payload) {
+            state.loadedFactures.push(payload);
+        }
     },
-    saveFacture: function saveFacture(_ref2, payload) {
-      var commit = _ref2.commit;
+    actions: {
+        loadFactures: function loadFactures(_ref) {
+            var commit = _ref.commit,
+                getters = _ref.getters;
 
-      var uri = 'http://localhost:3000/api/facture/create';
-      commit('setLoading', true);
-      __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(uri, payload).then(function (response) {
-        var lignes = [];
-        var obj = response.data;
-        console.log(response.data);
+            var uri = 'http://localhost:3000/api/facture';
+            commit('setLoading', true);
+            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(uri).then(function (response) {
+                var facture = [];
+                var obj = response.data;
+                Object.keys(obj).forEach(function (key) {
+                    var value = obj[key];
+                    facture.push({
+                        id: value.id,
+                        reference: value.reference,
+                        statut: value.statut,
+                        date_emission: value.date_emission,
+                        date_echeance: value.date_echeance,
+                        client_id: value.client_id,
+                        mode_reglement: value.mode_reglement,
+                        total_remise: value.total_remise,
+                        total_tva: value.total_tva,
+                        total_ttc: value.total_ttc,
+                        total_ht: value.total_ht,
+                        lignes: getters.getLignesFactureById(value.id.toString())
+                    });
+                });
+                commit('setLoadedFactures', facture);
+                commit('setLoading', false);
+            }).catch(function (error) {
+                commit('setLoading', false);
+                console.log(error);
+            });
+        },
+        saveFacture: function saveFacture(_ref2, payload) {
+            var commit = _ref2.commit;
 
-        Object.keys(obj).forEach(function (key) {
-          var value = obj[key];
-          lignes.push({
-            id: value.id,
-            produit_id: value.produit_id,
-            facture_id: value.facture_id,
-            qte: value.qte,
-            remise: value.remise
-          });
-        });
-        var facture = {
-          client_id: payload.client_id,
-          date_emission: payload.date_emission,
-          date_echeance: payload.date_echeance,
-          statut: payload.statut,
-          total_ht: payload.total_ht,
-          total_ttc: payload.total_ttc,
-          total_remise: payload.total_remise,
-          total_tva: payload.total_tva,
-          lignes: lignes
-        };
+            var uri = 'http://localhost:3000/api/facture/create';
+            commit('setLoading', true);
+            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(uri, payload).then(function (response) {
+                var lignes = [];
+                var obj = response.data;
+                Object.keys(obj).forEach(function (key) {
+                    var value = obj[key];
+                    lignes.push({
+                        id: value.id,
+                        produit_id: value.produit_id,
+                        facture_id: value.facture_id,
+                        qte: value.qte,
+                        remise: value.remise
+                    });
+                });
+                var facture = {
+                    client_id: payload.client_id,
+                    date_emission: payload.date_emission,
+                    date_echeance: payload.date_echeance,
+                    statut: payload.statut,
+                    total_ht: payload.total_ht,
+                    total_ttc: payload.total_ttc,
+                    total_remise: payload.total_remise,
+                    total_tva: payload.total_tva,
+                    lignes: lignes
+                };
 
-        commit('createFacture', facture);
-        commit('createLignesFacture', lignes);
-        commit('setLoading', false);
-        commit('setSavedStatut', true);
-        console.log('Ajout de facture avec succee');
-      }).catch(function (error) {
+                commit('createFacture', facture);
+                commit('createLignesFacture', lignes);
+                commit('setLoading', false);
+                commit('setSavedStatut', true);
+                console.log('Ajout de facture avec succee');
+            }).catch(function (error) {
 
-        commit('setLoading', false);
-        commit('seterreurs', error.response.data.errors);
+                commit('setLoading', false);
+                commit('seterreurs', error.response.data.errors);
 
-        console.log(error);
-      });
+                console.log(error);
+            });
+        }
+    },
+    getters: {
+        getLoadedFactures: function getLoadedFactures(state) {
+            return state.getLoadedFactures;
+        }
     }
-  },
-  getters: {
-    getLoadedFactures: function getLoadedFactures(state) {
-      return state.getLoadedFactures;
-    }
-  }
 });
 
 /***/ }),
@@ -31088,6 +31086,13 @@ module.exports = function spread(callback) {
     },
     getClientListName: function getClientListName(state) {
       return state.clientListName;
+    },
+    getClient: function getClient(state) {
+      return function (clientId) {
+        return state.loadedClients.find(function (client) {
+          return client.id === clientId;
+        });
+      };
     }
   }
 });
@@ -34025,7 +34030,7 @@ exports = module.exports = __webpack_require__(172)(false);
 
 
 // module
-exports.push([module.i, "\n.is-bold[data-v-07625fce] {\n  font-weight: bold;\n}\n", ""]);
+exports.push([module.i, "\n.is-bold[data-v-07625fce] {\n  font-weight: bold;\n}\n.clientNom[data-v-07625fce]{\n    font-weight: bold;\n}\n.clientDetail[data-v-07625fce]{\n    border-style: solid;\n    border-width: thin;\n}\n", ""]);
 
 // exports
 
@@ -34677,6 +34682,60 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 var moment = __webpack_require__(0);
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -34706,20 +34765,109 @@ var moment = __webpack_require__(0);
       total_tva: 0,
       total_ttc: 0,
       total_remise: 0,
+      net_a_payer: 0,
       lignes: [],
       validation_client: false,
       validation_date: false,
       validation_produit: false,
       validation_qte: false,
       validation_remise: false,
-      validation_lignes: false
+      validation_lignes: false,
+      client: {
+        nom: '',
+        adresse: '',
+        raison: '',
+        mail: '',
+        tel: '',
+        matricule: ''
+      },
+      snack: false,
+      snackColor: '',
+      snackText: ''
     };
   },
 
   methods: {
+    enleverAnciennesValeurLigneFacture: function enleverAnciennesValeurLigneFacture(item, key) {
+      var ancien_total_ht_ligne = 0;
+      var ancien_total_remise_ligne = 0;
+      var ancien_ttc_ligne = 0;
+      var ancien_total_tva_ligne = 0;
+      //On recupere les valeur avant la modification
+      if (key === 'qte') {
+        ancien_total_ht_ligne = this.total_ht_ligne(this.lignes[this.ligne_tab.indexOf(item)].produit_id, this.lignes[this.ligne_tab.indexOf(item)].qte);
+        ancien_ttc_ligne = ancien_total_ht_ligne * (1 + eval(this.ligne_tab[this.ligne_tab.indexOf(item)].tva) / 100);
+        ancien_total_tva_ligne = ancien_ttc_ligne - ancien_total_ht_ligne;
+        this.total_ht = (this.total_ht - ancien_total_ht_ligne).toFixed(3);
+        this.total_ttc = (this.total_ttc - ancien_ttc_ligne).toFixed(3);
+        this.total_tva = (this.total_tva - ancien_total_tva_ligne).toFixed(3);
+        this.net_a_payer = (this.total_ttc - this.total_remise).toFixed(3);
+      } else {
+        ancien_total_remise_ligne = this.lignes[this.ligne_tab.indexOf(item)].remise;
+        this.total_remise = this.total_remise - ancien_total_remise_ligne;
+        this.net_a_payer = (eval(this.net_a_payer) + eval(ancien_total_remise_ligne)).toFixed(3);
+      }
+      //On soustrait les anciennes valeurs du total
+    },
+    updateLigneFactureAvecNouvelleValeur: function updateLigneFactureAvecNouvelleValeur(val, item, key) {
+      var nouveau_total_ht_ligne = 0;
+      var nouveau_ttc_ligne = 0;
+      var nouveau_total_tva_ligne = 0;
+      var nouvelle_remise_ligne = 0;
+      if (key === 'qte') {
+        this.lignes[this.ligne_tab.indexOf(item)].qte = val;
+        nouveau_total_ht_ligne = this.total_ht_ligne(this.lignes[this.ligne_tab.indexOf(item)].produit_id, this.lignes[this.ligne_tab.indexOf(item)].qte);
+        nouveau_ttc_ligne = nouveau_total_ht_ligne * (1 + eval(this.ligne_tab[this.ligne_tab.indexOf(item)].tva) / 100);
+        nouveau_total_tva_ligne = nouveau_ttc_ligne - nouveau_total_ht_ligne;
+        this.total_ht = (eval(this.total_ht) + eval(nouveau_total_ht_ligne)).toFixed(3);
+        this.total_ttc = (eval(this.total_ttc) + eval(nouveau_ttc_ligne)).toFixed(3);
+        this.total_tva = (eval(this.total_tva) + eval(nouveau_total_tva_ligne)).toFixed(3);
+        this.ligne_tab[this.ligne_tab.indexOf(item)].total_ht_ligne = nouveau_total_ht_ligne;
+        this.net_a_payer = (eval(this.total_remise) + eval(this.total_ttc)).toFixed(3);
+      } else {
+        this.lignes[this.ligne_tab.indexOf(item)].remise = val;
+        nouvelle_remise_ligne = val;
+        this.total_remise = (eval(this.total_remise) + eval(nouvelle_remise_ligne)).toFixed(3);
+        this.net_a_payer = (eval(this.net_a_payer) - eval(nouvelle_remise_ligne)).toFixed(3);
+      }
+    },
+    save: function save(val, item, key) {
+      this.snack = true;
+      this.snackColor = 'success';
+      this.snackText = 'Data saved';
+      this.enleverAnciennesValeurLigneFacture(item, key);
+      this.updateLigneFactureAvecNouvelleValeur(val, item, key);
+    },
+    cancel: function cancel() {
+      this.snack = true;
+      this.snackColor = 'error';
+      this.snackText = 'Canceled';
+    },
+    open: function open() {
+      this.snack = true;
+      this.snackColor = 'info';
+      this.snackText = 'Dialog opened';
+    },
+    close: function close() {},
+    clientSelected: function clientSelected() {
+      this.client.nom = this.$store.getters.getClient(this.client_id).nom;
+      this.client.adresse = this.$store.getters.getClient(this.client_id).adresse;
+      this.client.raison = this.$store.getters.getClient(this.client_id).raison;
+      this.client.matricule = this.$store.getters.getClient(this.client_id).matricule;
+      this.client.mail = this.$store.getters.getClient(this.client_id).mail;
+      this.client.tel = this.$store.getters.getClient(this.client_id).tel;
+    },
+    resetFields: function resetFields() {
+      this.produit_id = null, this.client_id = null, this.total_ht = 0, this.total_tva = 0, this.total_ttc = 0, this.total_remise = 0, this.qte = 0, this.remise = 0, this.ligne_tab = [], this.lignes = [];
+    },
     deleteItem: function deleteItem(item) {
       var index = this.ligne_tab.indexOf(item);
-      confirm('Etes vous sur de vouloir supprimer cette ligne') && this.ligne_tab.splice(index, 1);
+      var response = confirm('Etes vous sur de vouloir supprimer cette ligne');
+      if (response) {
+        this.enleverAnciennesValeurLigneFacture(item);
+        this.ligne_tab.splice(index, 1);
+        this.lignes.splice(index, 1);
+      }
     },
     submit: function submit() {
       this.validation_client = this.client_id === null ? true : false;
@@ -34738,10 +34886,12 @@ var moment = __webpack_require__(0);
           lignes: this.lignes
         };
         this.$store.dispatch("saveFacture", facture);
+        this.resetFields();
       }
     },
-    test: function test() {
-      window.print();
+    test: function test(item, key) {
+      var a = 'qte';
+      console.log(this.lignes[this.ligne_tab.indexOf(item)].a);
     },
     clearErrors: function clearErrors() {
       this.$store.dispatch('clearErrors');
@@ -34759,13 +34909,14 @@ var moment = __webpack_require__(0);
           qte: this.qte,
           prix_unitaire: this.$store.getters.getProduitById(this.produit_id).prix,
           tva: this.$store.getters.getProduitById(this.produit_id).tva,
-          total_ht_ligne: this.total_ht_ligne(this.produit_id),
+          total_ht_ligne: this.total_ht_ligne(this.produit_id, this.qte),
           remise: this.remise
         });
         this.total_remise = (eval(this.total_remise) + eval(this.remise)).toFixed(3);
-        this.total_ht = (eval(this.total_ht) + eval(this.total_ht_ligne(this.produit_id))).toFixed(3);
-        this.total_ttc = (eval(this.total_ttc) + eval(this.total_ttc_ligne(this.produit_id))).toFixed(3);
-        this.total_tva = (eval(this.total_tva) + eval(this.total_tva_ligne(this.produit_id))).toFixed(3);
+        this.total_ht = (eval(this.total_ht) + eval(this.total_ht_ligne(this.produit_id, this.qte))).toFixed(3);
+        this.total_ttc = (eval(this.total_ttc) + eval(this.total_ttc_ligne(this.produit_id, this.qte))).toFixed(3);
+        this.total_tva = (eval(this.total_tva) + eval(this.total_tva_ligne(this.produit_id, this.qte))).toFixed(3);
+        this.net_a_payer = this.total_ttc - this.total_remise;
         this.lignes.push({
           produit_id: this.produit_id,
           qte: this.qte,
@@ -34773,16 +34924,16 @@ var moment = __webpack_require__(0);
         });
       }
     },
-    total_ht_ligne: function total_ht_ligne(id) {
+    total_ht_ligne: function total_ht_ligne(id, qte) {
       var a = this.$store.getters.getProduitById(id).prix;
-      return a * this.qte;
+      return a * qte;
     },
-    total_ttc_ligne: function total_ttc_ligne(id) {
+    total_ttc_ligne: function total_ttc_ligne(id, qte) {
       var a = this.$store.getters.getProduitById(id).tva;
-      return this.total_ht_ligne(id) * (1 + a / 100);
+      return this.total_ht_ligne(id, qte) * (1 + a / 100);
     },
-    total_tva_ligne: function total_tva_ligne(id) {
-      return this.total_ttc_ligne(id) - this.total_ht_ligne(id);
+    total_tva_ligne: function total_tva_ligne(id, qte) {
+      return this.total_ttc_ligne(id, qte) - this.total_ht_ligne(id, qte);
     }
   },
   computed: {
@@ -34792,7 +34943,7 @@ var moment = __webpack_require__(0);
     erreurs: function erreurs() {
       return this.$store.getters.erreurs;
     },
-    client: function client() {
+    clientListName: function clientListName() {
       return this.$store.getters.getClientListName;
     },
     produit: function produit() {
@@ -35217,15 +35368,16 @@ var render = function() {
         [
           _c(
             "v-flex",
-            { attrs: { xs12: "", sm4: "", md4: "", "d-flex": "" } },
+            { attrs: { xs12: "", md4: "", "d-flex": "" } },
             [
               _c("v-select", {
                 attrs: {
-                  items: _vm.client,
+                  items: _vm.clientListName,
                   "item-text": "nom",
                   "item-value": "id",
                   label: "Client"
                 },
+                on: { change: _vm.clientSelected },
                 model: {
                   value: _vm.client_id,
                   callback: function($$v) {
@@ -35244,25 +35396,60 @@ var render = function() {
             1
           ),
           _vm._v(" "),
-          _c("date", {
-            ref: "datefacture",
-            attrs: { date_facture: "Date Facturation" }
-          }),
-          _vm._v(" "),
-          _c("date", {
-            ref: "dateecheance",
-            attrs: { date_facture: "Date Echeance" }
-          }),
+          _c(
+            "v-flex",
+            { attrs: { xs12: "", md4: "" } },
+            [
+              _c("date", {
+                ref: "datefacture",
+                attrs: { date_facture: "Date Facturation" }
+              })
+            ],
+            1
+          ),
           _vm._v(" "),
           _c(
-            "v-alert",
-            { attrs: { value: _vm.validation_date, type: "error" } },
+            "v-flex",
+            { attrs: { xs12: "", md4: "" } },
             [
-              _vm._v(
-                "\n      La date d'echeance doit etre superieur a celle d'emission.\n    "
+              _c("date", {
+                ref: "dateecheance",
+                attrs: { date_facture: "Date Echeance" }
+              }),
+              _vm._v(" "),
+              _c(
+                "v-alert",
+                { attrs: { value: _vm.validation_date, type: "error" } },
+                [
+                  _vm._v(
+                    "\n      La date d'echeance doit etre superieur a celle d'emission.\n    "
+                  )
+                ]
               )
-            ]
+            ],
+            1
           )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-layout",
+        { attrs: { row: "", wrap: "" } },
+        [
+          _c("v-flex", { attrs: { xs12: "", md4: "" } }, [
+            _vm.client_id !== null
+              ? _c("div", { staticClass: "clientDetail" }, [
+                  _c("p", { staticClass: "clientNom ml-3 mt-1" }, [
+                    _vm._v(_vm._s(_vm.client.nom))
+                  ]),
+                  _vm._v(" "),
+                  _c("p", { staticClass: "clientadresse ml-3" }, [
+                    _vm._v(_vm._s(_vm.client.adresse))
+                  ])
+                ])
+              : _vm._e()
+          ])
         ],
         1
       ),
@@ -35420,7 +35607,68 @@ var render = function() {
                                 _vm._v(_vm._s(props.item.designation))
                               ]),
                               _vm._v(" "),
-                              _c("td", {}, [_vm._v(_vm._s(props.item.qte))]),
+                              _c(
+                                "td",
+                                {},
+                                [
+                                  _c(
+                                    "v-edit-dialog",
+                                    {
+                                      attrs: {
+                                        "return-value": props.item.qte,
+                                        lazy: ""
+                                      },
+                                      on: {
+                                        "update:returnValue": function($event) {
+                                          _vm.$set(props.item, "qte", $event)
+                                        },
+                                        save: function($event) {
+                                          _vm.save(
+                                            props.item.qte,
+                                            props.item,
+                                            Object.keys(props.item).find(
+                                              function(key) {
+                                                return (
+                                                  props.item[key] ===
+                                                  props.item.qte
+                                                )
+                                              }
+                                            )
+                                          )
+                                        },
+                                        cancel: _vm.cancel,
+                                        open: _vm.open,
+                                        close: _vm.close
+                                      }
+                                    },
+                                    [
+                                      _vm._v(
+                                        " " +
+                                          _vm._s(props.item.qte) +
+                                          "\n          "
+                                      ),
+                                      _c("v-text-field", {
+                                        attrs: {
+                                          slot: "input",
+                                          label: "Edit",
+                                          "single-line": "",
+                                          counter: ""
+                                        },
+                                        slot: "input",
+                                        model: {
+                                          value: props.item.qte,
+                                          callback: function($$v) {
+                                            _vm.$set(props.item, "qte", $$v)
+                                          },
+                                          expression: "props.item.qte"
+                                        }
+                                      })
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              ),
                               _vm._v(" "),
                               _c("td", {}, [
                                 _vm._v(_vm._s(props.item.prix_unitaire))
@@ -35432,26 +35680,73 @@ var render = function() {
                                 _vm._v(_vm._s(props.item.total_ht_ligne))
                               ]),
                               _vm._v(" "),
-                              _c("td", {}, [_vm._v(_vm._s(props.item.remise))]),
+                              _c(
+                                "td",
+                                {},
+                                [
+                                  _c(
+                                    "v-edit-dialog",
+                                    {
+                                      attrs: {
+                                        "return-value": props.item.remise,
+                                        lazy: ""
+                                      },
+                                      on: {
+                                        "update:returnValue": function($event) {
+                                          _vm.$set(props.item, "remise", $event)
+                                        },
+                                        save: function($event) {
+                                          _vm.save(
+                                            props.item.remise,
+                                            props.item,
+                                            Object.keys(props.item).find(
+                                              function(key) {
+                                                return (
+                                                  props.item[key] ===
+                                                  props.item.remise
+                                                )
+                                              }
+                                            )
+                                          )
+                                        },
+                                        cancel: _vm.cancel,
+                                        open: _vm.open,
+                                        close: _vm.close
+                                      }
+                                    },
+                                    [
+                                      _vm._v(
+                                        " " +
+                                          _vm._s(props.item.remise) +
+                                          "\n          "
+                                      ),
+                                      _c("v-text-field", {
+                                        attrs: {
+                                          slot: "input",
+                                          label: "Edit",
+                                          "single-line": "",
+                                          counter: ""
+                                        },
+                                        slot: "input",
+                                        model: {
+                                          value: props.item.remise,
+                                          callback: function($$v) {
+                                            _vm.$set(props.item, "remise", $$v)
+                                          },
+                                          expression: "props.item.remise"
+                                        }
+                                      })
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              ),
                               _vm._v(" "),
                               _c(
                                 "td",
                                 { staticClass: "justify-center layout px-0" },
                                 [
-                                  _c(
-                                    "v-icon",
-                                    {
-                                      staticClass: "mr-2",
-                                      attrs: { small: "" },
-                                      on: {
-                                        click: function($event) {
-                                          _vm.editItem(props.item)
-                                        }
-                                      }
-                                    },
-                                    [_vm._v("edit")]
-                                  ),
-                                  _vm._v(" "),
                                   _c(
                                     "v-icon",
                                     {
@@ -35580,9 +35875,8 @@ var render = function() {
                                   { attrs: { "offset-xs10": "", xs2: "" } },
                                   [
                                     _c("v-text-field", {
-                                      staticClass: "inputPrice is-bold",
+                                      staticClass: "inputPrice ",
                                       attrs: {
-                                        outline: "",
                                         type: "number",
                                         readonly: "",
                                         label: "Total TTC",
@@ -35598,6 +35892,31 @@ var render = function() {
                                     })
                                   ],
                                   1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "v-flex",
+                                  { attrs: { "offset-xs10": "", xs2: "" } },
+                                  [
+                                    _c("v-text-field", {
+                                      staticClass: "inputPrice is-bold",
+                                      attrs: {
+                                        outline: "",
+                                        type: "number",
+                                        readonly: "",
+                                        label: "Net à Payer",
+                                        disabled: ""
+                                      },
+                                      model: {
+                                        value: _vm.net_a_payer,
+                                        callback: function($$v) {
+                                          _vm.net_a_payer = $$v
+                                        },
+                                        expression: "net_a_payer"
+                                      }
+                                    })
+                                  ],
+                                  1
                                 )
                               ],
                               1
@@ -35608,6 +35927,38 @@ var render = function() {
                       ])
                     ],
                     2
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-snackbar",
+                    {
+                      attrs: { timeout: 3000, color: _vm.snackColor },
+                      model: {
+                        value: _vm.snack,
+                        callback: function($$v) {
+                          _vm.snack = $$v
+                        },
+                        expression: "snack"
+                      }
+                    },
+                    [
+                      _vm._v(
+                        "\n          " + _vm._s(_vm.snackText) + "\n          "
+                      ),
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: { flat: "" },
+                          on: {
+                            click: function($event) {
+                              _vm.snack = false
+                            }
+                          }
+                        },
+                        [_vm._v("Close")]
+                      )
+                    ],
+                    1
                   )
                 ],
                 1
@@ -67729,7 +68080,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-flex",
-    { attrs: { xs12: "", md4: "" } },
+    { attrs: { xs12: "" } },
     [
       _c(
         "v-menu",

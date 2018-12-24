@@ -63,7 +63,8 @@ export default {
     getClientListName(state) {
       return state.clientListName;
     },
-
-
+    getClient(state){
+        return clientId => state.loadedClients.find(client => client.id===clientId);
+    }
   },
 };

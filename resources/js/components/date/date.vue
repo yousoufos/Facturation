@@ -1,5 +1,5 @@
 <template>
-      <v-flex xs12 md4>
+      <v-flex xs12 >
         <v-menu
           ref="menu1"
           :close-on-content-click="false"

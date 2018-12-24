@@ -1,50 +1,50 @@
-export default{
-    state:{
+export default {
+    state: {
         loading: false,
         erreurs: null,
         savedStatut: false,
 
     },
-    mutations:{
-        setLoading(state,payload){
+    mutations: {
+        setLoading (state, payload) {
             state.loading = payload
         },
-        seterreurs(state,payload){
+        seterreurs (state, payload) {
             state.erreurs = payload
         },
-        clearErrors (state){
+        clearErrors (state) {
             state.erreurs = null
         },
-        clearSavedStatut (state){
+        clearSavedStatut (state) {
             state.savedStatut = false
         },
-        setSavedStatut(state,payload){
+        setSavedStatut (state, payload) {
             state.savedStatut = payload
         }
 
 
     },
-    actions:{
-        clearErrors ({commit}){
-           commit('clearErrors')
+    actions: {
+        clearErrors ({ commit }) {
+            commit('clearErrors')
         },
-        clearSavedStatut ({commit}){
-           commit('clearSavedStatut')
+        clearSavedStatut ({ commit }) {
+            commit('clearSavedStatut')
         },
     },
 
-    getters:{
-        getErrors(state){
+    getters: {
+        getErrors (state) {
 
             return state.erreurs
         },
-        loading(state){
+        loading (state) {
             return state.loading
         },
-        erreurs(state){
+        erreurs (state) {
             return state.erreurs
         },
-        savedStatut(state){
+        savedStatut (state) {
             return state.savedStatut
         },
 

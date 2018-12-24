@@ -6,7 +6,7 @@
     >
 
       <v-flex xs12>
-          <v-alert
+        <v-alert
           :value="saved"
           type="success"
           dismissible
@@ -59,18 +59,14 @@
       row
       wrap
     >
-      <v-flex
-        xs12
-        sm4
-        md4
-        d-flex
-      >
+      <v-flex xs12 md4 d-flex>
         <v-select
-          :items="client "
+          :items="clientListName "
           item-text="nom"
           item-value="id"
           label="Client"
           v-model="client_id"
+          @change="clientSelected"
         ></v-select>
         <v-alert
           :value="validation_client"
@@ -79,11 +75,14 @@
           Vous devez choisir un client.
         </v-alert>
       </v-flex>
-      <date
+      <v-flex xs12 md4>
+          <date
         :date_facture="'Date Facturation'"
         ref="datefacture"
       ></date>
-      <date
+      </v-flex>
+      <v-flex xs12 md4>
+         <date
         :date_facture="'Date Echeance'"
         ref="dateecheance"
       ></date>
@@ -93,6 +92,15 @@
       >
         La date d'echeance doit etre superieur a celle d'emission.
       </v-alert>
+      </v-flex>
+    </v-layout>
+    <v-layout row wrap>
+        <v-flex xs12 md4>
+        <div class="clientDetail" v-if="client_id!==null">
+            <p class="clientNom ml-3 mt-1">{{ client.nom }}</p>
+            <p class="clientadresse ml-3">{{ client.adresse }}</p>
+        </div>
+      </v-flex>
     </v-layout>
     <v-divider></v-divider>
     <v-layout
@@ -195,17 +203,46 @@
             >
               <td>{{ props.item.name }}</td>
               <td class>{{ props.item.designation }}</td>
-              <td class>{{ props.item.qte }}</td>
+              <td class>
+            <v-edit-dialog
+            :return-value.sync="props.item.qte"
+            lazy
+            @save="save(props.item.qte,props.item,Object.keys(props.item).find(key=>props.item[key] === props.item.qte ))"
+            @cancel="cancel"
+            @open="open"
+            @close="close"
+          > {{ props.item.qte }}
+            <v-text-field
+              slot="input"
+              v-model="props.item.qte"
+              label="Edit"
+              single-line
+              counter
+            ></v-text-field>
+          </v-edit-dialog>
+              </td>
               <td class>{{ props.item.prix_unitaire }}</td>
               <td class>{{ props.item.tva }}</td>
               <td class>{{ props.item.total_ht_ligne }}</td>
-              <td class>{{ props.item.remise }}</td>
+              <td class>
+            <v-edit-dialog
+            :return-value.sync="props.item.remise"
+            lazy
+            @save="save(props.item.remise,props.item,Object.keys(props.item).find(key=>props.item[key] === props.item.remise ))"
+            @cancel="cancel"
+            @open="open"
+            @close="close"
+          > {{ props.item.remise }}
+            <v-text-field
+              slot="input"
+              v-model="props.item.remise"
+              label="Edit"
+              single-line
+              counter
+            ></v-text-field>
+          </v-edit-dialog>
+              </td>
               <td class="justify-center layout px-0">
-                <v-icon
-                  small
-                  class="mr-2"
-                  @click="editItem(props.item)"
-                >edit</v-icon>
                 <v-icon
                   small
                   @click="deleteItem(props.item)"
@@ -277,8 +314,7 @@
                     xs2
                   >
                     <v-text-field
-                      outline
-                      class="inputPrice is-bold"
+                      class="inputPrice "
                       type="number"
                       readonly
                       label="Total TTC"
@@ -286,10 +322,28 @@
                       disabled
                     ></v-text-field>
                   </v-flex>
+                  <v-flex
+                    offset-xs10
+                    xs2
+                  >
+                    <v-text-field
+                      outline
+                      class="inputPrice is-bold"
+                      type="number"
+                      readonly
+                      label="Net à Payer"
+                      v-model="net_a_payer"
+                      disabled
+                    ></v-text-field>
+                  </v-flex>
                 </v-layout>
               </td>
             </template>
           </v-data-table>
+          <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
+            {{ snackText }}
+            <v-btn flat @click="snack = false">Close</v-btn>
+        </v-snackbar>
         </v-flex>
       </v-layout>
     </v-layout>
@@ -332,6 +386,7 @@ export default {
       total_tva: 0,
       total_ttc: 0,
       total_remise: 0,
+      net_a_payer:0,
       lignes: [],
       validation_client: false,
       validation_date: false,
@@ -339,18 +394,120 @@ export default {
       validation_qte: false,
       validation_remise: false,
       validation_lignes: false,
+      client:{
+          nom:'',
+          adresse:'',
+          raison:'',
+          mail:'',
+          tel:'',
+          matricule:''
+      },
+      snack: false,
+      snackColor: '',
+      snackText: '',
     };
   },
   methods: {
+      enleverAnciennesValeurLigneFacture(item,key){
+          let ancien_total_ht_ligne = 0
+          let ancien_total_remise_ligne = 0
+          let ancien_ttc_ligne = 0
+          let ancien_total_tva_ligne = 0
+        //On recupere les valeur avant la modification
+        if(key === 'qte'){
+            ancien_total_ht_ligne = this.total_ht_ligne(this.lignes[this.ligne_tab.indexOf(item)].produit_id,this.lignes[this.ligne_tab.indexOf(item)].qte)
+            ancien_ttc_ligne = ancien_total_ht_ligne * (1+eval(this.ligne_tab[this.ligne_tab.indexOf(item)].tva)/100)
+            ancien_total_tva_ligne = ancien_ttc_ligne - ancien_total_ht_ligne
+            this.total_ht =(this.total_ht - ancien_total_ht_ligne).toFixed(3);
+            this.total_ttc = (this.total_ttc - ancien_ttc_ligne).toFixed(3);
+            this.total_tva = (this.total_tva- ancien_total_tva_ligne).toFixed(3);
+            this.net_a_payer = (this.total_ttc - this.total_remise).toFixed(3)
+        }
+        else{
+             ancien_total_remise_ligne = this.lignes[this.ligne_tab.indexOf(item)].remise
+             this.total_remise = this.total_remise - ancien_total_remise_ligne
+             this.net_a_payer = (eval(this.net_a_payer) + eval(ancien_total_remise_ligne)).toFixed(3)
+        }
+        //On soustrait les anciennes valeurs du total
+
+      },
+      updateLigneFactureAvecNouvelleValeur(val,item,key){
+          let nouveau_total_ht_ligne = 0
+          let nouveau_ttc_ligne = 0
+          let nouveau_total_tva_ligne = 0
+          let nouvelle_remise_ligne = 0
+          if(key === 'qte'){
+            this.lignes[this.ligne_tab.indexOf(item)].qte=val
+            nouveau_total_ht_ligne = this.total_ht_ligne(this.lignes[this.ligne_tab.indexOf(item)].produit_id,this.lignes[this.ligne_tab.indexOf(item)].qte)
+            nouveau_ttc_ligne = nouveau_total_ht_ligne *  (1+eval(this.ligne_tab[this.ligne_tab.indexOf(item)].tva)/100)
+            nouveau_total_tva_ligne = nouveau_ttc_ligne - nouveau_total_ht_ligne
+            this.total_ht =(eval(this.total_ht) + eval(nouveau_total_ht_ligne)).toFixed(3)
+            this.total_ttc = (eval(this.total_ttc) + eval(nouveau_ttc_ligne)).toFixed(3)
+            this.total_tva = (eval(this.total_tva) + eval(nouveau_total_tva_ligne)).toFixed(3)
+            this.ligne_tab[this.ligne_tab.indexOf(item)].total_ht_ligne = nouveau_total_ht_ligne
+            this.net_a_payer = (eval(this.total_remise) +eval(this.total_ttc)).toFixed(3)
+          }
+          else{
+            this.lignes[this.ligne_tab.indexOf(item)].remise=val
+            nouvelle_remise_ligne = val
+            this.total_remise = (eval(this.total_remise) + eval(nouvelle_remise_ligne)).toFixed(3)
+            this.net_a_payer = (eval(this.net_a_payer) - eval(nouvelle_remise_ligne)).toFixed(3)
+          }
+      },
+      save (val,item,key) {
+        this.snack = true
+        this.snackColor = 'success'
+        this.snackText = 'Data saved'
+        this.enleverAnciennesValeurLigneFacture(item,key)
+        this.updateLigneFactureAvecNouvelleValeur(val,item,key)
+      },
+      cancel () {
+        this.snack = true
+        this.snackColor = 'error'
+        this.snackText = 'Canceled'
+      },
+      open () {
+        this.snack = true
+        this.snackColor = 'info'
+        this.snackText = 'Dialog opened'
+      },
+      close () {
+      },
+      clientSelected(){
+          this.client.nom=this.$store.getters.getClient(this.client_id).nom
+          this.client.adresse=this.$store.getters.getClient(this.client_id).adresse
+          this.client.raison=this.$store.getters.getClient(this.client_id).raison
+          this.client.matricule=this.$store.getters.getClient(this.client_id).matricule
+          this.client.mail=this.$store.getters.getClient(this.client_id).mail
+          this.client.tel=this.$store.getters.getClient(this.client_id).tel
+      },
+    resetFields () {
+      this.produit_id = null,
+        this.client_id = null,
+        this.total_ht = 0,
+        this.total_tva = 0,
+        this.total_ttc = 0,
+        this.total_remise = 0,
+        this.qte = 0,
+        this.remise = 0,
+        this.ligne_tab = [],
+        this.lignes=[]
+    },
     deleteItem (item) {
       const index = this.ligne_tab.indexOf(item)
-      confirm('Etes vous sur de vouloir supprimer cette ligne') && this.ligne_tab.splice(index, 1)
+      let response = confirm('Etes vous sur de vouloir supprimer cette ligne')
+      if(response){
+          this.enleverAnciennesValeurLigneFacture(item)
+          this.ligne_tab.splice(index, 1)
+          this.lignes.splice(index,1)
+      }
+
     },
     submit () {
       this.validation_client = this.client_id === null ? true : false
       this.validation_date = moment(this.$refs["datefacture"].date) <= moment(this.$refs["dateecheance"].date) ? false : true
       this.validation_lignes = this.ligne_tab.length == 0 ? true : false
-      if (this.validation_client==false && this.validation_date==false && this.validation_qte==false && this.validation_remise==false && this.validation_lignes==false && this.validation_produit==false) {
+      if (this.validation_client == false && this.validation_date == false && this.validation_qte == false && this.validation_remise == false && this.validation_lignes == false && this.validation_produit == false) {
         let facture = {
           client_id: this.client_id,
           date_emission: this.$refs["datefacture"].computedDateFormatted,
@@ -363,14 +520,14 @@ export default {
           lignes: this.lignes
         };
         this.$store.dispatch("saveFacture", facture);
-
-
-
+        this.resetFields()
       }
 
     },
-    test () {
-      window.print()
+    test (item,key) {
+        let a = 'qte'
+      console.log(this.lignes[this.ligne_tab.indexOf(item)].a);
+
 
     },
     clearErrors () {
@@ -382,50 +539,49 @@ export default {
 
     },
     ajouter () {
-        this.validation_qte = this.qte < 0 ? true : false
-        this.validation_remise = this.remise < 0 ? true : false
-        this.validation_produit = this.produit_id === null ? true : false
-        if ( this.validation_qte==false && this.validation_remise==false && this.validation_produit==false){
-            this.ligne_tab.push({
-        designation: this.$store.getters.getProduitById(this.produit_id)
-          .designation,
-        qte: this.qte,
-        prix_unitaire: this.$store.getters.getProduitById(this.produit_id).prix,
-        tva: this.$store.getters.getProduitById(this.produit_id).tva,
-        total_ht_ligne: this.total_ht_ligne(this.produit_id),
-        remise: this.remise
-      });
-      this.total_remise = (eval(this.total_remise) + eval(this.remise)).toFixed(
-        3
-      );
-      this.total_ht = (
-        eval(this.total_ht) + eval(this.total_ht_ligne(this.produit_id))
-      ).toFixed(3);
-      this.total_ttc = (
-        eval(this.total_ttc) + eval(this.total_ttc_ligne(this.produit_id))
-      ).toFixed(3);
-      this.total_tva = (
-        eval(this.total_tva) + eval(this.total_tva_ligne(this.produit_id))
-      ).toFixed(3);
-      this.lignes.push({
-        produit_id: this.produit_id,
-        qte: this.qte,
-        remise: this.remise
-      });
-        }
+      this.validation_qte = this.qte < 0 ? true : false
+      this.validation_remise = this.remise < 0 ? true : false
+      this.validation_produit = this.produit_id === null ? true : false
+      if (this.validation_qte == false && this.validation_remise == false && this.validation_produit == false) {
+        this.ligne_tab.push({
+          designation: this.$store.getters.getProduitById(this.produit_id)
+            .designation,
+          qte: this.qte,
+          prix_unitaire: this.$store.getters.getProduitById(this.produit_id).prix,
+          tva: this.$store.getters.getProduitById(this.produit_id).tva,
+          total_ht_ligne: this.total_ht_ligne(this.produit_id,this.qte),
+          remise: this.remise
+        });
+        this.total_remise = (eval(this.total_remise) + eval(this.remise)).toFixed(3);
+        this.total_ht = (
+          eval(this.total_ht) + eval(this.total_ht_ligne(this.produit_id,this.qte))
+        ).toFixed(3);
+        this.total_ttc = (
+          eval(this.total_ttc) + eval(this.total_ttc_ligne(this.produit_id,this.qte))
+        ).toFixed(3);
+        this.total_tva = (
+          eval(this.total_tva) + eval(this.total_tva_ligne(this.produit_id,this.qte))
+        ).toFixed(3);
+        this.net_a_payer = this.total_ttc - this. total_remise
+        this.lignes.push({
+          produit_id: this.produit_id,
+          qte: this.qte,
+          remise: this.remise
+        });
+      }
 
 
     },
-    total_ht_ligne (id) {
+    total_ht_ligne (id,qte) {
       let a = this.$store.getters.getProduitById(id).prix;
-      return a * this.qte;
+      return a * qte;
     },
-    total_ttc_ligne (id) {
+    total_ttc_ligne (id,qte) {
       let a = this.$store.getters.getProduitById(id).tva;
-      return this.total_ht_ligne(id) * (1 + a / 100);
+      return this.total_ht_ligne(id,qte) * (1 + a / 100);
     },
-    total_tva_ligne (id) {
-      return this.total_ttc_ligne(id) - this.total_ht_ligne(id);
+    total_tva_ligne (id,qte) {
+      return this.total_ttc_ligne(id,qte) - this.total_ht_ligne(id,qte);
     }
   },
   computed: {
@@ -435,7 +591,7 @@ export default {
     erreurs () {
       return this.$store.getters.erreurs;
     },
-    client () {
+    clientListName () {
       return this.$store.getters.getClientListName;
     },
     produit () {
@@ -444,8 +600,8 @@ export default {
     haveErrors () {
       return this.$store.getters.erreurs !== null && this.$store.getters.erreurs !== undefined
     },
-    saved(){
-       return this.$store.getters.savedStatut;
+    saved () {
+      return this.$store.getters.savedStatut;
     }
   }
 };
@@ -453,6 +609,13 @@ export default {
 <style scoped>
 .is-bold {
   font-weight: bold;
+}
+.clientNom{
+    font-weight: bold;
+}
+.clientDetail{
+    border-style: solid;
+    border-width: thin;
 }
 </style>
 

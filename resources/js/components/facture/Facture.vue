@@ -154,7 +154,7 @@
         <v-text-field
           class="inputPrice"
           type="number"
-          label="Remise"
+          label="Remise %"
           v-model="remise"
         ></v-text-field>
         <v-alert
@@ -314,25 +314,12 @@
                     xs2
                   >
                     <v-text-field
-                      class="inputPrice "
+                      outline
+                      class="inputPrice is-bold "
                       type="number"
                       readonly
                       label="Total TTC"
                       v-model="total_ttc"
-                      disabled
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex
-                    offset-xs10
-                    xs2
-                  >
-                    <v-text-field
-                      outline
-                      class="inputPrice is-bold"
-                      type="number"
-                      readonly
-                      label="Net à Payer"
-                      v-model="net_a_payer"
                       disabled
                     ></v-text-field>
                   </v-flex>
@@ -386,7 +373,6 @@ export default {
       total_tva: 0,
       total_ttc: 0,
       total_remise: 0,
-      net_a_payer:0,
       lignes: [],
       validation_client: false,
       validation_date: false,
@@ -408,52 +394,38 @@ export default {
     };
   },
   methods: {
-      enleverAnciennesValeurLigneFacture(item,key){
-          let ancien_total_ht_ligne = 0
-          let ancien_total_remise_ligne = 0
-          let ancien_ttc_ligne = 0
-          let ancien_total_tva_ligne = 0
-        //On recupere les valeur avant la modification
-        if(key === 'qte'){
-            ancien_total_ht_ligne = this.total_ht_ligne(this.lignes[this.ligne_tab.indexOf(item)].produit_id,this.lignes[this.ligne_tab.indexOf(item)].qte)
-            ancien_ttc_ligne = ancien_total_ht_ligne * (1+eval(this.ligne_tab[this.ligne_tab.indexOf(item)].tva)/100)
-            ancien_total_tva_ligne = ancien_ttc_ligne - ancien_total_ht_ligne
+      enleverAnciennesValeurLigneFacture(item){
+
+            let ancien_total_ht_ligne = this.total_ht_ligne(this.lignes[this.ligne_tab.indexOf(item)].produit_id,this.lignes[this.ligne_tab.indexOf(item)].qte,this.lignes[this.ligne_tab.indexOf(item)].remise)
+            let ancien_ttc_ligne = ancien_total_ht_ligne * (1+eval(this.ligne_tab[this.ligne_tab.indexOf(item)].tva)/100)
+            let ancien_total_tva_ligne = ancien_ttc_ligne - ancien_total_ht_ligne
             this.total_ht =(this.total_ht - ancien_total_ht_ligne).toFixed(3);
             this.total_ttc = (this.total_ttc - ancien_ttc_ligne).toFixed(3);
             this.total_tva = (this.total_tva- ancien_total_tva_ligne).toFixed(3);
-            this.net_a_payer = (this.total_ttc - this.total_remise).toFixed(3)
-        }
-        else{
-             ancien_total_remise_ligne = this.lignes[this.ligne_tab.indexOf(item)].remise
-             this.total_remise = this.total_remise - ancien_total_remise_ligne
-             this.net_a_payer = (eval(this.net_a_payer) + eval(ancien_total_remise_ligne)).toFixed(3)
-        }
-        //On soustrait les anciennes valeurs du total
+            let ancien_total_remise_ligne = this.lignes[this.ligne_tab.indexOf(item)].remise
+            this.total_remise = this.total_remise - ancien_total_remise_ligne
 
       },
       updateLigneFactureAvecNouvelleValeur(val,item,key){
-          let nouveau_total_ht_ligne = 0
-          let nouveau_ttc_ligne = 0
-          let nouveau_total_tva_ligne = 0
-          let nouvelle_remise_ligne = 0
-          if(key === 'qte'){
-            this.lignes[this.ligne_tab.indexOf(item)].qte=val
-            nouveau_total_ht_ligne = this.total_ht_ligne(this.lignes[this.ligne_tab.indexOf(item)].produit_id,this.lignes[this.ligne_tab.indexOf(item)].qte)
-            nouveau_ttc_ligne = nouveau_total_ht_ligne *  (1+eval(this.ligne_tab[this.ligne_tab.indexOf(item)].tva)/100)
-            nouveau_total_tva_ligne = nouveau_ttc_ligne - nouveau_total_ht_ligne
+
+            let nouveau_total_ht_ligne = this.total_ht_ligne(this.lignes[this.ligne_tab.indexOf(item)].produit_id,this.ligne_tab[this.ligne_tab.indexOf(item)].qte,this.ligne_tab[this.ligne_tab.indexOf(item)].remise)
+            let nouveau_ttc_ligne = eval(nouveau_total_ht_ligne) *  (1+eval(this.ligne_tab[this.ligne_tab.indexOf(item)].tva)/100)
+
+            let nouveau_total_tva_ligne = nouveau_ttc_ligne - nouveau_total_ht_ligne
             this.total_ht =(eval(this.total_ht) + eval(nouveau_total_ht_ligne)).toFixed(3)
             this.total_ttc = (eval(this.total_ttc) + eval(nouveau_ttc_ligne)).toFixed(3)
             this.total_tva = (eval(this.total_tva) + eval(nouveau_total_tva_ligne)).toFixed(3)
             this.ligne_tab[this.ligne_tab.indexOf(item)].total_ht_ligne = nouveau_total_ht_ligne
-            this.net_a_payer = (eval(this.total_remise) +eval(this.total_ttc)).toFixed(3)
-          }
-          else{
-            this.lignes[this.ligne_tab.indexOf(item)].remise=val
-            nouvelle_remise_ligne = val
-            this.total_remise = (eval(this.total_remise) + eval(nouvelle_remise_ligne)).toFixed(3)
-            this.net_a_payer = (eval(this.net_a_payer) - eval(nouvelle_remise_ligne)).toFixed(3)
-          }
+            this.total_remise = (eval(this.total_remise) + eval(this.ligne_tab[this.ligne_tab.indexOf(item)].remise)).toFixed(3)
+            if (key === 'qte'){
+                this.lignes[this.ligne_tab.indexOf(item)].qte=val
+            }
+            else
+            {
+                this.lignes[this.ligne_tab.indexOf(item)].remise=val
+            }
       },
+
       save (val,item,key) {
         this.snack = true
         this.snackColor = 'success'
@@ -540,7 +512,7 @@ export default {
     },
     ajouter () {
       this.validation_qte = this.qte < 0 ? true : false
-      this.validation_remise = this.remise < 0 ? true : false
+      this.validation_remise = (this.remise < 0 || this.remise > 100) ? true : false
       this.validation_produit = this.produit_id === null ? true : false
       if (this.validation_qte == false && this.validation_remise == false && this.validation_produit == false) {
         this.ligne_tab.push({
@@ -549,20 +521,19 @@ export default {
           qte: this.qte,
           prix_unitaire: this.$store.getters.getProduitById(this.produit_id).prix,
           tva: this.$store.getters.getProduitById(this.produit_id).tva,
-          total_ht_ligne: this.total_ht_ligne(this.produit_id,this.qte),
+          total_ht_ligne: this.total_ht_ligne(this.produit_id,this.qte,this.remise),
           remise: this.remise
         });
         this.total_remise = (eval(this.total_remise) + eval(this.remise)).toFixed(3);
         this.total_ht = (
-          eval(this.total_ht) + eval(this.total_ht_ligne(this.produit_id,this.qte))
+          eval(this.total_ht) + eval(this.total_ht_ligne(this.produit_id,this.qte,this.remise))
         ).toFixed(3);
         this.total_ttc = (
-          eval(this.total_ttc) + eval(this.total_ttc_ligne(this.produit_id,this.qte))
+          eval(this.total_ttc) + eval(this.total_ttc_ligne(this.produit_id,this.qte,this.remise))
         ).toFixed(3);
         this.total_tva = (
-          eval(this.total_tva) + eval(this.total_tva_ligne(this.produit_id,this.qte))
+          eval(this.total_tva) + eval(this.total_tva_ligne(this.produit_id,this.qte,this.remise))
         ).toFixed(3);
-        this.net_a_payer = this.total_ttc - this. total_remise
         this.lignes.push({
           produit_id: this.produit_id,
           qte: this.qte,
@@ -572,16 +543,17 @@ export default {
 
 
     },
-    total_ht_ligne (id,qte) {
+    total_ht_ligne (id,qte,remise) {
       let a = this.$store.getters.getProduitById(id).prix;
-      return a * qte;
+      return (a * qte) - remise;
     },
-    total_ttc_ligne (id,qte) {
+    total_ttc_ligne (id,qte,remise) {
       let a = this.$store.getters.getProduitById(id).tva;
-      return this.total_ht_ligne(id,qte) * (1 + a / 100);
+      return this.total_ht_ligne(id,qte,remise) * (1 + a / 100);
     },
-    total_tva_ligne (id,qte) {
-      return this.total_ttc_ligne(id,qte) - this.total_ht_ligne(id,qte);
+    total_tva_ligne (id,qte,remise) {
+        let a = this.$store.getters.getProduitById(id).tva;
+      return  this.total_ht_ligne(id,qte,remise) * (a/100);
     }
   },
   computed: {

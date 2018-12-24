@@ -34723,19 +34723,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 var moment = __webpack_require__(0);
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -34765,7 +34752,6 @@ var moment = __webpack_require__(0);
       total_tva: 0,
       total_ttc: 0,
       total_remise: 0,
-      net_a_payer: 0,
       lignes: [],
       validation_client: false,
       validation_date: false,
@@ -34788,47 +34774,32 @@ var moment = __webpack_require__(0);
   },
 
   methods: {
-    enleverAnciennesValeurLigneFacture: function enleverAnciennesValeurLigneFacture(item, key) {
-      var ancien_total_ht_ligne = 0;
-      var ancien_total_remise_ligne = 0;
-      var ancien_ttc_ligne = 0;
-      var ancien_total_tva_ligne = 0;
-      //On recupere les valeur avant la modification
-      if (key === 'qte') {
-        ancien_total_ht_ligne = this.total_ht_ligne(this.lignes[this.ligne_tab.indexOf(item)].produit_id, this.lignes[this.ligne_tab.indexOf(item)].qte);
-        ancien_ttc_ligne = ancien_total_ht_ligne * (1 + eval(this.ligne_tab[this.ligne_tab.indexOf(item)].tva) / 100);
-        ancien_total_tva_ligne = ancien_ttc_ligne - ancien_total_ht_ligne;
-        this.total_ht = (this.total_ht - ancien_total_ht_ligne).toFixed(3);
-        this.total_ttc = (this.total_ttc - ancien_ttc_ligne).toFixed(3);
-        this.total_tva = (this.total_tva - ancien_total_tva_ligne).toFixed(3);
-        this.net_a_payer = (this.total_ttc - this.total_remise).toFixed(3);
-      } else {
-        ancien_total_remise_ligne = this.lignes[this.ligne_tab.indexOf(item)].remise;
-        this.total_remise = this.total_remise - ancien_total_remise_ligne;
-        this.net_a_payer = (eval(this.net_a_payer) + eval(ancien_total_remise_ligne)).toFixed(3);
-      }
-      //On soustrait les anciennes valeurs du total
+    enleverAnciennesValeurLigneFacture: function enleverAnciennesValeurLigneFacture(item) {
+
+      var ancien_total_ht_ligne = this.total_ht_ligne(this.lignes[this.ligne_tab.indexOf(item)].produit_id, this.lignes[this.ligne_tab.indexOf(item)].qte, this.lignes[this.ligne_tab.indexOf(item)].remise);
+      var ancien_ttc_ligne = ancien_total_ht_ligne * (1 + eval(this.ligne_tab[this.ligne_tab.indexOf(item)].tva) / 100);
+      var ancien_total_tva_ligne = ancien_ttc_ligne - ancien_total_ht_ligne;
+      this.total_ht = (this.total_ht - ancien_total_ht_ligne).toFixed(3);
+      this.total_ttc = (this.total_ttc - ancien_ttc_ligne).toFixed(3);
+      this.total_tva = (this.total_tva - ancien_total_tva_ligne).toFixed(3);
+      var ancien_total_remise_ligne = this.lignes[this.ligne_tab.indexOf(item)].remise;
+      this.total_remise = this.total_remise - ancien_total_remise_ligne;
     },
     updateLigneFactureAvecNouvelleValeur: function updateLigneFactureAvecNouvelleValeur(val, item, key) {
-      var nouveau_total_ht_ligne = 0;
-      var nouveau_ttc_ligne = 0;
-      var nouveau_total_tva_ligne = 0;
-      var nouvelle_remise_ligne = 0;
+
+      var nouveau_total_ht_ligne = this.total_ht_ligne(this.lignes[this.ligne_tab.indexOf(item)].produit_id, this.ligne_tab[this.ligne_tab.indexOf(item)].qte, this.ligne_tab[this.ligne_tab.indexOf(item)].remise);
+      var nouveau_ttc_ligne = eval(nouveau_total_ht_ligne) * (1 + eval(this.ligne_tab[this.ligne_tab.indexOf(item)].tva) / 100);
+
+      var nouveau_total_tva_ligne = nouveau_ttc_ligne - nouveau_total_ht_ligne;
+      this.total_ht = (eval(this.total_ht) + eval(nouveau_total_ht_ligne)).toFixed(3);
+      this.total_ttc = (eval(this.total_ttc) + eval(nouveau_ttc_ligne)).toFixed(3);
+      this.total_tva = (eval(this.total_tva) + eval(nouveau_total_tva_ligne)).toFixed(3);
+      this.ligne_tab[this.ligne_tab.indexOf(item)].total_ht_ligne = nouveau_total_ht_ligne;
+      this.total_remise = (eval(this.total_remise) + eval(this.ligne_tab[this.ligne_tab.indexOf(item)].remise)).toFixed(3);
       if (key === 'qte') {
         this.lignes[this.ligne_tab.indexOf(item)].qte = val;
-        nouveau_total_ht_ligne = this.total_ht_ligne(this.lignes[this.ligne_tab.indexOf(item)].produit_id, this.lignes[this.ligne_tab.indexOf(item)].qte);
-        nouveau_ttc_ligne = nouveau_total_ht_ligne * (1 + eval(this.ligne_tab[this.ligne_tab.indexOf(item)].tva) / 100);
-        nouveau_total_tva_ligne = nouveau_ttc_ligne - nouveau_total_ht_ligne;
-        this.total_ht = (eval(this.total_ht) + eval(nouveau_total_ht_ligne)).toFixed(3);
-        this.total_ttc = (eval(this.total_ttc) + eval(nouveau_ttc_ligne)).toFixed(3);
-        this.total_tva = (eval(this.total_tva) + eval(nouveau_total_tva_ligne)).toFixed(3);
-        this.ligne_tab[this.ligne_tab.indexOf(item)].total_ht_ligne = nouveau_total_ht_ligne;
-        this.net_a_payer = (eval(this.total_remise) + eval(this.total_ttc)).toFixed(3);
       } else {
         this.lignes[this.ligne_tab.indexOf(item)].remise = val;
-        nouvelle_remise_ligne = val;
-        this.total_remise = (eval(this.total_remise) + eval(nouvelle_remise_ligne)).toFixed(3);
-        this.net_a_payer = (eval(this.net_a_payer) - eval(nouvelle_remise_ligne)).toFixed(3);
       }
     },
     save: function save(val, item, key) {
@@ -34901,7 +34872,7 @@ var moment = __webpack_require__(0);
     },
     ajouter: function ajouter() {
       this.validation_qte = this.qte < 0 ? true : false;
-      this.validation_remise = this.remise < 0 ? true : false;
+      this.validation_remise = this.remise < 0 || this.remise > 100 ? true : false;
       this.validation_produit = this.produit_id === null ? true : false;
       if (this.validation_qte == false && this.validation_remise == false && this.validation_produit == false) {
         this.ligne_tab.push({
@@ -34909,14 +34880,13 @@ var moment = __webpack_require__(0);
           qte: this.qte,
           prix_unitaire: this.$store.getters.getProduitById(this.produit_id).prix,
           tva: this.$store.getters.getProduitById(this.produit_id).tva,
-          total_ht_ligne: this.total_ht_ligne(this.produit_id, this.qte),
+          total_ht_ligne: this.total_ht_ligne(this.produit_id, this.qte, this.remise),
           remise: this.remise
         });
         this.total_remise = (eval(this.total_remise) + eval(this.remise)).toFixed(3);
-        this.total_ht = (eval(this.total_ht) + eval(this.total_ht_ligne(this.produit_id, this.qte))).toFixed(3);
-        this.total_ttc = (eval(this.total_ttc) + eval(this.total_ttc_ligne(this.produit_id, this.qte))).toFixed(3);
-        this.total_tva = (eval(this.total_tva) + eval(this.total_tva_ligne(this.produit_id, this.qte))).toFixed(3);
-        this.net_a_payer = this.total_ttc - this.total_remise;
+        this.total_ht = (eval(this.total_ht) + eval(this.total_ht_ligne(this.produit_id, this.qte, this.remise))).toFixed(3);
+        this.total_ttc = (eval(this.total_ttc) + eval(this.total_ttc_ligne(this.produit_id, this.qte, this.remise))).toFixed(3);
+        this.total_tva = (eval(this.total_tva) + eval(this.total_tva_ligne(this.produit_id, this.qte, this.remise))).toFixed(3);
         this.lignes.push({
           produit_id: this.produit_id,
           qte: this.qte,
@@ -34924,16 +34894,17 @@ var moment = __webpack_require__(0);
         });
       }
     },
-    total_ht_ligne: function total_ht_ligne(id, qte) {
+    total_ht_ligne: function total_ht_ligne(id, qte, remise) {
       var a = this.$store.getters.getProduitById(id).prix;
-      return a * qte;
+      return a * qte - remise;
     },
-    total_ttc_ligne: function total_ttc_ligne(id, qte) {
+    total_ttc_ligne: function total_ttc_ligne(id, qte, remise) {
       var a = this.$store.getters.getProduitById(id).tva;
-      return this.total_ht_ligne(id, qte) * (1 + a / 100);
+      return this.total_ht_ligne(id, qte, remise) * (1 + a / 100);
     },
-    total_tva_ligne: function total_tva_ligne(id, qte) {
-      return this.total_ttc_ligne(id, qte) - this.total_ht_ligne(id, qte);
+    total_tva_ligne: function total_tva_ligne(id, qte, remise) {
+      var a = this.$store.getters.getProduitById(id).tva;
+      return this.total_ht_ligne(id, qte, remise) * (a / 100);
     }
   },
   computed: {
@@ -35528,7 +35499,7 @@ var render = function() {
             [
               _c("v-text-field", {
                 staticClass: "inputPrice",
-                attrs: { type: "number", label: "Remise" },
+                attrs: { type: "number", label: "Remise %" },
                 model: {
                   value: _vm.remise,
                   callback: function($$v) {
@@ -35875,8 +35846,9 @@ var render = function() {
                                   { attrs: { "offset-xs10": "", xs2: "" } },
                                   [
                                     _c("v-text-field", {
-                                      staticClass: "inputPrice ",
+                                      staticClass: "inputPrice is-bold ",
                                       attrs: {
+                                        outline: "",
                                         type: "number",
                                         readonly: "",
                                         label: "Total TTC",
@@ -35888,31 +35860,6 @@ var render = function() {
                                           _vm.total_ttc = $$v
                                         },
                                         expression: "total_ttc"
-                                      }
-                                    })
-                                  ],
-                                  1
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "v-flex",
-                                  { attrs: { "offset-xs10": "", xs2: "" } },
-                                  [
-                                    _c("v-text-field", {
-                                      staticClass: "inputPrice is-bold",
-                                      attrs: {
-                                        outline: "",
-                                        type: "number",
-                                        readonly: "",
-                                        label: "Net à Payer",
-                                        disabled: ""
-                                      },
-                                      model: {
-                                        value: _vm.net_a_payer,
-                                        callback: function($$v) {
-                                          _vm.net_a_payer = $$v
-                                        },
-                                        expression: "net_a_payer"
                                       }
                                     })
                                   ],

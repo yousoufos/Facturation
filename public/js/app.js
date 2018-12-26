@@ -34030,7 +34030,7 @@ exports = module.exports = __webpack_require__(172)(false);
 
 
 // module
-exports.push([module.i, "\n.is-bold[data-v-07625fce] {\n  font-weight: bold;\n}\n.clientNom[data-v-07625fce]{\n    font-weight: bold;\n}\n.clientDetail[data-v-07625fce]{\n    border-style: solid;\n    border-width: thin;\n}\n", ""]);
+exports.push([module.i, "\n.is-bold[data-v-07625fce] {\n  font-weight: bold;\n}\n.clientNom[data-v-07625fce] {\n  font-weight: bold;\n}\n.clientDetail[data-v-07625fce] {\n  border-style: solid;\n  border-width: thin;\n}\n", ""]);
 
 // exports
 
@@ -34723,6 +34723,51 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 var moment = __webpack_require__(0);
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -34743,7 +34788,7 @@ var moment = __webpack_require__(0);
         align: "left",
         sortable: false,
         value: "name"
-      }, { text: "Designation", value: "designation" }, { text: "Quantité", value: "qte" }, { text: "Prix Unitaire", value: "prix_unitaire" }, { text: "TVA", value: "tva" }, { text: "Total HT", value: "total_ht_ligne" }, { text: "Remise", value: "remise" }, { text: "Actions", value: "name", sortable: false }],
+      }, { text: "Designation", value: "designation" }, { text: "Quantité", value: "qte" }, { text: "Prix Unitaire", value: "prix_unitaire" }, { text: "TVA", value: "tva" }, { text: "Total HT (aprés remise)", value: "total_ht_ligne" }, { text: "Remise % ", value: "remise" }, { text: "Actions", value: "name", sortable: false }],
       produit_id: null,
       reference: "FACT-TEST",
       statut: "En cours",
@@ -34759,6 +34804,8 @@ var moment = __webpack_require__(0);
       validation_qte: false,
       validation_remise: false,
       validation_lignes: false,
+      validation_modif_qte: false,
+      validation_modif_remise: false,
       client: {
         nom: '',
         adresse: '',
@@ -34779,23 +34826,23 @@ var moment = __webpack_require__(0);
       var ancien_total_ht_ligne = this.total_ht_ligne(this.lignes[this.ligne_tab.indexOf(item)].produit_id, this.lignes[this.ligne_tab.indexOf(item)].qte, this.lignes[this.ligne_tab.indexOf(item)].remise);
       var ancien_ttc_ligne = ancien_total_ht_ligne * (1 + eval(this.ligne_tab[this.ligne_tab.indexOf(item)].tva) / 100);
       var ancien_total_tva_ligne = ancien_ttc_ligne - ancien_total_ht_ligne;
+      var ancien_total_remise_ligne = this.total_remise_ligne(this.lignes[this.ligne_tab.indexOf(item)].produit_id, this.lignes[this.ligne_tab.indexOf(item)].qte, this.lignes[this.ligne_tab.indexOf(item)].remise);
       this.total_ht = (this.total_ht - ancien_total_ht_ligne).toFixed(3);
       this.total_ttc = (this.total_ttc - ancien_ttc_ligne).toFixed(3);
       this.total_tva = (this.total_tva - ancien_total_tva_ligne).toFixed(3);
-      var ancien_total_remise_ligne = this.lignes[this.ligne_tab.indexOf(item)].remise;
       this.total_remise = this.total_remise - ancien_total_remise_ligne;
     },
     updateLigneFactureAvecNouvelleValeur: function updateLigneFactureAvecNouvelleValeur(val, item, key) {
 
       var nouveau_total_ht_ligne = this.total_ht_ligne(this.lignes[this.ligne_tab.indexOf(item)].produit_id, this.ligne_tab[this.ligne_tab.indexOf(item)].qte, this.ligne_tab[this.ligne_tab.indexOf(item)].remise);
       var nouveau_ttc_ligne = eval(nouveau_total_ht_ligne) * (1 + eval(this.ligne_tab[this.ligne_tab.indexOf(item)].tva) / 100);
-
+      var nouveau_total_remise_ligne = this.total_remise_ligne(this.lignes[this.ligne_tab.indexOf(item)].produit_id, this.ligne_tab[this.ligne_tab.indexOf(item)].qte, this.ligne_tab[this.ligne_tab.indexOf(item)].remise);
       var nouveau_total_tva_ligne = nouveau_ttc_ligne - nouveau_total_ht_ligne;
       this.total_ht = (eval(this.total_ht) + eval(nouveau_total_ht_ligne)).toFixed(3);
       this.total_ttc = (eval(this.total_ttc) + eval(nouveau_ttc_ligne)).toFixed(3);
       this.total_tva = (eval(this.total_tva) + eval(nouveau_total_tva_ligne)).toFixed(3);
       this.ligne_tab[this.ligne_tab.indexOf(item)].total_ht_ligne = nouveau_total_ht_ligne;
-      this.total_remise = (eval(this.total_remise) + eval(this.ligne_tab[this.ligne_tab.indexOf(item)].remise)).toFixed(3);
+      this.total_remise = (eval(this.total_remise) + eval(nouveau_total_remise_ligne)).toFixed(3);
       if (key === 'qte') {
         this.lignes[this.ligne_tab.indexOf(item)].qte = val;
       } else {
@@ -34803,11 +34850,30 @@ var moment = __webpack_require__(0);
       }
     },
     save: function save(val, item, key) {
-      this.snack = true;
-      this.snackColor = 'success';
-      this.snackText = 'Data saved';
-      this.enleverAnciennesValeurLigneFacture(item, key);
-      this.updateLigneFactureAvecNouvelleValeur(val, item, key);
+      if (key === 'qte') {
+        if (val >= 0) {
+          this.snack = true;
+          this.snackColor = 'success';
+          this.snackText = 'Data saved';
+          this.enleverAnciennesValeurLigneFacture(item, key);
+          this.updateLigneFactureAvecNouvelleValeur(val, item, key);
+        } else {
+          this.validation_modif_qte = true;
+          this.$refs.modif_qte.cancel();
+        }
+      }
+      if (key === 'remise') {
+        if (val >= 0 && val <= 100) {
+          this.snack = true;
+          this.snackColor = 'success';
+          this.snackText = 'Data saved';
+          this.enleverAnciennesValeurLigneFacture(item, key);
+          this.updateLigneFactureAvecNouvelleValeur(val, item, key);
+        } else {
+          this.validation_modif_remise = true;
+          this.$emit('cancel');
+        }
+      }
     },
     cancel: function cancel() {
       this.snack = true;
@@ -34819,7 +34885,14 @@ var moment = __webpack_require__(0);
       this.snackColor = 'info';
       this.snackText = 'Dialog opened';
     },
-    close: function close() {},
+    close: function close(item) {
+      if (this.validation_modif_qte) {
+        this.ligne_tab[this.ligne_tab.indexOf(item)].qte = this.lignes[this.ligne_tab.indexOf(item)].qte;
+      }
+      if (this.validation_modif_remise) {
+        this.ligne_tab[this.ligne_tab.indexOf(item)].remise = this.lignes[this.ligne_tab.indexOf(item)].remise;
+      }
+    },
     clientSelected: function clientSelected() {
       this.client.nom = this.$store.getters.getClient(this.client_id).nom;
       this.client.adresse = this.$store.getters.getClient(this.client_id).adresse;
@@ -34861,10 +34934,15 @@ var moment = __webpack_require__(0);
       }
     },
     test: function test(item, key) {
-      var a = 'qte';
-      console.log(this.lignes[this.ligne_tab.indexOf(item)].a);
+      this.ligne_tab[0].qte = 10;
     },
     clearErrors: function clearErrors() {
+      this.validation_client = false;
+      this.validation_date = false;
+      this.validation_produit = false;
+      this.validation_qte = false;
+      this.validation_remise = false;
+      this.validation_lignes = false;
       this.$store.dispatch('clearErrors');
     },
     clearSavedStatut: function clearSavedStatut() {
@@ -34883,7 +34961,8 @@ var moment = __webpack_require__(0);
           total_ht_ligne: this.total_ht_ligne(this.produit_id, this.qte, this.remise),
           remise: this.remise
         });
-        this.total_remise = (eval(this.total_remise) + eval(this.remise)).toFixed(3);
+        this.total_remise = (eval(this.total_remise) + eval(this.total_remise_ligne(this.produit_id, this.qte, this.remise))).toFixed(3);
+
         this.total_ht = (eval(this.total_ht) + eval(this.total_ht_ligne(this.produit_id, this.qte, this.remise))).toFixed(3);
         this.total_ttc = (eval(this.total_ttc) + eval(this.total_ttc_ligne(this.produit_id, this.qte, this.remise))).toFixed(3);
         this.total_tva = (eval(this.total_tva) + eval(this.total_tva_ligne(this.produit_id, this.qte, this.remise))).toFixed(3);
@@ -34896,7 +34975,7 @@ var moment = __webpack_require__(0);
     },
     total_ht_ligne: function total_ht_ligne(id, qte, remise) {
       var a = this.$store.getters.getProduitById(id).prix;
-      return a * qte - remise;
+      return a * qte * (1 - remise / 100);
     },
     total_ttc_ligne: function total_ttc_ligne(id, qte, remise) {
       var a = this.$store.getters.getProduitById(id).tva;
@@ -34905,6 +34984,10 @@ var moment = __webpack_require__(0);
     total_tva_ligne: function total_tva_ligne(id, qte, remise) {
       var a = this.$store.getters.getProduitById(id).tva;
       return this.total_ht_ligne(id, qte, remise) * (a / 100);
+    },
+    total_remise_ligne: function total_remise_ligne(id, qte, remise) {
+      var a = this.$store.getters.getProduitById(id).prix;
+      return a * qte * (remise / 100);
     }
   },
   computed: {
@@ -34926,7 +35009,8 @@ var moment = __webpack_require__(0);
     saved: function saved() {
       return this.$store.getters.savedStatut;
     }
-  }
+  },
+  watch: {}
 });
 
 /***/ }),
@@ -35253,7 +35337,7 @@ var render = function() {
                   attrs: { value: _vm.saved, type: "success", dismissible: "" },
                   on: { click: _vm.clearSavedStatut }
                 },
-                [_vm._v("\n        Facture enregistrée.\n      ")]
+                [_vm._v("\n          Facture enregistrée.\n        ")]
               ),
               _vm._v(" "),
               _c(
@@ -35266,7 +35350,7 @@ var render = function() {
                   },
                   on: { click: _vm.clearErrors }
                 },
-                [_vm._v("\n        " + _vm._s(_vm.erreurs) + "\n      ")]
+                [_vm._v("\n          " + _vm._s(_vm.erreurs) + "\n        ")]
               )
             ],
             1
@@ -35360,8 +35444,15 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "v-alert",
-                { attrs: { value: _vm.validation_client, type: "error" } },
-                [_vm._v("\n        Vous devez choisir un client.\n      ")]
+                {
+                  attrs: {
+                    value: _vm.validation_client,
+                    type: "error",
+                    dismissible: ""
+                  },
+                  on: { click: _vm.clearErrors }
+                },
+                [_vm._v("\n          Vous devez choisir un client.\n        ")]
               )
             ],
             1
@@ -35390,10 +35481,17 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "v-alert",
-                { attrs: { value: _vm.validation_date, type: "error" } },
+                {
+                  attrs: {
+                    value: _vm.validation_date,
+                    type: "error",
+                    dismissible: ""
+                  },
+                  on: { click: _vm.clearErrors }
+                },
                 [
                   _vm._v(
-                    "\n      La date d'echeance doit etre superieur a celle d'emission.\n    "
+                    "\n          La date d'echeance doit etre superieur a celle de facturation.\n        "
                   )
                 ]
               )
@@ -35417,6 +35515,10 @@ var render = function() {
                   _vm._v(" "),
                   _c("p", { staticClass: "clientadresse ml-3" }, [
                     _vm._v(_vm._s(_vm.client.adresse))
+                  ]),
+                  _vm._v(" "),
+                  _c("p", { staticClass: "clientadresse ml-3" }, [
+                    _vm._v(_vm._s(_vm.client.matricule))
                   ])
                 ])
               : _vm._e()
@@ -35453,8 +35555,15 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "v-alert",
-                { attrs: { value: _vm.validation_produit, type: "error" } },
-                [_vm._v("\n        Vous devez choisir un produit.\n      ")]
+                {
+                  attrs: {
+                    value: _vm.validation_produit,
+                    type: "error",
+                    dismissible: ""
+                  },
+                  on: { click: _vm.clearErrors }
+                },
+                [_vm._v("\n          Vous devez choisir un produit.\n        ")]
               )
             ],
             1
@@ -35482,10 +35591,17 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "v-alert",
-                { attrs: { value: _vm.validation_qte, type: "error" } },
+                {
+                  attrs: {
+                    value: _vm.validation_qte,
+                    type: "error",
+                    dismissible: ""
+                  },
+                  on: { click: _vm.clearErrors }
+                },
                 [
                   _vm._v(
-                    "\n        La valeur de la quantité doit etre superieur ou egale à 0.\n      "
+                    "\n          La valeur de la quantité doit etre superieur ou egale à 0.\n        "
                   )
                 ]
               )
@@ -35511,10 +35627,17 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "v-alert",
-                { attrs: { value: _vm.validation_remise, type: "error" } },
+                {
+                  attrs: {
+                    value: _vm.validation_remise,
+                    type: "error",
+                    dismissible: ""
+                  },
+                  on: { click: _vm.clearErrors }
+                },
                 [
                   _vm._v(
-                    "\n        La valeur de la remise doit etre superieur ou egale à 0.\n      "
+                    "\n          La valeur de la remise doit etre comprise entre [0-100].\n        "
                   )
                 ]
               )
@@ -35549,10 +35672,17 @@ var render = function() {
                 [
                   _c(
                     "v-alert",
-                    { attrs: { value: _vm.validation_lignes, type: "error" } },
+                    {
+                      attrs: {
+                        value: _vm.validation_lignes,
+                        type: "error",
+                        dismissible: ""
+                      },
+                      on: { click: _vm.clearErrors }
+                    },
                     [
                       _vm._v(
-                        "\n          La facture ne n'a pas de de data\n        "
+                        "\n            La facture ne contient aucune entrée\n          "
                       )
                     ]
                   ),
@@ -35585,6 +35715,7 @@ var render = function() {
                                   _c(
                                     "v-edit-dialog",
                                     {
+                                      ref: "modif_qte",
                                       attrs: {
                                         "return-value": props.item.qte,
                                         lazy: ""
@@ -35609,18 +35740,23 @@ var render = function() {
                                         },
                                         cancel: _vm.cancel,
                                         open: _vm.open,
-                                        close: _vm.close
+                                        close: function($event) {
+                                          _vm.close(props.item)
+                                        }
                                       }
                                     },
                                     [
                                       _vm._v(
                                         " " +
                                           _vm._s(props.item.qte) +
-                                          "\n          "
+                                          "\n                  "
                                       ),
                                       _c("v-text-field", {
                                         attrs: {
                                           slot: "input",
+                                          min: "0",
+                                          step: "1",
+                                          type: "number",
                                           label: "Edit",
                                           "single-line": "",
                                           counter: ""
@@ -35682,18 +35818,21 @@ var render = function() {
                                         },
                                         cancel: _vm.cancel,
                                         open: _vm.open,
-                                        close: _vm.close
+                                        close: function($event) {
+                                          _vm.close(props.item)
+                                        }
                                       }
                                     },
                                     [
                                       _vm._v(
                                         " " +
                                           _vm._s(props.item.remise) +
-                                          "\n          "
+                                          "\n                  "
                                       ),
                                       _c("v-text-field", {
                                         attrs: {
                                           slot: "input",
+                                          type: "number",
                                           label: "Edit",
                                           "single-line": "",
                                           counter: ""
@@ -35890,7 +36029,9 @@ var render = function() {
                     },
                     [
                       _vm._v(
-                        "\n          " + _vm._s(_vm.snackText) + "\n          "
+                        "\n            " +
+                          _vm._s(_vm.snackText) +
+                          "\n            "
                       ),
                       _c(
                         "v-btn",

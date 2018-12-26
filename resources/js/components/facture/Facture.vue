@@ -59,7 +59,11 @@
       row
       wrap
     >
-      <v-flex xs12 md4 d-flex>
+      <v-flex
+        xs12
+        md4
+        d-flex
+      >
         <v-select
           :items="clientListName "
           item-text="nom"
@@ -71,34 +75,54 @@
         <v-alert
           :value="validation_client"
           type="error"
+          dismissible
+          @click="clearErrors"
         >
           Vous devez choisir un client.
         </v-alert>
       </v-flex>
-      <v-flex xs12 md4>
-          <date
-        :date_facture="'Date Facturation'"
-        ref="datefacture"
-      ></date>
-      </v-flex>
-      <v-flex xs12 md4>
-         <date
-        :date_facture="'Date Echeance'"
-        ref="dateecheance"
-      ></date>
-      <v-alert
-        :value="validation_date"
-        type="error"
+      <v-flex
+        xs12
+        md4
       >
-        La date d'echeance doit etre superieur a celle d'emission.
-      </v-alert>
+        <date
+          :date_facture="'Date Facturation'"
+          ref="datefacture"
+        ></date>
+      </v-flex>
+      <v-flex
+        xs12
+        md4
+      >
+        <date
+          :date_facture="'Date Echeance'"
+          ref="dateecheance"
+        ></date>
+        <v-alert
+          :value="validation_date"
+          type="error"
+          dismissible
+          @click="clearErrors"
+        >
+          La date d'echeance doit etre superieur a celle de facturation.
+        </v-alert>
       </v-flex>
     </v-layout>
-    <v-layout row wrap>
-        <v-flex xs12 md4>
-        <div class="clientDetail" v-if="client_id!==null">
-            <p class="clientNom ml-3 mt-1">{{ client.nom }}</p>
-            <p class="clientadresse ml-3">{{ client.adresse }}</p>
+    <v-layout
+      row
+      wrap
+    >
+      <v-flex
+        xs12
+        md4
+      >
+        <div
+          class="clientDetail"
+          v-if="client_id!==null"
+        >
+          <p class="clientNom ml-3 mt-1">{{ client.nom }}</p>
+          <p class="clientadresse ml-3">{{ client.adresse }}</p>
+          <p class="clientadresse ml-3">{{ client.matricule }}</p>
         </div>
       </v-flex>
     </v-layout>
@@ -123,6 +147,8 @@
         <v-alert
           :value="validation_produit"
           type="error"
+          dismissible
+          @click="clearErrors"
         >
           Vous devez choisir un produit.
         </v-alert>
@@ -133,15 +159,17 @@
         md2
       >
         <v-text-field
-          min="0"
-          step="1"
-          type="number"
-          label="Quantité"
-          v-model="qte"
+					min="0"
+					step="1"
+					type="number"
+					label="Quantité"
+					v-model="qte"
         ></v-text-field>
         <v-alert
           :value="validation_qte"
           type="error"
+          dismissible
+          @click="clearErrors"
         >
           La valeur de la quantité doit etre superieur ou egale à 0.
         </v-alert>
@@ -160,8 +188,10 @@
         <v-alert
           :value="validation_remise"
           type="error"
+          dismissible
+          @click="clearErrors"
         >
-          La valeur de la remise doit etre superieur ou egale à 0.
+          La valeur de la remise doit etre comprise entre [0-100].
         </v-alert>
       </v-flex>
       <v-flex
@@ -187,8 +217,10 @@
           <v-alert
             :value="validation_lignes"
             type="error"
+            dismissible
+          @click="clearErrors"
           >
-            La facture ne n'a pas de de data
+            La facture ne contient aucune entrée
           </v-alert>
           <v-data-table
             :headers="headers"
@@ -204,43 +236,49 @@
               <td>{{ props.item.name }}</td>
               <td class>{{ props.item.designation }}</td>
               <td class>
-            <v-edit-dialog
-            :return-value.sync="props.item.qte"
-            lazy
-            @save="save(props.item.qte,props.item,Object.keys(props.item).find(key=>props.item[key] === props.item.qte ))"
-            @cancel="cancel"
-            @open="open"
-            @close="close"
-          > {{ props.item.qte }}
-            <v-text-field
-              slot="input"
-              v-model="props.item.qte"
-              label="Edit"
-              single-line
-              counter
-            ></v-text-field>
-          </v-edit-dialog>
+                <v-edit-dialog
+                  :return-value.sync="props.item.qte"
+                  lazy
+                  @save="save(props.item.qte,props.item,Object.keys(props.item).find(key=>props.item[key] === props.item.qte ))"
+                  @cancel="cancel"
+                  @open="open"
+                  @close="close(props.item)"
+                  ref="modif_qte"
+                > {{ props.item.qte }}
+                  <v-text-field
+                    min="0"
+                    step="1"
+                    type="number"
+                    slot="input"
+                    v-model="props.item.qte"
+                    label="Edit"
+                    single-line
+                    counter
+
+                  ></v-text-field>
+                </v-edit-dialog>
               </td>
               <td class>{{ props.item.prix_unitaire }}</td>
               <td class>{{ props.item.tva }}</td>
               <td class>{{ props.item.total_ht_ligne }}</td>
               <td class>
-            <v-edit-dialog
-            :return-value.sync="props.item.remise"
-            lazy
-            @save="save(props.item.remise,props.item,Object.keys(props.item).find(key=>props.item[key] === props.item.remise ))"
-            @cancel="cancel"
-            @open="open"
-            @close="close"
-          > {{ props.item.remise }}
-            <v-text-field
-              slot="input"
-              v-model="props.item.remise"
-              label="Edit"
-              single-line
-              counter
-            ></v-text-field>
-          </v-edit-dialog>
+                <v-edit-dialog
+                  :return-value.sync="props.item.remise"
+                  lazy
+                  @save="save(props.item.remise,props.item,Object.keys(props.item).find(key=>props.item[key] === props.item.remise ))"
+                  @cancel="cancel"
+                  @open="open"
+                  @close="close(props.item)"
+                > {{ props.item.remise }}
+                  <v-text-field
+                    slot="input"
+                    type="number"
+                    v-model="props.item.remise"
+                    label="Edit"
+                    single-line
+                    counter
+                  ></v-text-field>
+                </v-edit-dialog>
               </td>
               <td class="justify-center layout px-0">
                 <v-icon
@@ -327,10 +365,17 @@
               </td>
             </template>
           </v-data-table>
-          <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
+          <v-snackbar
+            v-model="snack"
+            :timeout="3000"
+            :color="snackColor"
+          >
             {{ snackText }}
-            <v-btn flat @click="snack = false">Close</v-btn>
-        </v-snackbar>
+            <v-btn
+              flat
+              @click="snack = false"
+            >Close</v-btn>
+          </v-snackbar>
         </v-flex>
       </v-layout>
     </v-layout>
@@ -361,8 +406,8 @@ export default {
         { text: "Quantité", value: "qte" },
         { text: "Prix Unitaire", value: "prix_unitaire" },
         { text: "TVA", value: "tva" },
-        { text: "Total HT", value: "total_ht_ligne" },
-        { text: "Remise", value: "remise" },
+        { text: "Total HT (aprés remise)", value: "total_ht_ligne" },
+        { text: "Remise % ", value: "remise" },
         { text: "Actions", value: "name", sortable: false }
       ],
       produit_id: null,
@@ -379,14 +424,16 @@ export default {
       validation_produit: false,
       validation_qte: false,
       validation_remise: false,
-      validation_lignes: false,
-      client:{
-          nom:'',
-          adresse:'',
-          raison:'',
-          mail:'',
-          tel:'',
-          matricule:''
+			validation_lignes: false,
+			validation_modif_qte:false,
+			validation_modif_remise:false,
+      client: {
+        nom: '',
+        adresse: '',
+        raison: '',
+        mail: '',
+        tel: '',
+        matricule: ''
       },
       snack: false,
       snackColor: '',
@@ -394,65 +441,95 @@ export default {
     };
   },
   methods: {
-      enleverAnciennesValeurLigneFacture(item){
+    enleverAnciennesValeurLigneFacture (item) {
 
-            let ancien_total_ht_ligne = this.total_ht_ligne(this.lignes[this.ligne_tab.indexOf(item)].produit_id,this.lignes[this.ligne_tab.indexOf(item)].qte,this.lignes[this.ligne_tab.indexOf(item)].remise)
-            let ancien_ttc_ligne = ancien_total_ht_ligne * (1+eval(this.ligne_tab[this.ligne_tab.indexOf(item)].tva)/100)
-            let ancien_total_tva_ligne = ancien_ttc_ligne - ancien_total_ht_ligne
-            this.total_ht =(this.total_ht - ancien_total_ht_ligne).toFixed(3);
-            this.total_ttc = (this.total_ttc - ancien_ttc_ligne).toFixed(3);
-            this.total_tva = (this.total_tva- ancien_total_tva_ligne).toFixed(3);
-            let ancien_total_remise_ligne = this.lignes[this.ligne_tab.indexOf(item)].remise
-            this.total_remise = this.total_remise - ancien_total_remise_ligne
+      let ancien_total_ht_ligne = this.total_ht_ligne(this.lignes[this.ligne_tab.indexOf(item)].produit_id, this.lignes[this.ligne_tab.indexOf(item)].qte, this.lignes[this.ligne_tab.indexOf(item)].remise)
+      let ancien_ttc_ligne = ancien_total_ht_ligne * (1 + eval(this.ligne_tab[this.ligne_tab.indexOf(item)].tva) / 100)
+      let ancien_total_tva_ligne = ancien_ttc_ligne - ancien_total_ht_ligne
+      let ancien_total_remise_ligne = this.total_remise_ligne(this.lignes[this.ligne_tab.indexOf(item)].produit_id, this.lignes[this.ligne_tab.indexOf(item)].qte, this.lignes[this.ligne_tab.indexOf(item)].remise)
+      this.total_ht = (this.total_ht - ancien_total_ht_ligne).toFixed(3);
+      this.total_ttc = (this.total_ttc - ancien_ttc_ligne).toFixed(3);
+      this.total_tva = (this.total_tva - ancien_total_tva_ligne).toFixed(3);
+      this.total_remise = this.total_remise - ancien_total_remise_ligne
 
-      },
-      updateLigneFactureAvecNouvelleValeur(val,item,key){
+    },
+    updateLigneFactureAvecNouvelleValeur (val, item, key) {
 
-            let nouveau_total_ht_ligne = this.total_ht_ligne(this.lignes[this.ligne_tab.indexOf(item)].produit_id,this.ligne_tab[this.ligne_tab.indexOf(item)].qte,this.ligne_tab[this.ligne_tab.indexOf(item)].remise)
-            let nouveau_ttc_ligne = eval(nouveau_total_ht_ligne) *  (1+eval(this.ligne_tab[this.ligne_tab.indexOf(item)].tva)/100)
+      let nouveau_total_ht_ligne = this.total_ht_ligne(this.lignes[this.ligne_tab.indexOf(item)].produit_id,        this.ligne_tab[this.ligne_tab.indexOf(item)].qte, this.ligne_tab[this.ligne_tab.indexOf(item)].remise)
+      let nouveau_ttc_ligne = eval(nouveau_total_ht_ligne) * (1 + eval(this.ligne_tab[this.ligne_tab.indexOf(item)].tva) / 100)
+      let nouveau_total_remise_ligne = this.total_remise_ligne(this.lignes[this.ligne_tab.indexOf(item)].produit_id, this.ligne_tab[this.ligne_tab.indexOf(item)].qte, this.ligne_tab[this.ligne_tab.indexOf(item)].remise)
+      let nouveau_total_tva_ligne = nouveau_ttc_ligne - nouveau_total_ht_ligne
+      this.total_ht = (eval(this.total_ht) + eval(nouveau_total_ht_ligne)).toFixed(3)
+      this.total_ttc = (eval(this.total_ttc) + eval(nouveau_ttc_ligne)).toFixed(3)
+      this.total_tva = (eval(this.total_tva) + eval(nouveau_total_tva_ligne)).toFixed(3)
+      this.ligne_tab[this.ligne_tab.indexOf(item)].total_ht_ligne = nouveau_total_ht_ligne
+      this.total_remise = (eval(this.total_remise) + eval(nouveau_total_remise_ligne)).toFixed(3)
+      if (key === 'qte') {
+        this.lignes[this.ligne_tab.indexOf(item)].qte = val
+      }
+      else {
+        this.lignes[this.ligne_tab.indexOf(item)].remise = val
+      }
+    },
 
-            let nouveau_total_tva_ligne = nouveau_ttc_ligne - nouveau_total_ht_ligne
-            this.total_ht =(eval(this.total_ht) + eval(nouveau_total_ht_ligne)).toFixed(3)
-            this.total_ttc = (eval(this.total_ttc) + eval(nouveau_ttc_ligne)).toFixed(3)
-            this.total_tva = (eval(this.total_tva) + eval(nouveau_total_tva_ligne)).toFixed(3)
-            this.ligne_tab[this.ligne_tab.indexOf(item)].total_ht_ligne = nouveau_total_ht_ligne
-            this.total_remise = (eval(this.total_remise) + eval(this.ligne_tab[this.ligne_tab.indexOf(item)].remise)).toFixed(3)
-            if (key === 'qte'){
-                this.lignes[this.ligne_tab.indexOf(item)].qte=val
+    save (val, item, key) {
+        if(key === 'qte'){
+            if(val>=0){
+                this.snack = true
+                this.snackColor = 'success'
+                this.snackText = 'Data saved'
+                this.enleverAnciennesValeurLigneFacture(item, key)
+                this.updateLigneFactureAvecNouvelleValeur(val, item, key)
             }
-            else
-            {
-                this.lignes[this.ligne_tab.indexOf(item)].remise=val
+            else{
+                this.validation_modif_qte = true
+                this.$refs.modif_qte.cancel()
             }
-      },
+        }
+			if (key === 'remise') {
+                if(val>=0 && val <= 100){
+                    this.snack = true
+                    this.snackColor = 'success'
+                    this.snackText = 'Data saved'
+                    this.enleverAnciennesValeurLigneFacture(item, key)
+                    this.updateLigneFactureAvecNouvelleValeur(val, item, key)
+                }
+                else{
+                    this.validation_modif_remise = true
+                    this.$emit('cancel')
+                }
+			}
 
-      save (val,item,key) {
-        this.snack = true
-        this.snackColor = 'success'
-        this.snackText = 'Data saved'
-        this.enleverAnciennesValeurLigneFacture(item,key)
-        this.updateLigneFactureAvecNouvelleValeur(val,item,key)
-      },
-      cancel () {
-        this.snack = true
-        this.snackColor = 'error'
-        this.snackText = 'Canceled'
-      },
-      open () {
-        this.snack = true
-        this.snackColor = 'info'
-        this.snackText = 'Dialog opened'
-      },
-      close () {
-      },
-      clientSelected(){
-          this.client.nom=this.$store.getters.getClient(this.client_id).nom
-          this.client.adresse=this.$store.getters.getClient(this.client_id).adresse
-          this.client.raison=this.$store.getters.getClient(this.client_id).raison
-          this.client.matricule=this.$store.getters.getClient(this.client_id).matricule
-          this.client.mail=this.$store.getters.getClient(this.client_id).mail
-          this.client.tel=this.$store.getters.getClient(this.client_id).tel
-      },
+
+    },
+    cancel () {
+      this.snack = true
+      this.snackColor = 'error'
+      this.snackText = 'Canceled'
+    },
+    open () {
+      this.snack = true
+      this.snackColor = 'info'
+      this.snackText = 'Dialog opened'
+    },
+    close (item) {
+        if(this.validation_modif_qte){
+            this.ligne_tab[this.ligne_tab.indexOf(item)].qte = this.lignes[this.ligne_tab.indexOf(item)].qte
+        }
+        if(this.validation_modif_remise)
+        {
+            this.ligne_tab[this.ligne_tab.indexOf(item)].remise = this.lignes[this.ligne_tab.indexOf(item)].remise
+        }
+
+    },
+    clientSelected () {
+      this.client.nom = this.$store.getters.getClient(this.client_id).nom
+      this.client.adresse = this.$store.getters.getClient(this.client_id).adresse
+      this.client.raison = this.$store.getters.getClient(this.client_id).raison
+      this.client.matricule = this.$store.getters.getClient(this.client_id).matricule
+      this.client.mail = this.$store.getters.getClient(this.client_id).mail
+      this.client.tel = this.$store.getters.getClient(this.client_id).tel
+    },
     resetFields () {
       this.produit_id = null,
         this.client_id = null,
@@ -463,15 +540,15 @@ export default {
         this.qte = 0,
         this.remise = 0,
         this.ligne_tab = [],
-        this.lignes=[]
+        this.lignes = []
     },
     deleteItem (item) {
       const index = this.ligne_tab.indexOf(item)
       let response = confirm('Etes vous sur de vouloir supprimer cette ligne')
-      if(response){
-          this.enleverAnciennesValeurLigneFacture(item)
-          this.ligne_tab.splice(index, 1)
-          this.lignes.splice(index,1)
+      if (response) {
+        this.enleverAnciennesValeurLigneFacture(item)
+        this.ligne_tab.splice(index, 1)
+        this.lignes.splice(index, 1)
       }
 
     },
@@ -496,13 +573,18 @@ export default {
       }
 
     },
-    test (item,key) {
-        let a = 'qte'
-      console.log(this.lignes[this.ligne_tab.indexOf(item)].a);
+    test (item, key) {
+      this.ligne_tab[0].qte = 10
 
 
     },
     clearErrors () {
+        this.validation_client = false
+        this.validation_date = false
+        this.validation_produit = false
+        this.validation_qte = false
+        this.validation_remise = false
+        this.validation_lignes = false
       this.$store.dispatch('clearErrors')
 
     },
@@ -521,18 +603,20 @@ export default {
           qte: this.qte,
           prix_unitaire: this.$store.getters.getProduitById(this.produit_id).prix,
           tva: this.$store.getters.getProduitById(this.produit_id).tva,
-          total_ht_ligne: this.total_ht_ligne(this.produit_id,this.qte,this.remise),
+          total_ht_ligne: this.total_ht_ligne(this.produit_id, this.qte, this.remise),
           remise: this.remise
         });
-        this.total_remise = (eval(this.total_remise) + eval(this.remise)).toFixed(3);
+        this.total_remise = (eval(this.total_remise) + eval(this.total_remise_ligne(this.produit_id, this.qte, this.remise))).toFixed(3);
+
+
         this.total_ht = (
-          eval(this.total_ht) + eval(this.total_ht_ligne(this.produit_id,this.qte,this.remise))
+          eval(this.total_ht) + eval(this.total_ht_ligne(this.produit_id, this.qte, this.remise))
         ).toFixed(3);
         this.total_ttc = (
-          eval(this.total_ttc) + eval(this.total_ttc_ligne(this.produit_id,this.qte,this.remise))
+          eval(this.total_ttc) + eval(this.total_ttc_ligne(this.produit_id, this.qte, this.remise))
         ).toFixed(3);
         this.total_tva = (
-          eval(this.total_tva) + eval(this.total_tva_ligne(this.produit_id,this.qte,this.remise))
+          eval(this.total_tva) + eval(this.total_tva_ligne(this.produit_id, this.qte, this.remise))
         ).toFixed(3);
         this.lignes.push({
           produit_id: this.produit_id,
@@ -543,17 +627,21 @@ export default {
 
 
     },
-    total_ht_ligne (id,qte,remise) {
+    total_ht_ligne (id, qte, remise) {
       let a = this.$store.getters.getProduitById(id).prix;
-      return (a * qte) - remise;
+      return (a * qte * (1 - remise / 100));
     },
-    total_ttc_ligne (id,qte,remise) {
+    total_ttc_ligne (id, qte, remise) {
       let a = this.$store.getters.getProduitById(id).tva;
-      return this.total_ht_ligne(id,qte,remise) * (1 + a / 100);
+      return this.total_ht_ligne(id, qte, remise) * (1 + a / 100);
     },
-    total_tva_ligne (id,qte,remise) {
-        let a = this.$store.getters.getProduitById(id).tva;
-      return  this.total_ht_ligne(id,qte,remise) * (a/100);
+    total_tva_ligne (id, qte, remise) {
+      let a = this.$store.getters.getProduitById(id).tva;
+      return this.total_ht_ligne(id, qte, remise) * (a / 100);
+    },
+    total_remise_ligne (id, qte, remise) {
+      let a = this.$store.getters.getProduitById(id).prix;
+      return (a * qte * (remise / 100));
     }
   },
   computed: {
@@ -575,6 +663,9 @@ export default {
     saved () {
       return this.$store.getters.savedStatut;
     }
+  },
+  watch:{
+
   }
 };
 </script>
@@ -582,12 +673,12 @@ export default {
 .is-bold {
   font-weight: bold;
 }
-.clientNom{
-    font-weight: bold;
+.clientNom {
+  font-weight: bold;
 }
-.clientDetail{
-    border-style: solid;
-    border-width: thin;
+.clientDetail {
+  border-style: solid;
+  border-width: thin;
 }
 </style>
 

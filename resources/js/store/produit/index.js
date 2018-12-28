@@ -31,6 +31,7 @@ export default {
                         designation: value.designation,
                         tva: value.tva,
                         prix: value.prix,
+                        code:value.code
                     });
                 });
                 commit('setLoadedProduits', Produit);

@@ -89,7 +89,7 @@ export default {
     },
     getters: {
         getLoadedFactures (state) {
-            return state.getLoadedFactures
+            return state.loadedFactures
         }
     },
 };

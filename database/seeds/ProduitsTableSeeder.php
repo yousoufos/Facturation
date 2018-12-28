@@ -19,7 +19,8 @@ class ProduitsTableSeeder extends Seeder
             Produit::create([
                 'designation' => 'PROD-1000'.$i,
                 'tva' => $faker->randomElement($a),
-                'prix' => mt_rand(100,1000)
+                'prix' => mt_rand(100,1000),
+                'code' => 'Art-'.$i
             ]);
         }
     }

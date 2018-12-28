@@ -18,7 +18,7 @@ class FacturesTableSeeder extends Seeder
         $b=1;
         foreach(range(1,25)as$i){
             $facture = Facture::create([
-                'reference' => 'FACT-2000'.$b,
+                'reference' => 'FACT-2018-'.$b,
                 'client_id' => $i,
                 'date_emission' => date('Y-m-d',strtotime($i.'-12-2018')),
                 'date_echeance' => date('Y-m-d',strtotime($i.'-12-2018')),
@@ -26,7 +26,7 @@ class FacturesTableSeeder extends Seeder
                 'total_ttc' => mt_rand(2000,3000),
                 'total_tva' => mt_rand(100,999),
                 'total_remise' => mt_rand(0,50),
-                'statut' =>$faker->randomElement($array = array('en cours','clos','en attente')),
+                'statut' =>$faker->randomElement($array = array('En cours','Close','En attente','Annulée')),
 
             ]);
             $b++;

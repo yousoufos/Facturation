@@ -26,6 +26,7 @@ state.loadedLignesFacture.push(payload)
                       facture_id: value.facture_id,
                       qte: value.qte,
                       remise: value.remise,
+                      reference: value.reference
                     });
               })
               commit('setLoadedLignesFacture', lignes);

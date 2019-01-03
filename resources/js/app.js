@@ -52,5 +52,6 @@ const app = new Vue({
         this.$store.dispatch('loadProduits')
         this.$store.dispatch('loadLignesFacture')
         this.$store.dispatch('loadFactures')
+        this.$store.dispatch('loadReglements')
     },
 });

@@ -17,6 +17,9 @@ class Facture extends Model
     public function SuperProduit(){
         return $this->hasMany('App\LigneFacture');
     }
+    public function Reglement(){
+        return $this->hasMany('App\Reglement');
+    }
 
-    
+
 }

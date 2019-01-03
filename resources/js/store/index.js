@@ -9,6 +9,7 @@ import client from './client'
 import shared from './shared'
 import produit from './produit'
 import ligneFacture from './ligneFacture'
+import reglementFacture from './reglement'
 
 export const store = new Vuex.Store({
     modules: {
@@ -18,5 +19,6 @@ export const store = new Vuex.Store({
         produit: produit,
         facture: facture,
         ligneFacture: ligneFacture,
+        reglementFacture: reglementFacture,
     }
 })

@@ -21,3 +21,4 @@ Route::get('/client', 'ClientController@index');
 Route::get('/produit', 'ProduitController@index');
 Route::get('/facture', 'FactureController@index');
 Route::get('/facture/lignesfacture', 'LigneFactureController@index');
+Route::get('/facture/reglementfacture', 'ReglementController@index');

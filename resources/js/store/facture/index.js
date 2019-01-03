@@ -18,7 +18,7 @@ export default {
             commit('setLoading', true);
             axios.get(uri).then((response) => {
                 const facture = [];
-                const obj = response.data;
+                const obj = response.data.facture;
                 Object.keys(obj).forEach((key) => {
                     const value = obj[key];
                     facture.push({
@@ -49,7 +49,7 @@ export default {
             axios.post(uri, payload)
                 .then(response => {
                     const lignes = [];
-                    const obj = response.data;
+                    const obj = response.data.lignes;
                     Object.keys(obj).forEach((key) => {
                         const value = obj[key];
                         lignes.push({
@@ -60,7 +60,9 @@ export default {
                             remise: value.remise,
                         });
                     })
+                    const f = response.data.facture;
                     let facture = {
+                        id:f.id,
                         client_id: payload.client_id,
                         date_emission: payload.date_emission,
                         date_echeance: payload.date_echeance,
@@ -69,6 +71,7 @@ export default {
                         total_ttc: payload.total_ttc,
                         total_remise: payload.total_remise,
                         total_tva: payload.total_tva,
+                        reference: f.reference,
                         lignes: lignes
                     }
 
@@ -90,6 +93,9 @@ export default {
     getters: {
         getLoadedFactures (state) {
             return state.loadedFactures
+        },
+        getFacture (state) {
+            return factureId => state.loadedFactures.find(facture => facture.id === factureId);
         }
     },
 };

@@ -18,6 +18,7 @@
     <v-layout
       row
       wrap
+      v-else
     >
       <v-flex xs12>
         <v-data-table
@@ -26,7 +27,7 @@
           class="elevation-1"
           item-key="id"
           loading="true"
-          :rows-per-page-items="[10,25]"
+          :rows-per-page-items="[25,50]"
 
         >
           <template
@@ -34,13 +35,13 @@
             slot-scope="props"
           >
             <td>{{ props.item.name }}</td>
-            <td @click="rowId(props.item)" class="text-xs-left">{{ props.item.reference }}</td>
-            <td @click="rowId(props.item)" class="text-xs-left">{{ getClientName(props.item) }}</td>
-            <td @click="rowId(props.item)" class="text-xs-left">{{ props.item.date_emission }}</td>
-            <td @click="rowId(props.item)" class="text-xs-left">{{ props.item.date_echeance }}</td>
-            <td @click="rowId(props.item)" class="text-xs-left">{{ props.item.total_ht }}</td>
-            <td @click="rowId(props.item)" class="text-xs-left">{{ props.item.total_ttc }}</td>
-            <td @click="rowId(props.item)" class="text-xs-left" :class="getStatutClass(props.item)">{{ props.item.statut }}</td>
+            <td><router-link :to="{name: 'showfacture', params: { factureId: props.item.id }}" class="text-xs-left">{{ props.item.reference }}</router-link> </td>
+            <td class="text-xs-left">{{ getClientName(props.item) }}</td>
+            <td class="text-xs-left">{{ props.item.date_emission }}</td>
+            <td class="text-xs-left">{{ props.item.date_echeance }}</td>
+            <td class="text-xs-left">{{ props.item.total_ht }}</td>
+            <td class="text-xs-left">{{ props.item.total_ttc }}</td>
+            <td class="text-xs-left" :class="getStatutClass(props.item)">{{ props.item.statut }}</td>
           </template>
         </v-data-table>
       </v-flex>
@@ -94,6 +95,8 @@ export default {
       rowId(item){
           let id = item.id
           this.$router.push({ name: 'showfacture', params: { factureId:id }})
+          console.log(item.id);
+
 
       }
 

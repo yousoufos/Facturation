@@ -17,8 +17,8 @@ class FactureController extends Controller
      */
     public function index()
     {
-        $facture = Facture::All();
-        return response()->json($facture);
+        $facture = Facture::all()->sortByDesc("date_emission");
+        return response()->json(['facture'=>$facture]);
     }
     public function reference($id){
         return ('Fact-'.date('Y').'-'.$id);
@@ -67,7 +67,7 @@ class FactureController extends Controller
             array_push($li,$l);
          }
 
-        return response()->json($li,201);
+        return response()->json(['lignes'=> $li,'facture' => $facture]);
     }
 
     /**

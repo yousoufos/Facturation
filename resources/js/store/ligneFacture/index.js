@@ -1,7 +1,7 @@
 import axios from 'axios'
 export default {
     state: {
-        loadedLignesFacture: null
+        loadedLignesFacture: []
     },
     mutations: {
         setLoadedLignesFacture(state,payload){
@@ -12,10 +12,10 @@ state.loadedLignesFacture.push(payload)
 }
     },
     actions: {
-        loadLignesFacture({commit}){
+        async loadLignesFacture({commit}){
             const uri = 'http://localhost:3000/api/facture/lignesfacture/';
-            commit('setLoading', true);
-            axios.get(uri).then((response) => {
+            //commit('setLoading', true);
+            await axios.get(uri).then((response) => {
               const lignes = [];
               const obj = response.data;
               Object.keys(obj).forEach((key) => {
@@ -30,9 +30,9 @@ state.loadedLignesFacture.push(payload)
                     });
               })
               commit('setLoadedLignesFacture', lignes);
-              commit('setLoading', false);
+              //commit('setLoading', false);
             }).catch((error) => {
-              commit('setLoading', false);
+              //commit('setLoading', false);
               console.log(error);
             });
         }

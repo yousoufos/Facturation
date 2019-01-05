@@ -1,8 +1,8 @@
 import axios from 'axios'
 export default {
   state: {
-    loadedClients: null,
-    clientListName: null,
+    loadedClients: [],
+    clientListName: [],
 
   },
   mutations: {
@@ -14,13 +14,13 @@ export default {
     },
   },
   actions: {
-    loadClients({
+    async loadClients({
       commit,
       dispatch,
     }) {
       const uri = 'http://localhost:3000/api/client';
-      commit('setLoading', true);
-      axios.get(uri).then((response) => {
+      //commit('setLoading', true);
+      await axios.get(uri).then((response) => {
         const client = [];
         const obj = response.data;
         Object.keys(obj).forEach((key) => {
@@ -36,9 +36,11 @@ export default {
         })
         commit('setLoadedClients', client);
         dispatch('loadClientListName');
-        commit('setLoading', false);
+          //commit('setLoading', false);
+          console.log('Clients chargés');
+
       }).catch((error) => {
-        commit('setLoading', false);
+        //commit('setLoading', false);
         console.log(error);
       });
     },

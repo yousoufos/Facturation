@@ -31,6 +31,30 @@ export default {
         clearSavedStatut ({ commit }) {
             commit('clearSavedStatut')
         },
+        loadAll ({ dispatch }) {
+            let lignes = dispatch('loadLignesFacture')
+            let facture = dispatch('loadFactures')
+            let client = dispatch('loadClients')
+            let produits = dispatch('loadProduits')
+            let reglements = dispatch('loadReglements')
+             Promise.all([lignes, facture, client, produits, reglements]);
+            console.log('loaded');
+        },
+        chargerFacture ({ dispatch,commit }) {
+            commit('setLoading', true);
+             dispatch('loadLignesFacture').then(() => {
+                 dispatch('loadFactures').then(() => {
+                     dispatch('loadClients').then(() => {
+                         dispatch('loadProduits').then(() => {
+                             dispatch('loadReglements').then(() => {
+                                 commit('setLoading', false);
+                             })
+                         })
+
+                     })
+                 })
+            })
+        }
     },
 
     getters: {

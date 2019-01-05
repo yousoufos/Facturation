@@ -16,10 +16,10 @@
 		<v-flex xs12 md6>
 			<v-card>
 				<v-card-text>
-				   <p>Nom client</p>
-				   <p>Raison</p>
-				   <p>Adresse</p>
-				   <p>Matricule</p>
+				   <p>{{ client.nom }}</p>
+				   <p>{{ client.raison }}</p>
+				   <p>{{ client.adresse }}</p>
+				   <p>TVA: {{ client.matricule }}</p>
 				</v-card-text>
 			</v-card>
 		</v-flex>
@@ -27,36 +27,28 @@
 	<v-layout row wrap>
 		<v-flex xs3 d-flex>
 			<v-text-field
-				name="name"
 				label="Date"
-				id="date_emission"
                 v-model="date_emission"
                 readonly
 			></v-text-field>
 		</v-flex>
 		<v-flex xs3>
 			<v-text-field
-				name="name"
 				label="Date Echéance"
-				id="date_echeance"
                 v-model="date_echeance"
                 readonly
 			></v-text-field>
 		</v-flex>
 		<v-flex xs3>
 			<v-text-field
-				name="name"
 				label="Reference Facture"
-				id="reference"
                 v-model="reference"
                 readonly
 			></v-text-field>
 		</v-flex>
 		<v-flex xs3>
 			<v-text-field
-				name="name"
 				label="Code Client"
-				id="client_id"
                 v-model="code_client"
                 readonly
 			></v-text-field>
@@ -116,8 +108,7 @@
 											type="number"
 											readonly
 											label="Reste à Payer"
-											v-model="reste_payer"
-											disabled
+											v-model="reste"
 										>
 										</v-text-field>
 									</v-flex>
@@ -234,7 +225,7 @@ export default {
 	methods:{
 
 		test(){
-			console.log(moment(this.facture.date_emission).format('L'));
+			this.total_reglement()
 
         },
         total_ht_ligne (item) {
@@ -243,7 +234,16 @@ export default {
       let remise = item.remise
       return (prix * qte ) - remise;
     },
-	},
+        total_reglement(){
+                    let sum=0
+                    const obj = this.reglements;
+                    Object.keys(obj).forEach((key) => {
+                        const value = obj[key];
+                        sum+=eval(value.montant)
+                    })
+                    return sum
+    },
+    },
 	computed:{
         facture(){
             return this.$store.getters.getFacture(+this.$route.params.factureId)
@@ -263,9 +263,7 @@ export default {
         total_tva(){
             return this.facture.total_tva
         },
-        reglements(){
-            return this.$store.getters.getReglementFactureById((this.$route.params.factureId).toString())
-        },
+
         date_emission(){
             return moment(this.facture.date_emission).format('L')
         },
@@ -277,6 +275,16 @@ export default {
         },
         code_client(){
             return this.facture.client_id
+        },
+        reste(){
+            return this.facture.total_ttc - this.total_reglement()
+        },
+        client(){
+
+            return this.$store.getters.getClient(+this.facture.client_id)
+        },
+        reglements(){
+            return this.$store.getters.getReglementFactureById((this.$route.params.factureId).toString())
         },
 	}
 }

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export default {
 	state: {
-		loadedRegelments:null
+		loadedRegelments:[]
 	},
     mutations: {
         setLoadedReglements (state, payload) {
@@ -11,10 +11,10 @@ export default {
 
 	},
 	actions: {
-		loadReglements ({commit}) {
+		async loadReglements ({commit}) {
 			const uri = 'http://localhost:3000/api/facture/reglementfacture';
-			commit('setLoading', true);
-            axios.get(uri).then((response) => {
+			//commit('setLoading', true);
+            await axios.get(uri).then((response) => {
                 const reglement = [];
                 const obj = response.data;
                 Object.keys(obj).forEach((key) => {
@@ -28,9 +28,10 @@ export default {
                     });
                 });
                 commit('setLoadedReglements', reglement);
-                commit('setLoading', false);
+                console.log('Reglements chargés');
+                //commit('setLoading', false);
             }).catch((error) => {
-                commit('setLoading', false);
+                //commit('setLoading', false);
                 console.log(error);
             });
 		}

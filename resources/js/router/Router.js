@@ -5,6 +5,7 @@ Vue.use(Router)
 const facturation = Vue.component('facturation', require('../components/facture/CreateFacture.vue'));
 const liste_facture = Vue.component('liste_facture', require('../components/facture/ListeFactures.vue'));
 const show_facture = Vue.component('show_facture', require('../components/facture/ShowFacture.vue'));
+const test = Vue.component('test', require('../components/facture/test.vue'));
 const home = Vue.component('home', require('../components/index.vue'));
 
 export default new Router({
@@ -26,6 +27,12 @@ export default new Router({
             name: 'showfacture',
             props: true,
             component: show_facture
+        },
+        {
+            path: '/facturation/test/:id',
+            name: 'test',
+            props: true,
+            component: test
         },
         {
             path: '*',

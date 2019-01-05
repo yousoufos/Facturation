@@ -47,11 +47,13 @@ const app = new Vue({
     },
     router,
     store: store,
-    created() {
-        this.$store.dispatch('loadClients')
-        this.$store.dispatch('loadProduits')
-        this.$store.dispatch('loadLignesFacture')
-        this.$store.dispatch('loadFactures')
-        this.$store.dispatch('loadReglements')
+    created () {
+        //  this.$store.dispatch('loadFactures')
+        //  this.$store.dispatch('loadLignesFacture')
+        //  this.$store.dispatch('loadClients')
+        // this.$store.dispatch('loadProduits')
+        // this.$store.dispatch('loadReglements')
+        //this.$store.dispatch('loadAll')
+        this.$store.dispatch('chargerFacture')
     },
 });

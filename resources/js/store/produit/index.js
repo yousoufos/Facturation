@@ -2,8 +2,8 @@ import axios from 'axios';
 
 export default {
     state: {
-        loadedProduits: null,
-        produitListName: null,
+        loadedProduits: [],
+        produitListName: [],
 
     },
     mutations: {
@@ -15,13 +15,13 @@ export default {
         },
     },
     actions: {
-        loadProduits ({
+        async loadProduits ({
             commit,
             dispatch,
         }) {
             const uri = 'http://localhost:3000/api/produit';
-            commit('setLoading', true);
-            axios.get(uri).then((response) => {
+            //commit('setLoading', true);
+            await axios.get(uri).then((response) => {
                 const Produit = [];
                 const obj = response.data;
                 Object.keys(obj).forEach((key) => {
@@ -36,9 +36,11 @@ export default {
                 });
                 commit('setLoadedProduits', Produit);
                 dispatch('loadProduitListName');
-                commit('setLoading', false);
+                console.log('Produits chargés');
+
+                //commit('setLoading', false);
             }).catch((error) => {
-                commit('setLoading', false);
+                //commit('setLoading', false);
                 console.log(error);
             });
         },

@@ -1,7 +1,7 @@
 import axios from 'axios'
 export default {
     state: {
-        loadedFactures: null,
+        loadedFactures: [],
     },
     mutations: {
         setLoadedFactures (state, payload) {
@@ -13,10 +13,10 @@ export default {
 
     },
     actions: {
-        loadFactures ({ commit, getters }) {
+        async loadFactures ({ commit, getters }) {
             const uri = 'http://localhost:3000/api/facture';
-            commit('setLoading', true);
-            axios.get(uri).then((response) => {
+            //commit('setLoading', true);
+             await axios.get(uri).then((response) => {
                 const facture = [];
                 const obj = response.data.facture;
                 Object.keys(obj).forEach((key) => {
@@ -37,10 +37,14 @@ export default {
                     });
                 })
                 commit('setLoadedFactures', facture);
-                commit('setLoading', false);
+                //commit('setLoading', false);
+                console.log('Factures chargées');
+
             }).catch((error) => {
-                commit('setLoading', false);
+                //commit('setLoading', false);
                 console.log(error);
+            }).then(function () {
+                //commit('setLoading', false)
             });
         },
         saveFacture ({ commit }, payload) {
@@ -87,6 +91,8 @@ export default {
                     commit('seterreurs', error.response.data.errors)
 
                     console.log(error);
+                }).then(function () {
+                    commit('setLoading', false)
                 });
         }
     },
@@ -94,8 +100,13 @@ export default {
         getLoadedFactures (state) {
             return state.loadedFactures
         },
-        getFacture (state) {
-            return factureId => state.loadedFactures.find(facture => facture.id === factureId);
+        getFacture(state) {
+            return (factureId) => {
+                return state.loadedFactures.find((facture) => {
+                    return facture.id == factureId
+                })
+            }
+
         }
     },
 };

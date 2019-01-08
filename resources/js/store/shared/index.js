@@ -3,6 +3,7 @@ export default {
         loading: false,
         erreurs: null,
         savedStatut: false,
+        loadingRegelement:false
 
     },
     mutations: {
@@ -20,6 +21,9 @@ export default {
         },
         setSavedStatut (state, payload) {
             state.savedStatut = payload
+        },
+        setLoadingReglement (state,payload) {
+            state.loadingRegelement = payload
         }
 
 
@@ -71,6 +75,9 @@ export default {
         savedStatut (state) {
             return state.savedStatut
         },
+        getLoadingReglement (state) {
+            return state.loadingRegelement
+        }
 
     }
 }

@@ -36,7 +36,13 @@ class ReglementController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $reglement = new Reglement();
+        $reglement->mode_reglement = $request->get('mode_reglement');
+        $reglement->montant = $request->get('montant');
+        $reglement->date_reglement = $request->get('date_reglement');
+        $reglement->facture_id = $request->get('facture_id');
+        $reglement->save();
+        return response()->json(['reglement'=> $reglement]);
     }
 
     /**
@@ -79,8 +85,11 @@ class ReglementController extends Controller
      * @param  \App\Reglement  $reglement
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Reglement $reglement)
+    public function destroy($id)
     {
-        //
+        $reglement = Reglement::findOrFail($id);
+        $reglement->delete();
+        return response()->json('Reglement '.$id.' effacé avec succée');
     }
+
 }

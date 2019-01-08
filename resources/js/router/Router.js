@@ -2,11 +2,11 @@ import Vue from 'vue'
 import Router from 'vue-router'
 Vue.use(Router)
 
-const facturation = Vue.component('facturation', require('../components/facture/CreateFacture.vue'));
-const liste_facture = Vue.component('liste_facture', require('../components/facture/ListeFactures.vue'));
-const show_facture = Vue.component('show_facture', require('../components/facture/ShowFacture.vue'));
-const test = Vue.component('test', require('../components/facture/test.vue'));
-const home = Vue.component('home', require('../components/index.vue'));
+const facturation = Vue.component('facturation', require('../components/facture/CreateFacture.vue').default);
+const liste_facture = Vue.component('liste_facture', require('../components/facture/ListeFactures.vue').default);
+const show_facture = Vue.component('show_facture', require('../components/facture/ShowFacture.vue').default);
+const test = Vue.component('test', require('../components/facture/test.vue').default);
+const home = Vue.component('home', require('../components/index.vue').default);
 
 export default new Router({
     mode: 'history',

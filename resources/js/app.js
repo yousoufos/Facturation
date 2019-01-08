@@ -30,8 +30,8 @@ Vue.use(VueAxios, axios)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key)))
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
-Vue.component('app', require('./components/App.vue'));
-Vue.component('date', require('./components/date/date.vue'));
+Vue.component('app', require('./components/App.vue').default);
+Vue.component('date', require('./components/date/date.vue').default);
 
 
 /**
@@ -42,11 +42,9 @@ Vue.component('date', require('./components/date/date.vue'));
 
 const app = new Vue({
     el: '#app',
-    component: {
-        App
-    },
     router,
     store: store,
+    render: h => h(require('./components/App').default),
     created () {
         //  this.$store.dispatch('loadFactures')
         //  this.$store.dispatch('loadLignesFacture')
@@ -56,4 +54,4 @@ const app = new Vue({
         //this.$store.dispatch('loadAll')
         this.$store.dispatch('chargerFacture')
     },
-});
+})

@@ -2,11 +2,18 @@ import axios from 'axios';
 
 export default {
 	state: {
-		loadedRegelments:[]
+		loadReglements:[]
 	},
     mutations: {
         setLoadedReglements (state, payload) {
-            state.loadedRegelments = payload
+            state.loadReglements = payload
+        },
+        addNewReglement (state, payload) {
+            state.loadReglements.push(payload)
+        },
+        removeLigneReglement (state, payload) {
+            const index = state.loadReglements.indexOf(payload)
+            state.loadReglements.splice(index, 1)
         }
 
 	},
@@ -34,11 +41,48 @@ export default {
                 //commit('setLoading', false);
                 console.log(error);
             });
-		}
+        },
+        saveReglement ({ commit }, payload) {
+            const uri = 'http://localhost:3000/api/facture/reglementfacture/add'
+            commit('setLoadingReglement', true)
+            axios.post(uri, payload)
+                .then(response => {
+                    const reglement = response.data.reglement;
+                    let reg = {
+                        id: reglement.id,
+                        montant: reglement.montant,
+                        mode_reglement: reglement.mode_reglement,
+                        date_reglement: reglement.date_reglement,
+                        facture_id: reglement.facture_id
+
+                    }
+                    commit('addNewReglement', reg)
+                    commit('setLoadingReglement',false)
+                }).catch(error => {
+                    commit('setLoadingReglement', false)
+                    //commit('seterreurs', error.response.data.errors)
+                    console.log(error);
+                })
+
+        },
+        deleteReglement ({ commit }, payload) {
+            commit('setLoadingReglement', true)
+            const uri = 'http://localhost:3000/api/facture/reglementfacture/delete/'+payload.id
+            axios.delete(uri).then(response => {
+                commit('removeLigneReglement',payload.index)
+                console.log(response);
+                commit('setLoadingReglement', false)
+
+            }).catch(error => {
+                commit('setLoadingReglement', false)
+                console.log(error);
+
+            })
+        },
 	},
 	getters: {
         getReglementFactureById: (state) => (id) => {
-            return state.loadedRegelments.filter(item => item.facture_id === id)
+            return state.loadReglements.filter(item => item.facture_id === id)
 
         },
 	}

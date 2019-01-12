@@ -7,6 +7,7 @@ const liste_facture = Vue.component('liste_facture', require('../components/fact
 const show_facture = Vue.component('show_facture', require('../components/facture/ShowFacture.vue').default);
 const test = Vue.component('test', require('../components/facture/test.vue').default);
 const home = Vue.component('home', require('../components/index.vue').default);
+const liste_produit = Vue.component('liste_produit', require('../components/Produits/listeProduits.vue').default);
 
 export default new Router({
     mode: 'history',
@@ -33,6 +34,11 @@ export default new Router({
             name: 'test',
             props: true,
             component: test
+        },
+        {
+            path: '/facturation/produit/liste',
+            name: 'liste_produit',
+            component: liste_produit
         },
         {
             path: '*',

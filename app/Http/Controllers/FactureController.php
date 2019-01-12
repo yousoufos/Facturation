@@ -17,7 +17,7 @@ class FactureController extends Controller
      */
     public function index()
     {
-        $facture = Facture::all()->sortByDesc("date_emission");
+        $facture = Facture::all()->sortByDesc("id");
         return response()->json(['facture'=>$facture]);
     }
     public function reference($id){
@@ -99,9 +99,11 @@ class FactureController extends Controller
      * @param  \App\Facture  $facture
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Facture $facture)
+    public function update(Request $request, $id)
     {
-        //
+        $facture = Facture::find($id);
+      $facture->update($request->all());
+      return response()->json('successfully updated');
     }
 
     /**

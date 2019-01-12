@@ -1,4 +1,5 @@
 import axios from 'axios'
+var moment = require('moment')
 export default {
     state: {
         loadedFactures: [],
@@ -9,10 +10,26 @@ export default {
         },
         createFacture (state, payload) {
             state.loadedFactures.push(payload)
+        },
+        setStatutFacture (state, payload) {
+            state.loadedFactures.find(facture => facture.id === payload.id).statut = payload.statut
         }
 
     },
     actions: {
+        changeStatut ({commit},payload) {
+            const uri = 'http://localhost:3000/api/facture/update/' + payload.id
+            axios.put(uri, payload).then((response) => {
+                commit('setStatutFacture', payload)
+                console.log(response);
+
+
+            }).catch((error) => {
+                console.log(error);
+
+            });
+
+        },
         async loadFactures ({ commit, getters }) {
             const uri = 'http://localhost:3000/api/facture';
             //commit('setLoading', true);
@@ -98,7 +115,9 @@ export default {
     },
     getters: {
         getLoadedFactures (state) {
-            return state.loadedFactures
+            return state.loadedFactures.sort((factureA, factureB) => {
+                return factureB.id - factureA.id
+            })
         },
         getFacture(state) {
             return (factureId) => {

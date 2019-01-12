@@ -59,11 +59,6 @@
       </v-card>
     </v-dialog>
   </v-layout>
-	<v-layout row wrap>
-		<v-flex xs12>
-			<v-btn  @click="test">text</v-btn>
-		</v-flex>
-	</v-layout>
 	<v-layout row justify-space-between>
 		<v-flex xs12 md6>
 			<v-card>
@@ -131,7 +126,7 @@
 		  </template>
 		  <template slot="footer">
 			  <td :colspan="headers.length">
-				<v-layout row wrap mt-2>
+				<v-layout row wrap mt-5>
 					<v-flex xs8>
 						<v-data-table
 							:headers="headers1"
@@ -169,6 +164,7 @@
 											readonly
 											label="Reste à Payer"
 											v-model="reste"
+                                            :class="getStatutClass()"
 										>
 										</v-text-field>
 									</v-flex>
@@ -294,6 +290,15 @@ export default {
 		}
     },
 	methods:{
+        getStatutClass(){
+          if(this.reste != undefined && this.reste > 0){
+              return 'light-blue lighten-1'
+          }
+          if(this.reste != undefined && this.reste === 0){
+              return 'teal lighten-1'
+          }
+
+      },
         clearErrors(){
             this.validation_mode_reglement =false
             this.validation_montant_reglement = false
@@ -358,7 +363,21 @@ export default {
                     return sum
     },
     },
+    watch:{
+        reste(val){
+            let fact = this.facture
+            if(!this.loading){
+                if(val === 0){
+                fact.statut = 'Close'
+                this.$store.dispatch('changeStatut',fact)
+            }else {
+                fact.statut = 'En cours'
+                this.$store.dispatch('changeStatut',fact)
+            }
+            }
 
+        }
+    },
 	computed:{
         facture(){
             return this.$store.getters.getFacture(+this.$route.params.factureId)
@@ -392,7 +411,13 @@ export default {
             return this.facture.client_id
         },
         reste(){
-            return this.facture.total_ttc - this.total_reglement()
+            if(this.facture != undefined){
+                return this.facture.total_ttc - this.total_reglement()
+            }
+            else{
+                return null
+            }
+
         },
         client(){
 

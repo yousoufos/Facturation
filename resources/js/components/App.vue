@@ -38,6 +38,20 @@
 				<v-icon v-text="menu.icon"></v-icon>
 			  </v-list-tile-action>
 			</v-list-tile>
+
+		  </v-list-group>
+          <v-list-group sub-group no-action>
+			<v-list-tile slot="activator">
+			  <v-list-tile-title>Produits</v-list-tile-title>
+			</v-list-tile>
+
+			<v-list-tile v-for="(menu, i) in menu_produit" :key="i" :to="menu.link">
+			  <v-list-tile-title v-text="menu.title"></v-list-tile-title>
+			  <v-list-tile-action>
+				<v-icon v-text="menu.icon"></v-icon>
+			  </v-list-tile-action>
+			</v-list-tile>
+
 		  </v-list-group>
 		</v-list-group>
 	  </v-list>
@@ -59,7 +73,10 @@ export default {
 	menu_facturation: [
 		{ icon: "dehaze", title: "Lister", link: "/facturation/liste" },
 		{ icon: "add", title: "Creer", link: "/facturation/create" },
-	]
+    ],
+    menu_produit:[
+        {icon:"dehaze", title:"Lister",link:"/facturation/produit/liste"}
+    ]
   }),
   computed: {},
   methods: {}

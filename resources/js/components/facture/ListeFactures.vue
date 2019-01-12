@@ -28,6 +28,7 @@
           item-key="id"
           loading="true"
           :rows-per-page-items="[25,50]"
+          disable-initial-sort
 
         >
           <template

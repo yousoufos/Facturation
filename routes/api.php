@@ -21,6 +21,7 @@ Route::post('/facture/reglementfacture/add', 'ReglementController@store');
 Route::get('/client', 'ClientController@index');
 Route::get('/produit', 'ProduitController@index');
 Route::get('/facture', 'FactureController@index');
+Route::put('/facture/update/{id}', 'FactureController@update');
 Route::get('/facture/lignesfacture', 'LigneFactureController@index');
 Route::get('/facture/reglementfacture', 'ReglementController@index');
 Route::delete('/facture/reglementfacture/delete/{id}', 'ReglementController@destroy');

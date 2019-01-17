@@ -1,9 +1,11 @@
+import axios from 'axios'
 export default {
     state: {
         loading: false,
         erreurs: null,
         savedStatut: false,
-        loadingRegelement:false
+        loadingRegelement:false,
+        loadedTva:null
 
     },
     mutations: {
@@ -24,11 +26,34 @@ export default {
         },
         setLoadingReglement (state,payload) {
             state.loadingRegelement = payload
+        },
+        setLoadedTva (state, payload) {
+            state.loadedTva = payload
         }
 
 
     },
     actions: {
+        async loadTva ({ commit }) {
+            const uri = 'http://localhost:3000/api/tva/'
+            await axios.get(uri).then((response) => {
+                const tva = [];
+                const obj = response.data.tva;
+                Object.keys(obj).forEach((key) => {
+                    const val = obj[key];
+                    tva.push({
+                        value: val.value,
+                    });
+                });
+                commit('setLoadedTva', tva);
+                console.log('Tva chargées');
+
+                //commit('setLoading', false);
+            }).catch((error) => {
+                //commit('setLoading', false);
+                console.log(error);
+            });
+        },
         clearErrors ({ commit }) {
             commit('clearErrors')
         },
@@ -51,7 +76,10 @@ export default {
                      dispatch('loadClients').then(() => {
                          dispatch('loadProduits').then(() => {
                              dispatch('loadReglements').then(() => {
-                                 commit('setLoading', false);
+                                 dispatch('loadTva').then(() => {
+                                     commit('setLoading', false);
+                                 })
+
                              })
                          })
 
@@ -77,6 +105,9 @@ export default {
         },
         getLoadingReglement (state) {
             return state.loadingRegelement
+        },
+        getLoadedTva (state) {
+            return state.loadedTva
         }
 
     }

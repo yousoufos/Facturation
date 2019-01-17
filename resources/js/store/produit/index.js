@@ -13,6 +13,10 @@ export default {
         setProduitListName (state, payload) {
             state.produitListName = payload;
         },
+        addNewProduit (state, payload) {
+            state.loadedProduits.push(payload)
+        }
+
     },
     actions: {
         async loadProduits ({
@@ -57,7 +61,30 @@ export default {
             });
             commit('setProduitListName', clt);
         },
+        saveProduit ({ commit }, payload) {
+            const uri = 'http://localhost:3000/api/facture/produit/add'
+            commit('setLoading', true);
+            axios.post(uri, payload)
+                .then(response => {
+                    const produit = response.data.produit;
+                    let prod = {
+                        code: produit.code,
+                        designation: produit.designation,
+                        prix: produit.prix,
+                        tva: produit.tva
+                    }
+                    commit('addNewProduit', prod)
+                    commit('setLoading', false);
+                }).catch(error => {
+                    commit('setLoading', false);
+                    //commit('seterreurs', error.response.data.errors)
+                    console.log(error);
+                })
+
+
+        },
     },
+
     getters: {
         getloadedProduits (state) {
             return state.loadedProduits;

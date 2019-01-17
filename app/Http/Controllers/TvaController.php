@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\produit;
+use App\tva;
 use Illuminate\Http\Request;
-use App\Http\Requests\StoreProduitRequest;
 
-class ProduitController extends Controller
+class TvaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +14,8 @@ class ProduitController extends Controller
      */
     public function index()
     {
-        $produits = Produit::All();
-        return response()->json($produits);
+        $tva = Tva::All();
+        return response()->json(['tva'=> $tva]);
     }
 
     /**
@@ -35,25 +34,18 @@ class ProduitController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreProduitRequest $request)
+    public function store(Request $request)
     {
-        $produit = new Produit;
-        $produit->code = $request->get('code');
-        $produit->designation = $request->get('designation');
-        $produit->prix = $request->get('prix');
-        $produit->tva = $request->get('tva');
-        $produit->save();
-        return response()->json(['produit'=> $produit]);
-
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\produit  $produit
+     * @param  \App\tva  $tva
      * @return \Illuminate\Http\Response
      */
-    public function show(produit $produit)
+    public function show(tva $tva)
     {
         //
     }
@@ -61,10 +53,10 @@ class ProduitController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\produit  $produit
+     * @param  \App\tva  $tva
      * @return \Illuminate\Http\Response
      */
-    public function edit(produit $produit)
+    public function edit(tva $tva)
     {
         //
     }
@@ -73,10 +65,10 @@ class ProduitController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\produit  $produit
+     * @param  \App\tva  $tva
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, produit $produit)
+    public function update(Request $request, tva $tva)
     {
         //
     }
@@ -84,10 +76,10 @@ class ProduitController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\produit  $produit
+     * @param  \App\tva  $tva
      * @return \Illuminate\Http\Response
      */
-    public function destroy(produit $produit)
+    public function destroy(tva $tva)
     {
         //
     }

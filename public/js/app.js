@@ -2012,9 +2012,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      codeProduit: null,
+      designation: null,
+      prix: null,
+      tva: null,
       dialog: false,
       headers: [{
         align: "left",
@@ -2042,6 +2055,20 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     addProduct: function addProduct() {
       this.dialog = true;
+      this.clearFields();
+    },
+    saveProduct: function saveProduct() {
+      var produit = {
+        code: this.codeProduit,
+        designation: this.designation,
+        prix: this.prix,
+        tva: this.tva
+      };
+      this.$store.dispatch('saveProduit', produit);
+      this.dialog = false;
+    },
+    clearFields: function clearFields() {
+      this.codeProduit = null, this.designation = null, this.prix = null, this.tva = null;
     }
   },
   computed: {
@@ -2050,6 +2077,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     loading: function loading() {
       return this.$store.getters.loading;
+    },
+    listTva: function listTva() {
+      return this.$store.getters.getLoadedTva;
     }
   }
 });
@@ -3207,6 +3237,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3476,7 +3507,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -3533,7 +3564,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -32124,6 +32155,31 @@ var render = function() {
                                           })
                                         ],
                                         1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-flex",
+                                        {
+                                          attrs: { xs12: "", sm6: "", md4: "" }
+                                        },
+                                        [
+                                          _c("v-select", {
+                                            attrs: {
+                                              items: _vm.listTva,
+                                              "item-text": "value",
+                                              "item-value": "value",
+                                              label: "Tva"
+                                            },
+                                            model: {
+                                              value: _vm.tva,
+                                              callback: function($$v) {
+                                                _vm.tva = $$v
+                                              },
+                                              expression: "tva"
+                                            }
+                                          })
+                                        ],
+                                        1
                                       )
                                     ],
                                     1
@@ -32157,7 +32213,7 @@ var render = function() {
                                 "v-btn",
                                 {
                                   attrs: { color: "blue darken-1", flat: "" },
-                                  on: { click: _vm.addReglement }
+                                  on: { click: _vm.saveProduct }
                                 },
                                 [_vm._v("Save")]
                               )
@@ -74094,6 +74150,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     setProduitListName: function setProduitListName(state, payload) {
       state.produitListName = payload;
+    },
+    addNewProduit: function addNewProduit(state, payload) {
+      state.loadedProduits.push(payload);
     }
   },
   actions: {
@@ -74156,6 +74215,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         });
       });
       commit('setProduitListName', clt);
+    },
+    saveProduit: function saveProduit(_ref3, payload) {
+      var commit = _ref3.commit;
+      var uri = 'http://localhost:3000/api/facture/produit/add';
+      commit('setLoading', true);
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.post(uri, payload).then(function (response) {
+        var produit = response.data.produit;
+        var prod = {
+          code: produit.code,
+          designation: produit.designation,
+          prix: produit.prix,
+          tva: produit.tva
+        };
+        commit('addNewProduit', prod);
+        commit('setLoading', false);
+      }).catch(function (error) {
+        commit('setLoading', false); //commit('seterreurs', error.response.data.errors)
+
+        console.log(error);
+      });
     }
   },
   getters: {
@@ -74318,12 +74397,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   state: {
     loading: false,
     erreurs: null,
     savedStatut: false,
-    loadingRegelement: false
+    loadingRegelement: false,
+    loadedTva: null
   },
   mutations: {
     setLoading: function setLoading(state, payload) {
@@ -74343,19 +74434,64 @@ __webpack_require__.r(__webpack_exports__);
     },
     setLoadingReglement: function setLoadingReglement(state, payload) {
       state.loadingRegelement = payload;
+    },
+    setLoadedTva: function setLoadedTva(state, payload) {
+      state.loadedTva = payload;
     }
   },
   actions: {
-    clearErrors: function clearErrors(_ref) {
-      var commit = _ref.commit;
+    loadTva: function () {
+      var _loadTva = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(_ref) {
+        var commit, uri;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                commit = _ref.commit;
+                uri = 'http://localhost:3000/api/tva/';
+                _context.next = 4;
+                return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(uri).then(function (response) {
+                  var tva = [];
+                  var obj = response.data.tva;
+                  Object.keys(obj).forEach(function (key) {
+                    var val = obj[key];
+                    tva.push({
+                      value: val.value
+                    });
+                  });
+                  commit('setLoadedTva', tva);
+                  console.log('Tva chargées'); //commit('setLoading', false);
+                }).catch(function (error) {
+                  //commit('setLoading', false);
+                  console.log(error);
+                });
+
+              case 4:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function loadTva(_x) {
+        return _loadTva.apply(this, arguments);
+      }
+
+      return loadTva;
+    }(),
+    clearErrors: function clearErrors(_ref2) {
+      var commit = _ref2.commit;
       commit('clearErrors');
     },
-    clearSavedStatut: function clearSavedStatut(_ref2) {
-      var commit = _ref2.commit;
+    clearSavedStatut: function clearSavedStatut(_ref3) {
+      var commit = _ref3.commit;
       commit('clearSavedStatut');
     },
-    loadAll: function loadAll(_ref3) {
-      var dispatch = _ref3.dispatch;
+    loadAll: function loadAll(_ref4) {
+      var dispatch = _ref4.dispatch;
       var lignes = dispatch('loadLignesFacture');
       var facture = dispatch('loadFactures');
       var client = dispatch('loadClients');
@@ -74364,16 +74500,18 @@ __webpack_require__.r(__webpack_exports__);
       Promise.all([lignes, facture, client, produits, reglements]);
       console.log('loaded');
     },
-    chargerFacture: function chargerFacture(_ref4) {
-      var dispatch = _ref4.dispatch,
-          commit = _ref4.commit;
+    chargerFacture: function chargerFacture(_ref5) {
+      var dispatch = _ref5.dispatch,
+          commit = _ref5.commit;
       commit('setLoading', true);
       dispatch('loadLignesFacture').then(function () {
         dispatch('loadFactures').then(function () {
           dispatch('loadClients').then(function () {
             dispatch('loadProduits').then(function () {
               dispatch('loadReglements').then(function () {
-                commit('setLoading', false);
+                dispatch('loadTva').then(function () {
+                  commit('setLoading', false);
+                });
               });
             });
           });
@@ -74396,6 +74534,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     getLoadingReglement: function getLoadingReglement(state) {
       return state.loadingRegelement;
+    },
+    getLoadedTva: function getLoadedTva(state) {
+      return state.loadedTva;
     }
   }
 });

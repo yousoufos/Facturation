@@ -43,13 +43,22 @@
               <v-flex xs12 sm6 md4>
                 <v-text-field label="Prix" v-model="prix" required ></v-text-field>
               </v-flex>
+              <v-flex xs12 sm6 md4>
+                <v-select
+          :items="listTva"
+          item-text="value"
+          item-value="value"
+          label="Tva"
+          v-model="tva"
+        ></v-select>
+        </v-flex>
             </v-layout>
           </v-container>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" flat @click="dialog = false">Close</v-btn>
-          <v-btn color="blue darken-1" flat @click="addReglement">Save</v-btn>
+          <v-btn color="blue darken-1" flat @click="saveProduct">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -104,6 +113,10 @@
 export default {
     data () {
     return {
+        codeProduit:null,
+        designation:null,
+        prix:null,
+        tva:null,
         dialog:false,
       headers: [
         {
@@ -122,6 +135,24 @@ export default {
     methods:{
         addProduct(){
             this.dialog = true
+            this.clearFields()
+        },
+        saveProduct(){
+             let produit={
+                code:this.codeProduit,
+                designation:this.designation,
+                prix:this.prix,
+                tva:this.tva
+            }
+            this.$store.dispatch('saveProduit',produit)
+            this.dialog = false
+
+        },
+        clearFields(){
+            this.codeProduit=null,
+            this.designation=null,
+            this.prix=null,
+            this.tva=null
         }
     },
     computed: {
@@ -130,6 +161,9 @@ export default {
       },
       loading(){
           return this.$store.getters.loading;
+      },
+      listTva(){
+          return this.$store.getters.getLoadedTva
       }
 
 

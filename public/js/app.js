@@ -2021,14 +2021,40 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  $_veeValidate: {
+    validator: 'new'
+  },
   data: function data() {
     return {
+      create: false,
+      dictionary: {
+        attributes: {},
+        custom: {
+          code: {
+            required: 'Champs requis'
+          },
+          tva: {
+            required: 'Champs requis'
+          },
+          designation: {
+            required: 'Champs requis'
+          },
+          prix: {
+            required: 'Champs requis',
+            decimal: "Le prix n'est pas valide"
+          }
+        }
+      },
       codeProduit: null,
       designation: null,
       prix: null,
       tva: null,
       dialog: false,
+      id: null,
       headers: [{
         align: "left",
         sortable: false,
@@ -2053,22 +2079,76 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    produitId: function produitId(id) {
+      return this.$store.getters.getProduitById(id);
+    },
+    deleteItem: function deleteItem(item) {
+      var a = {
+        id: item.id,
+        index: item
+      };
+      var index = this.produits.indexOf(item);
+      var response = confirm('Etes vous sur de vouloir supprimer ce produit?');
+
+      if (response) {
+        this.$store.dispatch('deleteProduit', a);
+      }
+    },
+    editItem: function editItem(item) {
+      var index = this.produits.indexOf(item);
+      this.dialog = true;
+      this.clearFields();
+      this.create = false;
+      this.codeProduit = this.produitId(item.id).code;
+      this.designation = this.produitId(item.id).designation;
+      this.tva = this.produitId(item.id).tva;
+      this.prix = this.produitId(item.id).prix;
+      this.id = item.id;
+    },
     addProduct: function addProduct() {
       this.dialog = true;
       this.clearFields();
+      this.create = true;
     },
     saveProduct: function saveProduct() {
-      var produit = {
-        code: this.codeProduit,
-        designation: this.designation,
-        prix: this.prix,
-        tva: this.tva
-      };
-      this.$store.dispatch('saveProduit', produit);
-      this.dialog = false;
+      var _this = this;
+
+      if (this.create) {
+        this.$validator.validate().then(function (result) {
+          if (result) {
+            var produit = {
+              code: _this.codeProduit,
+              designation: _this.designation,
+              prix: _this.prix,
+              tva: _this.tva
+            };
+
+            _this.$store.dispatch('saveProduit', produit);
+
+            _this.dialog = false;
+          } else {}
+        });
+      } else {
+        this.$validator.validate().then(function (result) {
+          if (result) {
+            var produit = {
+              code: _this.codeProduit,
+              designation: _this.designation,
+              prix: _this.prix,
+              tva: _this.tva,
+              id: _this.id
+            };
+
+            _this.$store.dispatch('editProduit', produit);
+
+            _this.dialog = false;
+          } else {}
+        });
+      }
     },
     clearFields: function clearFields() {
       this.codeProduit = null, this.designation = null, this.prix = null, this.tva = null;
+      this.$validator.reset();
     }
   },
   computed: {
@@ -2081,6 +2161,9 @@ __webpack_require__.r(__webpack_exports__);
     listTva: function listTva() {
       return this.$store.getters.getLoadedTva;
     }
+  },
+  mounted: function mounted() {
+    this.$validator.localize('en', this.dictionary);
   }
 });
 
@@ -2186,13 +2269,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -2745,8 +2821,8 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
       if (this.validation_client == false && this.validation_date == false && this.validation_qte == false && this.validation_remise == false && this.validation_lignes == false && this.validation_produit == false) {
         var facture = {
           client_id: this.client_id,
-          date_emission: this.$refs["datefacture"].computedDateFormatted,
-          date_echeance: this.$refs["dateecheance"].computedDateFormatted,
+          date_emission: this.$refs["datefacture"].date,
+          date_echeance: this.$refs["dateecheance"].date,
           statut: this.statut,
           total_ht: this.total_ht,
           total_ttc: this.total_ttc,
@@ -2800,7 +2876,7 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
     },
     total_ht_ligne: function total_ht_ligne(id, qte, remise) {
       var a = this.$store.getters.getProduitById(id).prix;
-      return a * qte * (1 - remise / 100);
+      return (a * qte * (1 - remise / 100)).toFixed(3);
     },
     total_ttc_ligne: function total_ttc_ligne(id, qte, remise) {
       var a = this.$store.getters.getProduitById(id).tva;
@@ -2901,6 +2977,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["url"],
   data: function data() {
@@ -2937,6 +3015,9 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    formatDate: function formatDate(d) {
+      return moment(d).format("DD-MM-YYYY");
+    },
     getClientName: function getClientName(item) {
       return this.$store.getters.getClient(+item.client_id).nom;
     },
@@ -3351,7 +3432,7 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
       var prix = this.$store.getters.getProduitById(+item.produit_id).prix;
       var qte = item.qte;
       var remise = item.remise;
-      return prix * qte - remise;
+      return (prix * qte - remise).toFixed(3);
     },
     total_reglement: function total_reglement() {
       var sum = 0;
@@ -3507,7 +3588,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -3545,7 +3626,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -32069,115 +32150,183 @@ var render = function() {
                     },
                     [
                       _c(
-                        "v-card",
+                        "form",
                         [
-                          _c("v-card-title", [
-                            _c("span", { staticClass: "headline" }, [
-                              _vm._v("Nouveau Produit")
-                            ])
-                          ]),
-                          _vm._v(" "),
                           _c(
-                            "v-card-text",
+                            "v-card",
                             [
+                              _c("v-card-title", [
+                                _c("span", { staticClass: "headline" }, [
+                                  _vm._v("Nouveau Produit")
+                                ])
+                              ]),
+                              _vm._v(" "),
                               _c(
-                                "v-container",
-                                { attrs: { "grid-list-md": "" } },
+                                "v-card-text",
                                 [
                                   _c(
-                                    "v-layout",
-                                    { attrs: { wrap: "" } },
+                                    "v-container",
+                                    { attrs: { "grid-list-md": "" } },
                                     [
                                       _c(
-                                        "v-flex",
-                                        {
-                                          attrs: { xs12: "", sm6: "", md4: "" }
-                                        },
+                                        "v-layout",
+                                        { attrs: { wrap: "" } },
                                         [
-                                          _c("v-text-field", {
-                                            attrs: {
-                                              label: "Code Produit",
-                                              required: ""
+                                          _c(
+                                            "v-flex",
+                                            {
+                                              attrs: {
+                                                xs12: "",
+                                                sm6: "",
+                                                md4: ""
+                                              }
                                             },
-                                            model: {
-                                              value: _vm.codeProduit,
-                                              callback: function($$v) {
-                                                _vm.codeProduit = $$v
-                                              },
-                                              expression: "codeProduit"
-                                            }
-                                          })
-                                        ],
-                                        1
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-flex",
-                                        {
-                                          attrs: { xs12: "", sm6: "", md4: "" }
-                                        },
-                                        [
-                                          _c("v-text-field", {
-                                            attrs: {
-                                              label: "Designation",
-                                              required: ""
+                                            [
+                                              _c("v-text-field", {
+                                                directives: [
+                                                  {
+                                                    name: "validate",
+                                                    rawName: "v-validate",
+                                                    value: "required",
+                                                    expression: "'required'"
+                                                  }
+                                                ],
+                                                attrs: {
+                                                  label: "Code Produit",
+                                                  "data-vv-name": "code",
+                                                  "error-messages": _vm.errors.collect(
+                                                    "code"
+                                                  )
+                                                },
+                                                model: {
+                                                  value: _vm.codeProduit,
+                                                  callback: function($$v) {
+                                                    _vm.codeProduit = $$v
+                                                  },
+                                                  expression: "codeProduit"
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-flex",
+                                            {
+                                              attrs: {
+                                                xs12: "",
+                                                sm6: "",
+                                                md4: ""
+                                              }
                                             },
-                                            model: {
-                                              value: _vm.designation,
-                                              callback: function($$v) {
-                                                _vm.designation = $$v
-                                              },
-                                              expression: "designation"
-                                            }
-                                          })
-                                        ],
-                                        1
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-flex",
-                                        {
-                                          attrs: { xs12: "", sm6: "", md4: "" }
-                                        },
-                                        [
-                                          _c("v-text-field", {
-                                            attrs: {
-                                              label: "Prix",
-                                              required: ""
+                                            [
+                                              _c("v-text-field", {
+                                                directives: [
+                                                  {
+                                                    name: "validate",
+                                                    rawName: "v-validate",
+                                                    value: "required",
+                                                    expression: "'required'"
+                                                  }
+                                                ],
+                                                attrs: {
+                                                  label: "Designation",
+                                                  "data-vv-name": "designation",
+                                                  "error-messages": _vm.errors.collect(
+                                                    "designation"
+                                                  )
+                                                },
+                                                model: {
+                                                  value: _vm.designation,
+                                                  callback: function($$v) {
+                                                    _vm.designation = $$v
+                                                  },
+                                                  expression: "designation"
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-flex",
+                                            {
+                                              attrs: {
+                                                xs12: "",
+                                                sm6: "",
+                                                md4: ""
+                                              }
                                             },
-                                            model: {
-                                              value: _vm.prix,
-                                              callback: function($$v) {
-                                                _vm.prix = $$v
-                                              },
-                                              expression: "prix"
-                                            }
-                                          })
-                                        ],
-                                        1
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-flex",
-                                        {
-                                          attrs: { xs12: "", sm6: "", md4: "" }
-                                        },
-                                        [
-                                          _c("v-select", {
-                                            attrs: {
-                                              items: _vm.listTva,
-                                              "item-text": "value",
-                                              "item-value": "value",
-                                              label: "Tva"
+                                            [
+                                              _c("v-text-field", {
+                                                directives: [
+                                                  {
+                                                    name: "validate",
+                                                    rawName: "v-validate",
+                                                    value: "required|decimal:3",
+                                                    expression:
+                                                      "'required|decimal:3'"
+                                                  }
+                                                ],
+                                                attrs: {
+                                                  label: "Prix",
+                                                  "data-vv-name": "prix",
+                                                  "error-messages": _vm.errors.collect(
+                                                    "prix"
+                                                  )
+                                                },
+                                                model: {
+                                                  value: _vm.prix,
+                                                  callback: function($$v) {
+                                                    _vm.prix = $$v
+                                                  },
+                                                  expression: "prix"
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-flex",
+                                            {
+                                              attrs: {
+                                                xs12: "",
+                                                sm6: "",
+                                                md4: ""
+                                              }
                                             },
-                                            model: {
-                                              value: _vm.tva,
-                                              callback: function($$v) {
-                                                _vm.tva = $$v
-                                              },
-                                              expression: "tva"
-                                            }
-                                          })
+                                            [
+                                              _c("v-select", {
+                                                directives: [
+                                                  {
+                                                    name: "validate",
+                                                    rawName: "v-validate",
+                                                    value: "required",
+                                                    expression: "'required'"
+                                                  }
+                                                ],
+                                                attrs: {
+                                                  items: _vm.listTva,
+                                                  "item-text": "value",
+                                                  "item-value": "value",
+                                                  label: "Tva",
+                                                  "data-vv-name": "tva",
+                                                  "error-messages": _vm.errors.collect(
+                                                    "tva"
+                                                  )
+                                                },
+                                                model: {
+                                                  value: _vm.tva,
+                                                  callback: function($$v) {
+                                                    _vm.tva = $$v
+                                                  },
+                                                  expression: "tva"
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          )
                                         ],
                                         1
                                       )
@@ -32186,36 +32335,42 @@ var render = function() {
                                   )
                                 ],
                                 1
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-card-actions",
-                            [
-                              _c("v-spacer"),
-                              _vm._v(" "),
-                              _c(
-                                "v-btn",
-                                {
-                                  attrs: { color: "blue darken-1", flat: "" },
-                                  on: {
-                                    click: function($event) {
-                                      _vm.dialog = false
-                                    }
-                                  }
-                                },
-                                [_vm._v("Close")]
                               ),
                               _vm._v(" "),
                               _c(
-                                "v-btn",
-                                {
-                                  attrs: { color: "blue darken-1", flat: "" },
-                                  on: { click: _vm.saveProduct }
-                                },
-                                [_vm._v("Save")]
+                                "v-card-actions",
+                                [
+                                  _c("v-spacer"),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-btn",
+                                    {
+                                      attrs: {
+                                        color: "blue darken-1",
+                                        flat: ""
+                                      },
+                                      on: {
+                                        click: function($event) {
+                                          _vm.dialog = false
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("Close")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-btn",
+                                    {
+                                      attrs: {
+                                        color: "blue darken-1",
+                                        flat: ""
+                                      },
+                                      on: { click: _vm.saveProduct }
+                                    },
+                                    [_vm._v("Save")]
+                                  )
+                                ],
+                                1
                               )
                             ],
                             1
@@ -32223,8 +32378,7 @@ var render = function() {
                         ],
                         1
                       )
-                    ],
-                    1
+                    ]
                   )
                 ],
                 1
@@ -32506,22 +32660,6 @@ var render = function() {
                   on: { click: _vm.submit }
                 },
                 [_vm._v("Save")]
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-flex",
-            { attrs: { xs12: "" } },
-            [
-              _c(
-                "v-btn",
-                {
-                  attrs: { color: "primary", block: "" },
-                  on: { click: _vm.test }
-                },
-                [_vm._v("Vuex")]
               )
             ],
             1
@@ -33268,11 +33406,15 @@ var render = function() {
                             ]),
                             _vm._v(" "),
                             _c("td", { staticClass: "text-xs-left" }, [
-                              _vm._v(_vm._s(props.item.date_emission))
+                              _vm._v(
+                                _vm._s(_vm.formatDate(props.item.date_emission))
+                              )
                             ]),
                             _vm._v(" "),
                             _c("td", { staticClass: "text-xs-left" }, [
-                              _vm._v(_vm._s(props.item.date_echeance))
+                              _vm._v(
+                                _vm._s(_vm.formatDate(props.item.date_echeance))
+                              )
                             ]),
                             _vm._v(" "),
                             _c("td", { staticClass: "text-xs-left" }, [
@@ -74153,19 +74295,55 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     addNewProduit: function addNewProduit(state, payload) {
       state.loadedProduits.push(payload);
+    },
+    removeProduit: function removeProduit(state, payload) {
+      var index = state.loadedProduits.indexOf(payload);
+      state.loadedProduits.splice(index, 1);
+    },
+    editProduitLoaded: function editProduitLoaded(state, payload) {
+      var prod = state.loadedProduits.find(function (produit) {
+        return produit.id === payload.id;
+      });
+      prod.prix = payload.prix;
+      prod.tva = payload.tva;
+      prod.designation = payload.designation;
+      prod.code = payload.code;
     }
   },
   actions: {
+    editProduit: function editProduit(_ref, payload) {
+      var commit = _ref.commit;
+      var uri = 'http://localhost:3000/api/produit/update/' + payload.id;
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.put(uri, payload).then(function (response) {
+        commit('editProduitLoaded', payload);
+        console.log(response);
+      }).catch(function (error) {
+        console.log(error);
+      });
+    },
+    deleteProduit: function deleteProduit(_ref2, payload) {
+      var commit = _ref2.commit;
+      commit('setLoading', true);
+      var uri = 'http://localhost:3000/api/produit/delete/' + payload.id;
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.delete(uri).then(function (response) {
+        commit('removeProduit', payload.index);
+        console.log(response);
+        commit('setLoading', false);
+      }).catch(function (error) {
+        commit('setLoading', false);
+        console.log(error);
+      });
+    },
     loadProduits: function () {
       var _loadProduits = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(_ref) {
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(_ref3) {
         var commit, dispatch, uri;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                commit = _ref.commit, dispatch = _ref.dispatch;
+                commit = _ref3.commit, dispatch = _ref3.dispatch;
                 uri = 'http://localhost:3000/api/produit'; //commit('setLoading', true);
 
                 _context.next = 4;
@@ -74204,9 +74382,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       return loadProduits;
     }(),
-    loadProduitListName: function loadProduitListName(_ref2) {
-      var commit = _ref2.commit,
-          getters = _ref2.getters;
+    loadProduitListName: function loadProduitListName(_ref4) {
+      var commit = _ref4.commit,
+          getters = _ref4.getters;
       var clt = [];
       getters.getloadedProduits.forEach(function (element) {
         clt.push({
@@ -74216,8 +74394,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       });
       commit('setProduitListName', clt);
     },
-    saveProduit: function saveProduit(_ref3, payload) {
-      var commit = _ref3.commit;
+    saveProduit: function saveProduit(_ref5, payload) {
+      var commit = _ref5.commit;
       var uri = 'http://localhost:3000/api/facture/produit/add';
       commit('setLoading', true);
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.post(uri, payload).then(function (response) {

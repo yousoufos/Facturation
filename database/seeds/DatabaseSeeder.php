@@ -15,8 +15,9 @@ class DatabaseSeeder extends Seeder
              ProduitsTableSeeder::class,
              ClientsTableSeeder::class,
              FacturesTableSeeder::class,
-             
-         
+             TvaTableSeeder::class,
+
+
          ]);
     }
 }

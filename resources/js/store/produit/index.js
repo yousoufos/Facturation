@@ -15,10 +15,47 @@ export default {
         },
         addNewProduit (state, payload) {
             state.loadedProduits.push(payload)
+        },
+        removeProduit (state, payload) {
+            const index = state.loadedProduits.indexOf(payload)
+            state.loadedProduits.splice(index, 1)
+        },
+        editProduitLoaded (state, payload) {
+            let prod = state.loadedProduits.find(produit => produit.id === payload.id)
+            prod.prix = payload.prix
+            prod.tva = payload.tva
+            prod.designation = payload.designation
+            prod.code = payload.code
         }
 
     },
     actions: {
+        editProduit ({ commit }, payload) {
+            const uri = 'http://localhost:3000/api/produit/update/' + payload.id
+            axios.put(uri, payload).then((response) => {
+                commit('editProduitLoaded', payload)
+                console.log(response);
+
+
+            }).catch((error) => {
+                console.log(error);
+
+            });
+        },
+        deleteProduit ({ commit }, payload) {
+            commit('setLoading', true)
+            const uri = 'http://localhost:3000/api/produit/delete/'+payload.id
+            axios.delete(uri).then(response => {
+                commit('removeProduit',payload.index)
+                console.log(response);
+                commit('setLoading', false)
+
+            }).catch(error => {
+                commit('setLoading', false)
+                console.log(error);
+
+            })
+        },
         async loadProduits ({
             commit,
             dispatch,

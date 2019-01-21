@@ -27,6 +27,7 @@
     </v-layout>
         <v-layout row justify-center>
     <v-dialog v-model="dialog" persistent max-width="600px">
+        <form>
       <v-card>
         <v-card-title>
           <span class="headline">Nouveau Produit</span>
@@ -35,13 +36,13 @@
           <v-container grid-list-md>
             <v-layout wrap>
               <v-flex xs12 sm6 md4>
-                <v-text-field label="Code Produit" v-model="codeProduit" required ></v-text-field>
+                <v-text-field label="Code Produit" v-model="codeProduit" v-validate="'required'" data-vv-name="code" :error-messages="errors.collect('code')"></v-text-field>
               </v-flex>
               <v-flex xs12 sm6 md4>
-                <v-text-field label="Designation" v-model="designation" required ></v-text-field>
+                <v-text-field label="Designation" v-model="designation" v-validate="'required'" data-vv-name="designation" :error-messages="errors.collect('designation')"></v-text-field>
               </v-flex>
               <v-flex xs12 sm6 md4>
-                <v-text-field label="Prix" v-model="prix" required ></v-text-field>
+                <v-text-field label="Prix" v-model="prix" v-validate="'required|decimal:3'" data-vv-name="prix" :error-messages="errors.collect('prix')" ></v-text-field>
               </v-flex>
               <v-flex xs12 sm6 md4>
                 <v-select
@@ -50,6 +51,7 @@
           item-value="value"
           label="Tva"
           v-model="tva"
+          v-validate="'required'" data-vv-name="tva" :error-messages="errors.collect('tva')"
         ></v-select>
         </v-flex>
             </v-layout>
@@ -61,6 +63,7 @@
           <v-btn color="blue darken-1" flat @click="saveProduct">Save</v-btn>
         </v-card-actions>
       </v-card>
+      </form>
     </v-dialog>
   </v-layout>
         <v-layout row wrap>
@@ -111,13 +114,37 @@
 
 <script>
 export default {
+     $_veeValidate: {
+      validator: 'new'
+    },
     data () {
     return {
+        create:false,
+         dictionary: {
+        attributes: {
+        },
+        custom: {
+          code: {
+            required:'Champs requis',
+          },
+          tva: {
+            required: 'Champs requis'
+          },
+          designation:{
+              required: 'Champs requis'
+          },
+          prix:{
+               required: 'Champs requis',
+               decimal:"Le prix n'est pas valide"
+          }
+        }
+      },
         codeProduit:null,
         designation:null,
         prix:null,
         tva:null,
         dialog:false,
+        id:null,
       headers: [
         {
           align: "left",
@@ -133,12 +160,46 @@ export default {
     }
     },
     methods:{
+        produitId(id){
+          return this.$store.getters.getProduitById(id)
+        },
+        deleteItem(item){
+            let a={
+                id:item.id,
+                index:item
+            }
+            const index = this.produits.indexOf(item)
+      		let response = confirm('Etes vous sur de vouloir supprimer ce produit?')
+      		if (response) {
+                  this.$store.dispatch('deleteProduit',a)
+
+              }
+
+
+
+        },
+        editItem(item){
+            const index = this.produits.indexOf(item)
+            this.dialog = true
+            this.clearFields()
+            this.create = false
+            this.codeProduit = this.produitId(item.id).code
+            this.designation = this.produitId(item.id).designation
+            this.tva = this.produitId(item.id).tva
+            this.prix = this.produitId(item.id).prix
+            this.id = item.id
+
+        },
         addProduct(){
             this.dialog = true
             this.clearFields()
+            this.create = true
         },
         saveProduct(){
-             let produit={
+            if(this.create){
+                this.$validator.validate().then(result=>{
+               if(result){
+                   let produit={
                 code:this.codeProduit,
                 designation:this.designation,
                 prix:this.prix,
@@ -146,6 +207,31 @@ export default {
             }
             this.$store.dispatch('saveProduit',produit)
             this.dialog = false
+               }
+               else{
+
+               }
+           });
+            }
+            else{
+                this.$validator.validate().then(result=>{
+               if(result){
+                   let produit={
+                code:this.codeProduit,
+                designation:this.designation,
+                prix:this.prix,
+                tva:this.tva,
+                id:this.id
+            }
+            this.$store.dispatch('editProduit',produit)
+            this.dialog = false
+               }
+               else{
+
+               }
+           });
+            }
+
 
         },
         clearFields(){
@@ -153,6 +239,7 @@ export default {
             this.designation=null,
             this.prix=null,
             this.tva=null
+            this.$validator.reset()
         }
     },
     computed: {
@@ -164,10 +251,14 @@ export default {
       },
       listTva(){
           return this.$store.getters.getLoadedTva
-      }
+      },
 
 
-  }
+
+  },
+  mounted () {
+      this.$validator.localize('en', this.dictionary)
+    },
 }
 </script>
 

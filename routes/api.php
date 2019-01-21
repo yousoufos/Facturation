@@ -24,6 +24,8 @@ Route::get('/produit', 'ProduitController@index');
 Route::get('/facture', 'FactureController@index');
 Route::get('/tva', 'TvaController@index');
 Route::put('/facture/update/{id}', 'FactureController@update');
+Route::put('/produit/update/{id}', 'ProduitController@update');
 Route::get('/facture/lignesfacture', 'LigneFactureController@index');
 Route::get('/facture/reglementfacture', 'ReglementController@index');
 Route::delete('/facture/reglementfacture/delete/{id}', 'ReglementController@destroy');
+Route::delete('/produit/delete/{id}', 'ProduitController@destroy');

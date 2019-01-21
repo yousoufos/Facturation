@@ -352,7 +352,7 @@ export default {
       let prix = this.$store.getters.getProduitById(+item.produit_id).prix;
       let qte = item.qte
       let remise = item.remise
-      return (prix * qte ) - remise;
+      return ((prix * qte ) - remise).toFixed(3);
     },
         total_reglement(){
                     let sum=0

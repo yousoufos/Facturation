@@ -47,13 +47,6 @@
           block
         >Save</v-btn>
       </v-flex>
-      <v-flex xs12>
-        <v-btn
-          color="primary"
-          @click="test"
-          block
-        >Vuex</v-btn>
-      </v-flex>
     </v-layout>
     <v-layout
       row
@@ -559,8 +552,8 @@ export default {
       if (this.validation_client == false && this.validation_date == false && this.validation_qte == false && this.validation_remise == false && this.validation_lignes == false && this.validation_produit == false) {
         let facture = {
           client_id: this.client_id,
-          date_emission: this.$refs["datefacture"].computedDateFormatted,
-          date_echeance: this.$refs["dateecheance"].computedDateFormatted,
+          date_emission: this.$refs["datefacture"].date,
+          date_echeance: this.$refs["dateecheance"].date,
           statut: this.statut,
           total_ht: this.total_ht,
           total_ttc: this.total_ttc,
@@ -629,7 +622,7 @@ export default {
     },
     total_ht_ligne (id, qte, remise) {
       let a = this.$store.getters.getProduitById(id).prix;
-      return (a * qte * (1 - remise / 100));
+      return (a * qte * (1 - remise / 100)).toFixed(3);
     },
     total_ttc_ligne (id, qte, remise) {
       let a = this.$store.getters.getProduitById(id).tva;

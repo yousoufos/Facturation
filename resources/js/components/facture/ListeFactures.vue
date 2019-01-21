@@ -38,8 +38,8 @@
             <td>{{ props.item.name }}</td>
             <td><router-link :to="{name: 'showfacture', params: { factureId: props.item.id }}" class="text-xs-left">{{ props.item.reference }}</router-link> </td>
             <td class="text-xs-left">{{ getClientName(props.item) }}</td>
-            <td class="text-xs-left">{{ props.item.date_emission }}</td>
-            <td class="text-xs-left">{{ props.item.date_echeance }}</td>
+            <td class="text-xs-left">{{ formatDate(props.item.date_emission) }}</td>
+            <td class="text-xs-left">{{ formatDate(props.item.date_echeance) }}</td>
             <td class="text-xs-left">{{ props.item.total_ht }}</td>
             <td class="text-xs-left">{{ props.item.total_ttc }}</td>
             <td class="text-xs-left" :class="getStatutClass(props.item)">{{ props.item.statut }}</td>
@@ -51,6 +51,7 @@
 </template>
 
 <script>
+var moment = require('moment');
 export default {
   props: ["url"],
   data () {
@@ -76,6 +77,9 @@ export default {
     }
   },
   methods: {
+      formatDate(d){
+          return moment(d).format("DD-MM-YYYY")
+      },
       getClientName(item){
           return this.$store.getters.getClient(+item.client_id).nom
       },

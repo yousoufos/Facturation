@@ -12,8 +12,76 @@ export default {
     setClientListName(state, payload) {
       state.clientListName = payload;
     },
+    addNewClient (state, payload) {
+          state.loadedClients.push(payload)
+      },
+    removeClient (state, payload) {
+          const index = state.loadedClients.indexOf(payload)
+          state.loadedClients.splice(index, 1)
+      },
+    editClientLoaded (state, payload) {
+          let clt = state.loadedClients.find(client => client.id === payload.id)
+          clt.nom = payload.nom
+          clt.raison = payload.raison
+          clt.matricule = payload.matricule
+          clt.tel = payload.tel
+          clt.email = payload.email
+          clt.adresse = payload.adresse
+      }
   },
-  actions: {
+    actions: {
+        editClient ({ commit }, payload) {
+            const uri = 'http://localhost:3000/api/client/update/' + payload.id
+            commit('setLoadingTable', true)
+            axios.put(uri, payload).then((response) => {
+                commit('editClientLoaded', payload)
+                console.log(response);
+                commit('setLoadingTable', false)
+
+            }).catch((error) => {
+                console.log(error);
+                commit('setLoadingTable', false)
+
+            });
+        },
+        deleteClient ({ commit }, payload) {
+            commit('setLoadingTable', true)
+            const uri = 'http://localhost:3000/api/client/delete/' + payload.id
+            axios.delete(uri).then(response => {
+                commit('removeClient', payload.index)
+                console.log(response);
+                commit('setLoadingTable', false)
+
+            }).catch(error => {
+                commit('setLoadingTable', false)
+                console.log(error);
+
+            })
+        },
+        saveClient ({ commit }, payload) {
+            const uri = 'http://localhost:3000/api/client/add'
+            commit('setLoadingTable', true);
+            axios.post(uri, payload)
+                .then(response => {
+                    client = response.data.client;
+                    let clt = {
+                        nom: produit.nom,
+                        raison: produit.raison,
+                        matricule: produit.matricule,
+                        tel: produit.tel,
+                        email: produit.email,
+                        adresse: produit.adresse,
+                    }
+                    commit('addNewProduit', clt)
+                    commit('setLoadingTable', false);
+                }).catch(error => {
+                    commit('setLoadingTable', false);
+                    //commit('seterreurs', error.response.data.errors)
+                    console.log(error);
+                })
+
+
+        },
     async loadClients({
       commit,
       dispatch,
@@ -32,7 +100,9 @@ export default {
                 matricule: obj[key].matricule,
                 adresse: obj[key].adresse,
                 tel: obj[key].tel,
-              });
+                email: obj[key].email,
+            });
+
         })
         commit('setLoadedClients', client);
         dispatch('loadClientListName');

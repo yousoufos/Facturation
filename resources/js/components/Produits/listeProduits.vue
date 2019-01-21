@@ -73,7 +73,7 @@
           :items="produits"
           class="elevation-1"
           item-key="id"
-          loading="true"
+          :loading="loadingTable"
           :rows-per-page-items="[25,50]"
           disable-initial-sort
 
@@ -196,24 +196,6 @@ export default {
             this.create = true
         },
         saveProduct(){
-            if(this.create){
-                this.$validator.validate().then(result=>{
-               if(result){
-                   let produit={
-                code:this.codeProduit,
-                designation:this.designation,
-                prix:this.prix,
-                tva:this.tva
-            }
-            this.$store.dispatch('saveProduit',produit)
-            this.dialog = false
-               }
-               else{
-
-               }
-           });
-            }
-            else{
                 this.$validator.validate().then(result=>{
                if(result){
                    let produit={
@@ -222,15 +204,16 @@ export default {
                 prix:this.prix,
                 tva:this.tva,
                 id:this.id
-            }
-            this.$store.dispatch('editProduit',produit)
-            this.dialog = false
-               }
-               else{
-
+                     }
+                   if(this.create){
+                     this.$store.dispatch('saveProduit',produit)
+                   }
+                   else{
+                       this.$store.dispatch('editProduit',produit)
+                   }
+                   this.dialog = false
                }
            });
-            }
 
 
         },
@@ -252,6 +235,9 @@ export default {
       listTva(){
           return this.$store.getters.getLoadedTva
       },
+      loadingTable(){
+            return this.$store.getters.getLoadingTable
+        }
 
 
 

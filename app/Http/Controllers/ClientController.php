@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\client;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreClientRequest;
 
 class ClientController extends Controller
 {
@@ -34,9 +35,17 @@ class ClientController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreClientRequest $request)
     {
-        
+        $client = new Client;
+        $client->nom = $request->get('nom');
+        $client->raison = $request->get('raison');
+        $client->matricule = $request->get('matricule');
+        $client->tel = $request->get('tel');
+        $client->email = $request->get('email');
+        $client->adresse = $request->get('adresse');
+        $client->save();
+        return response()->json(['client'=> $client]);
     }
 
     /**
@@ -68,9 +77,11 @@ class ClientController extends Controller
      * @param  \App\client  $client
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, client $client)
+    public function update(StoreClientRequest $request, $id)
     {
-        //
+        $client = Client::find($id);
+        $client->update($request->all());
+        return response()->json('successfully updated');
     }
 
     /**

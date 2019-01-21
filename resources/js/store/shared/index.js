@@ -4,8 +4,8 @@ export default {
         loading: false,
         erreurs: null,
         savedStatut: false,
-        loadingRegelement:false,
-        loadedTva:null
+        loadingTable:false,
+        loadedTva: null
 
     },
     mutations: {
@@ -24,8 +24,8 @@ export default {
         setSavedStatut (state, payload) {
             state.savedStatut = payload
         },
-        setLoadingReglement (state,payload) {
-            state.loadingRegelement = payload
+        setLoadingTable (state,payload) {
+            state.loadingTable = payload
         },
         setLoadedTva (state, payload) {
             state.loadedTva = payload
@@ -103,8 +103,8 @@ export default {
         savedStatut (state) {
             return state.savedStatut
         },
-        getLoadingReglement (state) {
-            return state.loadingRegelement
+        getLoadingTable (state) {
+            return state.loadingTable
         },
         getLoadedTva (state) {
             return state.loadedTva

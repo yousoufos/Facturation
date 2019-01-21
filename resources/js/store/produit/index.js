@@ -31,27 +31,30 @@ export default {
     },
     actions: {
         editProduit ({ commit }, payload) {
+
             const uri = 'http://localhost:3000/api/produit/update/' + payload.id
+            commit('setLoadingTable', true)
             axios.put(uri, payload).then((response) => {
                 commit('editProduitLoaded', payload)
                 console.log(response);
 
-
+                commit('setLoadingTable', false)
             }).catch((error) => {
                 console.log(error);
+                commit('setLoadingTable', false)
 
             });
         },
         deleteProduit ({ commit }, payload) {
-            commit('setLoading', true)
+            commit('setLoadingTable', true)
             const uri = 'http://localhost:3000/api/produit/delete/'+payload.id
             axios.delete(uri).then(response => {
                 commit('removeProduit',payload.index)
                 console.log(response);
-                commit('setLoading', false)
+                commit('setLoadingTable', false)
 
             }).catch(error => {
-                commit('setLoading', false)
+                commit('setLoadingTable', false)
                 console.log(error);
 
             })
@@ -99,7 +102,7 @@ export default {
             commit('setProduitListName', clt);
         },
         saveProduit ({ commit }, payload) {
-            const uri = 'http://localhost:3000/api/facture/produit/add'
+            const uri = 'http://localhost:3000/api/produit/add'
             commit('setLoading', true);
             axios.post(uri, payload)
                 .then(response => {

@@ -76,7 +76,7 @@ class ProduitController extends Controller
      * @param  \App\produit  $produit
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreProduitRequest $request, $id)
     {
         $produit = Produit::find($id);
         $produit->update($request->all());

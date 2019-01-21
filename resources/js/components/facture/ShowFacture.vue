@@ -132,7 +132,7 @@
 						<v-data-table
 							:headers="headers1"
 							:items="reglements"
-                            :loading="loadingReglement"
+                            :loading="loadingTable"
 							class="elevation-1"
 							item-key="id"
 							hide-actions
@@ -427,8 +427,8 @@ export default {
         reglements(){
             return this.$store.getters.getReglementFactureById((this.$route.params.factureId).toString())
         },
-        loadingReglement(){
-            return this.$store.getters.getLoadingReglement
+        loadingTable(){
+            return this.$store.getters.getLoadingTable
         }
 
 	}

@@ -44,7 +44,7 @@ export default {
         },
         saveReglement ({ commit }, payload) {
             const uri = 'http://localhost:3000/api/facture/reglementfacture/add'
-            commit('setLoadingReglement', true)
+            commit('setLoadingTable', true)
             axios.post(uri, payload)
                 .then(response => {
                     const reglement = response.data.reglement;
@@ -57,24 +57,24 @@ export default {
 
                     }
                     commit('addNewReglement', reg)
-                    commit('setLoadingReglement',false)
+                    commit('setLoadingTable',false)
                 }).catch(error => {
-                    commit('setLoadingReglement', false)
+                    commit('setLoadingTable', false)
                     //commit('seterreurs', error.response.data.errors)
                     console.log(error);
                 })
 
         },
         deleteReglement ({ commit }, payload) {
-            commit('setLoadingReglement', true)
+            commit('setLoadingTable', true)
             const uri = 'http://localhost:3000/api/facture/reglementfacture/delete/'+payload.id
             axios.delete(uri).then(response => {
                 commit('removeLigneReglement',payload.index)
                 console.log(response);
-                commit('setLoadingReglement', false)
+                commit('setLoadingTable', false)
 
             }).catch(error => {
-                commit('setLoadingReglement', false)
+                commit('setLoadingTable', false)
                 console.log(error);
 
             })

@@ -47,6 +47,11 @@ export default new Router({
             component: liste_client
         },
         {
+            path: '/facturation/test',
+            name: 'test',
+            component: test
+        },
+        {
             path: '*',
             component: home
         }

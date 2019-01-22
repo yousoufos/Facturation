@@ -1,16 +1,11 @@
 <template>
     <v-container grid-list-xs>
-        <v-layout row wrap v-if="loading">
+        <navigation></navigation>
+        <v-layout row wrap >
         <v-flex xs12 class="text-xs-center">
-           <v-progress-circular indeterminate color="primary">
-            </v-progress-circular>
+           test
         </v-flex>
-    </v-layout>
-        <v-layout row wrap v-else>
-            <v-flex xs12>
-                {{ facture.client_id}}
-                {{ client.nom }}
-            </v-flex>
+
         </v-layout>
 
     </v-container>
@@ -26,17 +21,7 @@ export default {
 
     computed:{
 
-        facture(){
-                return this.$store.getters.getFacture(1)
 
-
-        },
-        client(){
-            return this.$store.getters.getClient(+this.facture.client_id)
-        },
-        loading(){
-            return this.$store.getters.loading
-        }
     }
 }
 </script>

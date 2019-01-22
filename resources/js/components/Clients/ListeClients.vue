@@ -1,5 +1,6 @@
 <template>
     <v-container grid-list-xs>
+        <navigation></navigation>
       <v-layout
       row
       wrap

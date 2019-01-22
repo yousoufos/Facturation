@@ -1,5 +1,6 @@
 <template>
 <v-container grid-list-md>
+
     <v-layout row wrap v-if="loading">
         <v-flex xs12 class="text-xs-center">
            <v-progress-circular indeterminate color="primary">
@@ -128,7 +129,7 @@
 		  <template slot="footer">
 			  <td :colspan="headers.length">
 				<v-layout row wrap mt-5>
-					<v-flex xs8>
+					<v-flex xs9>
 						<v-data-table
 							:headers="headers1"
 							:items="reglements"
@@ -186,7 +187,7 @@
 						<v-icon dark>add</v-icon>
 						</v-btn>
 					</v-flex>
-					<v-flex xs3>
+					<v-flex xs2>
 						<v-layout row wrap >
 				  <v-flex xs12>
 					<v-text-field

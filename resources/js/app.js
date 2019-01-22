@@ -32,6 +32,7 @@ Vue.use(VueAxios, axios)
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 Vue.component('app', require('./components/App.vue').default);
 Vue.component('date', require('./components/date/date.vue').default);
+Vue.component('navigation', require('./components/Navigation.vue').default);
 
 
 /**

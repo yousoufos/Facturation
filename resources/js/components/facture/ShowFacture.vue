@@ -1,6 +1,6 @@
 <template>
 <v-container grid-list-md>
-
+<navigation></navigation>
     <v-layout row wrap v-if="loading">
         <v-flex xs12 class="text-xs-center">
            <v-progress-circular indeterminate color="primary">
@@ -436,6 +436,8 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+@media print{
 
+}
 </style>

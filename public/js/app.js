@@ -3760,6 +3760,8 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
       return sum;
     },
     generatePdf: function generatePdf() {
+      var _this = this;
+
       //      var columns = ["ID", "Country", "Rank", "Capital"];
       // var data = [
       //     [1, "Denmark", 7.526, "Copenhagen"],
@@ -3774,19 +3776,18 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
       //     body: data
       // });
       var body = [];
-      var head = [];
-      var obj = this.facture.lignes;
-
-      if (this.facture.lignes.length > 0) {
-        var value = obj[0];
-        head = Object.keys(value);
-        console.log(head);
-      }
+      var head = ['Code', 'Designation', 'Qte', 'Tva%', 'Prix Unitaire', 'Remise', 'Total HT'];
+      var obj = this.facture.lignes; // if(this.facture.lignes.length>0)
+      // {
+      //     const value = obj[0]
+      //      head = Object.keys(value)
+      //     console.log(head);
+      // }
 
       Object.keys(obj).forEach(function (key) {
         var value = obj[key];
         var b1 = [];
-        b1.push('1', value.produit_id, value.facture_id, value.qte, value.remise);
+        b1.push(_this.$store.getters.getProduitById(+value.produit_id).code, _this.$store.getters.getProduitById(+value.produit_id).designation, value.qte, _this.$store.getters.getProduitById(+value.produit_id).tva, _this.$store.getters.getProduitById(+value.produit_id).prix, value.remise, _this.total_ht_ligne(value));
         body.push(b1);
       });
       console.log(body);
@@ -77136,7 +77137,7 @@ var liste_produit = vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('liste_
 var liste_client = vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('liste_client', __webpack_require__(/*! ../components/Clients/listeClients.vue */ "./resources/js/components/Clients/listeClients.vue").default);
 /* harmony default export */ __webpack_exports__["default"] = (new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   mode: 'history',
-  base: Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"}).BASE_URL,
+  base: Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"}).BASE_URL,
   routes: [{
     path: '/facturation/create',
     name: 'create_facture',
@@ -78144,8 +78145,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\youso\Laravel_tuto\Facturation\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\youso\Laravel_tuto\Facturation\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/macbookpro/Desktop/Facturation/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/macbookpro/Desktop/Facturation/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

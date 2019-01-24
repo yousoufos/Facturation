@@ -385,20 +385,20 @@ export default {
     //     body: data
     // });
         let body =[]
-        let head =[]
+        let head =['Code','Designation','Qte','Tva%','Prix Unitaire','Remise','Total HT']
         const obj = this.facture.lignes;
-        if(this.facture.lignes.length>0)
-        {
+        // if(this.facture.lignes.length>0)
+        // {
 
-            const value = obj[0]
-             head = Object.keys(value)
-            console.log(head);
+        //     const value = obj[0]
+        //      head = Object.keys(value)
+        //     console.log(head);
 
-        }
+        // }
         Object.keys(obj).forEach((key) => {
                         const value = obj[key];
                         let b1=[]
-                        b1.push('1',value.produit_id,value.facture_id,value.qte,value.remise)
+                        b1.push(this.$store.getters.getProduitById(+value.produit_id).code,this.$store.getters.getProduitById(+value.produit_id).designation,value.qte,this.$store.getters.getProduitById(+value.produit_id).tva,this.$store.getters.getProduitById(+value.produit_id).prix,value.remise,this.total_ht_ligne(value))
                         body.push(b1)
 
         })

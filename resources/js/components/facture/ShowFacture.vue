@@ -62,6 +62,9 @@
     </v-dialog>
   </v-layout>
 	<v-layout row justify-space-between>
+        <v-flex xs12>
+            <v-btn block color="success" @click="generatePdf">Pdf</v-btn>
+        </v-flex>
 		<v-flex xs12 md6>
 			<v-card>
 				<v-card-text>
@@ -250,6 +253,8 @@
 
 <script>
 var moment = require('moment');
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 export default {
 
 	data(){
@@ -364,6 +369,49 @@ export default {
                     })
                     return sum
     },
+    generatePdf(){
+    //      var columns = ["ID", "Country", "Rank", "Capital"];
+    // var data = [
+    //     [1, "Denmark", 7.526, "Copenhagen"],
+    //     [2, "Switzerland", 	7.509, "Bern"],
+    //     [3, "Iceland", 7.501, "Reykjavík"],
+    //     [4, "Norway", 7.498, "Oslo"],
+    //     [5, "Finland", 7.413, "Helsinki"]
+    // ];
+
+    // var doc = new jsPDF();
+    // doc.autoTable({
+    //     head: [columns],
+    //     body: data
+    // });
+        let body =[]
+        let head =[]
+        const obj = this.facture.lignes;
+        if(this.facture.lignes.length>0)
+        {
+
+            const value = obj[0]
+             head = Object.keys(value)
+            console.log(head);
+
+        }
+        Object.keys(obj).forEach((key) => {
+                        const value = obj[key];
+                        let b1=[]
+                        b1.push('1',value.produit_id,value.facture_id,value.qte,value.remise)
+                        body.push(b1)
+
+        })
+        console.log(body);
+
+        var doc = new jsPDF();
+        doc.autoTable({
+        head: [head],
+        body: body
+    });
+        doc.output("dataurlnewwindow");
+        //doc.save('a4.pdf')
+    }
     },
     watch:{
         reste(val){

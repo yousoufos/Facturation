@@ -15,6 +15,7 @@ Vue.use(Vuetify)
 import App from './components/App.vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+
 Vue.use(VueAxios, axios)
 
 

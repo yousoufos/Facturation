@@ -370,31 +370,9 @@ export default {
                     return sum
     },
     generatePdf(){
-    //      var columns = ["ID", "Country", "Rank", "Capital"];
-    // var data = [
-    //     [1, "Denmark", 7.526, "Copenhagen"],
-    //     [2, "Switzerland", 	7.509, "Bern"],
-    //     [3, "Iceland", 7.501, "Reykjavík"],
-    //     [4, "Norway", 7.498, "Oslo"],
-    //     [5, "Finland", 7.413, "Helsinki"]
-    // ];
-
-    // var doc = new jsPDF();
-    // doc.autoTable({
-    //     head: [columns],
-    //     body: data
-    // });
         let body =[]
         let head =['Code','Designation','Qte','Tva%','Prix Unitaire','Remise','Total HT']
         const obj = this.facture.lignes;
-        // if(this.facture.lignes.length>0)
-        // {
-
-        //     const value = obj[0]
-        //      head = Object.keys(value)
-        //     console.log(head);
-
-        // }
         Object.keys(obj).forEach((key) => {
                         const value = obj[key];
                         let b1=[]
@@ -405,9 +383,17 @@ export default {
         console.log(body);
 
         var doc = new jsPDF();
+        doc.setFontSize(12)
+        doc.rect(10,10,50,50,'S')
+        doc.text(this.client.nom,10,15)
+        doc.setFontSize(10)
+        doc.text(this.client.raison,10,22)
+        doc.text(this.client.adresse,10,29)
+        doc.text(this.client.matricule,10,40)
         doc.autoTable({
         head: [head],
-        body: body
+        body: body,
+        startY:100
     });
         doc.output("dataurlnewwindow");
         //doc.save('a4.pdf')

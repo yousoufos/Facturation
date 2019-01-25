@@ -3762,28 +3762,9 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
     generatePdf: function generatePdf() {
       var _this = this;
 
-      //      var columns = ["ID", "Country", "Rank", "Capital"];
-      // var data = [
-      //     [1, "Denmark", 7.526, "Copenhagen"],
-      //     [2, "Switzerland", 	7.509, "Bern"],
-      //     [3, "Iceland", 7.501, "Reykjavík"],
-      //     [4, "Norway", 7.498, "Oslo"],
-      //     [5, "Finland", 7.413, "Helsinki"]
-      // ];
-      // var doc = new jsPDF();
-      // doc.autoTable({
-      //     head: [columns],
-      //     body: data
-      // });
       var body = [];
       var head = ['Code', 'Designation', 'Qte', 'Tva%', 'Prix Unitaire', 'Remise', 'Total HT'];
-      var obj = this.facture.lignes; // if(this.facture.lignes.length>0)
-      // {
-      //     const value = obj[0]
-      //      head = Object.keys(value)
-      //     console.log(head);
-      // }
-
+      var obj = this.facture.lignes;
       Object.keys(obj).forEach(function (key) {
         var value = obj[key];
         var b1 = [];
@@ -3792,9 +3773,17 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
       });
       console.log(body);
       var doc = new jspdf__WEBPACK_IMPORTED_MODULE_0___default.a();
+      doc.setFontSize(12);
+      doc.rect(10, 10, 50, 50, 'S');
+      doc.text(this.client.nom, 10, 15);
+      doc.setFontSize(10);
+      doc.text(this.client.raison, 10, 22);
+      doc.text(this.client.adresse, 10, 29);
+      doc.text(this.client.matricule, 10, 40);
       doc.autoTable({
         head: [head],
-        body: body
+        body: body,
+        startY: 100
       });
       doc.output("dataurlnewwindow"); //doc.save('a4.pdf')
     }
@@ -77137,7 +77126,7 @@ var liste_produit = vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('liste_
 var liste_client = vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('liste_client', __webpack_require__(/*! ../components/Clients/listeClients.vue */ "./resources/js/components/Clients/listeClients.vue").default);
 /* harmony default export */ __webpack_exports__["default"] = (new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   mode: 'history',
-  base: Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"}).BASE_URL,
+  base: Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"}).BASE_URL,
   routes: [{
     path: '/facturation/create',
     name: 'create_facture',
@@ -78145,8 +78134,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/macbookpro/Desktop/Facturation/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/macbookpro/Desktop/Facturation/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\youso\Laravel_tuto\Facturation\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\youso\Laravel_tuto\Facturation\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

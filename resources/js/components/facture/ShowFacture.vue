@@ -253,6 +253,8 @@
 
 <script>
 var moment = require('moment');
+var writtenForm = require('written-number')
+writtenForm.defaults.lang = 'fr'
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 export default {
@@ -405,10 +407,16 @@ export default {
     doc.setLineWidth(0.5)
     doc.setDrawColor(0, 0, 0)
     doc.line(10, doc.autoTable.previous.finalY + 5+i, 200, doc.autoTable.previous.finalY+5+i)
+    var s = this.total_ttc.split('.')
     doc.text('Total Remise: '+this.total_remise, 150, doc.autoTable.previous.finalY + 10+i);
     doc.text('Total Tva: '+this.total_tva, 150, doc.autoTable.previous.finalY + 20+i);
     doc.text('Total Tva: '+this.total_ht, 150, doc.autoTable.previous.finalY + 30+i);
     doc.text('Total TTC: '+this.total_ttc, 150, doc.autoTable.previous.finalY + 40+i);
+    doc.text('Arreter la presente facture à la somme de: '+writtenForm(s[0])+ ' dinars '+(s.length>1 ? 'et '+writtenForm(s[1])+' millimes' : ''), 10, doc.autoTable.previous.finalY + 50+i);
+
+
+
+
         doc.output("dataurlnewwindow");
         //doc.save('a4.pdf')
     }

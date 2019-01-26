@@ -3762,6 +3762,7 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
     generatePdf: function generatePdf() {
       var _this = this;
 
+      var i = 10;
       var body = [];
       var head = ['Code', 'Designation', 'Qte', 'Tva%', 'Prix Unitaire', 'Remise', 'Total HT'];
       var obj = this.facture.lignes;
@@ -3774,17 +3775,30 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
       console.log(body);
       var doc = new jspdf__WEBPACK_IMPORTED_MODULE_0___default.a();
       doc.setFontSize(12);
-      doc.rect(10, 10, 50, 50, 'S');
-      doc.text(this.client.nom, 10, 15);
+      doc.rect(10, 10, 75, 40, 'S');
+      doc.text('Client: ' + this.client.nom, 12, 15);
       doc.setFontSize(10);
-      doc.text(this.client.raison, 10, 22);
-      doc.text(this.client.adresse, 10, 29);
-      doc.text(this.client.matricule, 10, 40);
+      doc.text('Raison: ' + this.client.raison, 12, 22);
+      doc.text('Adresse: ' + this.client.adresse, 12, 29);
+      doc.text('TVA: ' + this.client.matricule, 12, 40);
+      doc.autoTable({
+        head: [['Date emission:', 'Date echéance:', 'Reference Facture:', 'Code Client:']],
+        body: [[this.date_emission, this.date_echeance, this.reference, this.code_client]],
+        theme: 'plain',
+        startY: 65
+      });
       doc.autoTable({
         head: [head],
         body: body,
-        startY: 100
+        startY: 80
       });
+      doc.setLineWidth(0.5);
+      doc.setDrawColor(0, 0, 0);
+      doc.line(10, doc.autoTable.previous.finalY + 5 + i, 200, doc.autoTable.previous.finalY + 5 + i);
+      doc.text('Total Remise: ' + this.total_remise, 150, doc.autoTable.previous.finalY + 10 + i);
+      doc.text('Total Tva: ' + this.total_tva, 150, doc.autoTable.previous.finalY + 20 + i);
+      doc.text('Total Tva: ' + this.total_ht, 150, doc.autoTable.previous.finalY + 30 + i);
+      doc.text('Total TTC: ' + this.total_ttc, 150, doc.autoTable.previous.finalY + 40 + i);
       doc.output("dataurlnewwindow"); //doc.save('a4.pdf')
     }
   },
@@ -77126,7 +77140,7 @@ var liste_produit = vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('liste_
 var liste_client = vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('liste_client', __webpack_require__(/*! ../components/Clients/listeClients.vue */ "./resources/js/components/Clients/listeClients.vue").default);
 /* harmony default export */ __webpack_exports__["default"] = (new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   mode: 'history',
-  base: Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"}).BASE_URL,
+  base: Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"}).BASE_URL,
   routes: [{
     path: '/facturation/create',
     name: 'create_facture',
@@ -78134,8 +78148,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\youso\Laravel_tuto\Facturation\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\youso\Laravel_tuto\Facturation\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/macbookpro/Desktop/Facturation/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/macbookpro/Desktop/Facturation/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -370,6 +370,7 @@ export default {
                     return sum
     },
     generatePdf(){
+        let i = 10
         let body =[]
         let head =['Code','Designation','Qte','Tva%','Prix Unitaire','Remise','Total HT']
         const obj = this.facture.lignes;
@@ -384,17 +385,30 @@ export default {
 
         var doc = new jsPDF();
         doc.setFontSize(12)
-        doc.rect(10,10,50,50,'S')
-        doc.text(this.client.nom,10,15)
+        doc.rect(10,10,75,40,'S')
+        doc.text('Client: '+this.client.nom,12,15)
         doc.setFontSize(10)
-        doc.text(this.client.raison,10,22)
-        doc.text(this.client.adresse,10,29)
-        doc.text(this.client.matricule,10,40)
+        doc.text('Raison: '+this.client.raison,12,22)
+        doc.text('Adresse: '+this.client.adresse,12,29)
+        doc.text('TVA: '+this.client.matricule,12,40)
+        doc.autoTable({
+            head:[['Date emission:','Date echéance:','Reference Facture:','Code Client:']],
+            body:[[this.date_emission,this.date_echeance,this.reference,this.code_client]],
+            theme:'plain',
+            startY:65
+        })
         doc.autoTable({
         head: [head],
         body: body,
-        startY:100
+        startY:80
     });
+    doc.setLineWidth(0.5)
+    doc.setDrawColor(0, 0, 0)
+    doc.line(10, doc.autoTable.previous.finalY + 5+i, 200, doc.autoTable.previous.finalY+5+i)
+    doc.text('Total Remise: '+this.total_remise, 150, doc.autoTable.previous.finalY + 10+i);
+    doc.text('Total Tva: '+this.total_tva, 150, doc.autoTable.previous.finalY + 20+i);
+    doc.text('Total Tva: '+this.total_ht, 150, doc.autoTable.previous.finalY + 30+i);
+    doc.text('Total TTC: '+this.total_ttc, 150, doc.autoTable.previous.finalY + 40+i);
         doc.output("dataurlnewwindow");
         //doc.save('a4.pdf')
     }

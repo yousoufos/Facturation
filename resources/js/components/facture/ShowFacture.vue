@@ -20,7 +20,9 @@
             <v-layout wrap>
               <v-flex xs12 sm6 md4>
                 <v-select
-          :items="modeReglementTab "
+          :items="mode"
+          item-text="modeReglement"
+          item-value="modeReglement"
           label="Mode Reglement"
           v-model="mode_reglement"
         ></v-select>
@@ -486,6 +488,9 @@ export default {
         },
         loadingTable(){
             return this.$store.getters.getLoadingTable
+        },
+        mode(){
+            return this.$store.getters.getLoadedModeReglement
         }
 
 	}

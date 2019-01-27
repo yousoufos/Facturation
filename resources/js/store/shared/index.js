@@ -5,7 +5,8 @@ export default {
         erreurs: null,
         savedStatut: false,
         loadingTable:false,
-        loadedTva: null
+        loadedTva: null,
+        loadedModeReglement:null
 
     },
     mutations: {
@@ -29,7 +30,33 @@ export default {
         },
         setLoadedTva (state, payload) {
             state.loadedTva = payload
+        },
+        setLoadedModeReglement (state, payload) {
+            state.loadedModeReglement = payload
+        },
+        addNewTva (state, payload) {
+            state.loadedTva.push(payload)
+        },
+        removeTva (state, payload) {
+            const index = state.loadedTva.indexOf(payload)
+            state.loadedTva.splice(index, 1)
+        },
+        editTvaLoaded (state, payload) {
+            let tva = state.loadedTva.find(tva => tva.id === payload.id)
+            tva.value = payload.value
+        },
+        addNewModeReglement (state, payload) {
+            state.loadedModeReglement.push(payload)
+        },
+        removeModeReglement (state, payload) {
+            const index = state.loadedModeReglement.indexOf(payload)
+            state.loadedModeReglement.splice(index, 1)
+        },
+        editModeRegelementLoaded (state, payload) {
+            let mode = state.loadedModeReglement.find(modereglement => modereglement.id === payload.id)
+            mode.modeReglement = payload.modeReglement
         }
+
 
 
     },
@@ -47,6 +74,26 @@ export default {
                 });
                 commit('setLoadedTva', tva);
                 console.log('Tva chargées');
+
+                //commit('setLoading', false);
+            }).catch((error) => {
+                //commit('setLoading', false);
+                console.log(error);
+            });
+        },
+        async loadModeReglement ({ commit }) {
+            const uri = 'http://localhost:3000/api/modereglement/'
+            await axios.get(uri).then((response) => {
+                const mode = [];
+                const obj = response.data.modeReglement;
+                Object.keys(obj).forEach((key) => {
+                    const val = obj[key];
+                    mode.push({
+                        modeReglement: val.modeReglement,
+                    });
+                });
+                commit('setLoadedModeReglement', mode);
+                console.log('ModeReglement chargés');
 
                 //commit('setLoading', false);
             }).catch((error) => {
@@ -77,7 +124,10 @@ export default {
                          dispatch('loadProduits').then(() => {
                              dispatch('loadReglements').then(() => {
                                  dispatch('loadTva').then(() => {
-                                     commit('setLoading', false);
+                                     dispatch('loadModeReglement').then(() => {
+                                         commit('setLoading', false);
+                                     })
+
                                  })
 
                              })
@@ -108,6 +158,9 @@ export default {
         },
         getLoadedTva (state) {
             return state.loadedTva
+        },
+        getLoadedModeReglement (state) {
+            return state.loadedModeReglement
         }
 
     }

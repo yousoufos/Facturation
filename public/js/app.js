@@ -3633,6 +3633,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 
 var writtenForm = __webpack_require__(/*! written-number */ "./node_modules/written-number/lib/index.js");
@@ -3870,6 +3872,9 @@ writtenForm.defaults.lang = 'fr';
     },
     loadingTable: function loadingTable() {
       return this.$store.getters.getLoadingTable;
+    },
+    mode: function mode() {
+      return this.$store.getters.getLoadedModeReglement;
     }
   }
 });
@@ -36692,7 +36697,9 @@ var render = function() {
                                         [
                                           _c("v-select", {
                                             attrs: {
-                                              items: _vm.modeReglementTab,
+                                              items: _vm.mode,
+                                              "item-text": "modeReglement",
+                                              "item-value": "modeReglement",
                                               label: "Mode Reglement"
                                             },
                                             model: {
@@ -78353,7 +78360,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     erreurs: null,
     savedStatut: false,
     loadingTable: false,
-    loadedTva: null
+    loadedTva: null,
+    loadedModeReglement: null
   },
   mutations: {
     setLoading: function setLoading(state, payload) {
@@ -78376,6 +78384,35 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     setLoadedTva: function setLoadedTva(state, payload) {
       state.loadedTva = payload;
+    },
+    setLoadedModeReglement: function setLoadedModeReglement(state, payload) {
+      state.loadedModeReglement = payload;
+    },
+    addNewTva: function addNewTva(state, payload) {
+      state.loadedTva.push(payload);
+    },
+    removeTva: function removeTva(state, payload) {
+      var index = state.loadedTva.indexOf(payload);
+      state.loadedTva.splice(index, 1);
+    },
+    editTvaLoaded: function editTvaLoaded(state, payload) {
+      var tva = state.loadedTva.find(function (tva) {
+        return tva.id === payload.id;
+      });
+      tva.value = payload.value;
+    },
+    addNewModeReglement: function addNewModeReglement(state, payload) {
+      state.loadedModeReglement.push(payload);
+    },
+    removeModeReglement: function removeModeReglement(state, payload) {
+      var index = state.loadedModeReglement.indexOf(payload);
+      state.loadedModeReglement.splice(index, 1);
+    },
+    editModeRegelementLoaded: function editModeRegelementLoaded(state, payload) {
+      var mode = state.loadedModeReglement.find(function (modereglement) {
+        return modereglement.id === payload.id;
+      });
+      mode.modeReglement = payload.modeReglement;
     }
   },
   actions: {
@@ -78421,16 +78458,58 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       return loadTva;
     }(),
-    clearErrors: function clearErrors(_ref2) {
-      var commit = _ref2.commit;
+    loadModeReglement: function () {
+      var _loadModeReglement = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(_ref2) {
+        var commit, uri;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                commit = _ref2.commit;
+                uri = 'http://localhost:3000/api/modereglement/';
+                _context2.next = 4;
+                return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(uri).then(function (response) {
+                  var mode = [];
+                  var obj = response.data.modeReglement;
+                  Object.keys(obj).forEach(function (key) {
+                    var val = obj[key];
+                    mode.push({
+                      modeReglement: val.modeReglement
+                    });
+                  });
+                  commit('setLoadedModeReglement', mode);
+                  console.log('ModeReglement chargés'); //commit('setLoading', false);
+                }).catch(function (error) {
+                  //commit('setLoading', false);
+                  console.log(error);
+                });
+
+              case 4:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function loadModeReglement(_x2) {
+        return _loadModeReglement.apply(this, arguments);
+      }
+
+      return loadModeReglement;
+    }(),
+    clearErrors: function clearErrors(_ref3) {
+      var commit = _ref3.commit;
       commit('clearErrors');
     },
-    clearSavedStatut: function clearSavedStatut(_ref3) {
-      var commit = _ref3.commit;
+    clearSavedStatut: function clearSavedStatut(_ref4) {
+      var commit = _ref4.commit;
       commit('clearSavedStatut');
     },
-    loadAll: function loadAll(_ref4) {
-      var dispatch = _ref4.dispatch;
+    loadAll: function loadAll(_ref5) {
+      var dispatch = _ref5.dispatch;
       var lignes = dispatch('loadLignesFacture');
       var facture = dispatch('loadFactures');
       var client = dispatch('loadClients');
@@ -78439,9 +78518,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       Promise.all([lignes, facture, client, produits, reglements]);
       console.log('loaded');
     },
-    chargerFacture: function chargerFacture(_ref5) {
-      var dispatch = _ref5.dispatch,
-          commit = _ref5.commit;
+    chargerFacture: function chargerFacture(_ref6) {
+      var dispatch = _ref6.dispatch,
+          commit = _ref6.commit;
       commit('setLoading', true);
       dispatch('loadLignesFacture').then(function () {
         dispatch('loadFactures').then(function () {
@@ -78449,7 +78528,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             dispatch('loadProduits').then(function () {
               dispatch('loadReglements').then(function () {
                 dispatch('loadTva').then(function () {
-                  commit('setLoading', false);
+                  dispatch('loadModeReglement').then(function () {
+                    commit('setLoading', false);
+                  });
                 });
               });
             });
@@ -78476,6 +78557,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     getLoadedTva: function getLoadedTva(state) {
       return state.loadedTva;
+    },
+    getLoadedModeReglement: function getLoadedModeReglement(state) {
+      return state.loadedModeReglement;
     }
   }
 });

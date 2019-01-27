@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\tva;
+use App\ModeReglement;
 use Illuminate\Http\Request;
 
-class TvaController extends Controller
+class ModeReglementController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,9 @@ class TvaController extends Controller
      */
     public function index()
     {
-        $tva = Tva::All();
-        return response()->json(['tva'=> $tva]);
+        $modeReglement = ModeReglement::All();
+        return response()->json(['modeReglement'=> $modeReglement]);
+
     }
 
     /**
@@ -36,19 +37,19 @@ class TvaController extends Controller
      */
     public function store(Request $request)
     {
-        $tva = new Tva;
-        $tva->value = $request->get('tva');
-        $tva->save();
-        return response()->json(['tva'=> $tva]);
+        $modeReglement = new ModeReglement;
+        $modeReglement->modeReglement = $request->get('modeReglement');
+        $modeReglement->save();
+        return response()->json(['modeReglement'=> $modeReglement]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\tva  $tva
+     * @param  \App\ModeReglement  $modeReglement
      * @return \Illuminate\Http\Response
      */
-    public function show(tva $tva)
+    public function show(ModeReglement $modeReglement)
     {
         //
     }
@@ -56,38 +57,38 @@ class TvaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\tva  $tva
+     * @param  \App\ModeReglement  $modeReglement
      * @return \Illuminate\Http\Response
      */
-    public function edit(tva $tva)
+    public function edit(ModeReglement $modeReglement)
     {
-        //
+
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\tva  $tva
+     * @param  \App\ModeReglement  $modeReglement
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, tva $tva)
+    public function update(Request $request, ModeReglement $modeReglement)
     {
-        $tva = Tva::find($id);
-        $tva->update($request->all());
+        $modeReglement = ModeReglement::find($id);
+        $modeReglement->update($request->all());
         return response()->json('successfully updated');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\tva  $tva
+     * @param  \App\ModeReglement  $modeReglement
      * @return \Illuminate\Http\Response
      */
-    public function destroy(tva $tva)
+    public function destroy(ModeReglement $modeReglement)
     {
-        $tva = Tva::findOrFail($id);
-        $tva->delete();
-        return response()->json('tva '.$id.' effacé avec succée');
+        $modeReglement = ModeReglement::findOrFail($id);
+        $modeReglement->delete();
+        return response()->json('modeReglement '.$id.' effacé avec succée');
     }
 }

@@ -3775,7 +3775,6 @@ writtenForm.defaults.lang = 'fr';
         b1.push(_this.$store.getters.getProduitById(+value.produit_id).code, _this.$store.getters.getProduitById(+value.produit_id).designation, value.qte, _this.$store.getters.getProduitById(+value.produit_id).tva, _this.$store.getters.getProduitById(+value.produit_id).prix, value.remise, _this.total_ht_ligne(value));
         body.push(b1);
       });
-      console.log(body);
       var doc = new jspdf__WEBPACK_IMPORTED_MODULE_0___default.a();
       doc.setFontSize(12);
       doc.rect(10, 10, 75, 40, 'S');
@@ -3804,6 +3803,9 @@ writtenForm.defaults.lang = 'fr';
       doc.text('Total Tva: ' + this.total_ht, 150, doc.autoTable.previous.finalY + 30 + i);
       doc.text('Total TTC: ' + this.total_ttc, 150, doc.autoTable.previous.finalY + 40 + i);
       doc.text('Arreter la presente facture à la somme de: ' + writtenForm(s[0]) + ' dinars ' + (s.length > 1 ? 'et ' + writtenForm(s[1]) + ' millimes' : ''), 10, doc.autoTable.previous.finalY + 50 + i);
+
+      didDrawPage: (function (HookData) {});
+
       doc.output("dataurlnewwindow"); //doc.save('a4.pdf')
     }
   },
@@ -3855,7 +3857,7 @@ writtenForm.defaults.lang = 'fr';
     },
     reste: function reste() {
       if (this.facture != undefined) {
-        return this.facture.total_ttc - this.total_reglement();
+        return (this.facture.total_ttc - this.total_reglement()).toFixed(3);
       } else {
         return null;
       }
@@ -35053,164 +35055,150 @@ var render = function() {
           _vm._v(" "),
           _c(
             "v-list-group",
-            { attrs: { "prepend-icon": "account_circle", value: "true" } },
+            { attrs: { "no-action": "", "sub-group": "", value: "true" } },
             [
               _c(
                 "v-list-tile",
                 { attrs: { slot: "activator" }, slot: "activator" },
-                [_c("v-list-tile-title", [_vm._v("Users")])],
+                [_c("v-list-tile-title", [_vm._v("Admin")])],
                 1
               ),
               _vm._v(" "),
-              _c(
-                "v-list-group",
-                { attrs: { "no-action": "", "sub-group": "", value: "true" } },
-                [
-                  _c(
-                    "v-list-tile",
-                    { attrs: { slot: "activator" }, slot: "activator" },
-                    [_c("v-list-tile-title", [_vm._v("Admin")])],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _vm._l(_vm.admins, function(admin, i) {
-                    return _c(
-                      "v-list-tile",
-                      { key: i },
+              _vm._l(_vm.admins, function(admin, i) {
+                return _c(
+                  "v-list-tile",
+                  { key: i },
+                  [
+                    _c("v-list-tile-title", {
+                      domProps: { textContent: _vm._s(admin[0]) }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "v-list-tile-action",
                       [
-                        _c("v-list-tile-title", {
-                          domProps: { textContent: _vm._s(admin[0]) }
-                        }),
-                        _vm._v(" "),
-                        _c(
-                          "v-list-tile-action",
-                          [
-                            _c("v-icon", {
-                              domProps: { textContent: _vm._s(admin[1]) }
-                            })
-                          ],
-                          1
-                        )
+                        _c("v-icon", {
+                          domProps: { textContent: _vm._s(admin[1]) }
+                        })
                       ],
                       1
                     )
-                  })
-                ],
-                2
-              ),
-              _vm._v(" "),
-              _c(
-                "v-list-group",
-                { attrs: { "sub-group": "", "no-action": "" } },
-                [
-                  _c(
-                    "v-list-tile",
-                    { attrs: { slot: "activator" }, slot: "activator" },
-                    [_c("v-list-tile-title", [_vm._v("Facturation")])],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _vm._l(_vm.menu_facturation, function(menu, i) {
-                    return _c(
-                      "v-list-tile",
-                      { key: i, attrs: { to: menu.link } },
-                      [
-                        _c("v-list-tile-title", {
-                          domProps: { textContent: _vm._s(menu.title) }
-                        }),
-                        _vm._v(" "),
-                        _c(
-                          "v-list-tile-action",
-                          [
-                            _c("v-icon", {
-                              domProps: { textContent: _vm._s(menu.icon) }
-                            })
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    )
-                  })
-                ],
-                2
-              ),
-              _vm._v(" "),
-              _c(
-                "v-list-group",
-                { attrs: { "sub-group": "", "no-action": "" } },
-                [
-                  _c(
-                    "v-list-tile",
-                    { attrs: { slot: "activator" }, slot: "activator" },
-                    [_c("v-list-tile-title", [_vm._v("Produits")])],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _vm._l(_vm.menu_produit, function(menu, i) {
-                    return _c(
-                      "v-list-tile",
-                      { key: i, attrs: { to: menu.link } },
-                      [
-                        _c("v-list-tile-title", {
-                          domProps: { textContent: _vm._s(menu.title) }
-                        }),
-                        _vm._v(" "),
-                        _c(
-                          "v-list-tile-action",
-                          [
-                            _c("v-icon", {
-                              domProps: { textContent: _vm._s(menu.icon) }
-                            })
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    )
-                  })
-                ],
-                2
-              ),
-              _vm._v(" "),
-              _c(
-                "v-list-group",
-                { attrs: { "sub-group": "", "no-action": "" } },
-                [
-                  _c(
-                    "v-list-tile",
-                    { attrs: { slot: "activator" }, slot: "activator" },
-                    [_c("v-list-tile-title", [_vm._v("Clients")])],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _vm._l(_vm.menu_client, function(menu, i) {
-                    return _c(
-                      "v-list-tile",
-                      { key: i, attrs: { to: menu.link } },
-                      [
-                        _c("v-list-tile-title", {
-                          domProps: { textContent: _vm._s(menu.title) }
-                        }),
-                        _vm._v(" "),
-                        _c(
-                          "v-list-tile-action",
-                          [
-                            _c("v-icon", {
-                              domProps: { textContent: _vm._s(menu.icon) }
-                            })
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    )
-                  })
-                ],
-                2
-              )
+                  ],
+                  1
+                )
+              })
             ],
-            1
+            2
+          ),
+          _vm._v(" "),
+          _c(
+            "v-list-group",
+            { attrs: { "sub-group": "", "no-action": "" } },
+            [
+              _c(
+                "v-list-tile",
+                { attrs: { slot: "activator" }, slot: "activator" },
+                [_c("v-list-tile-title", [_vm._v("Facturation")])],
+                1
+              ),
+              _vm._v(" "),
+              _vm._l(_vm.menu_facturation, function(menu, i) {
+                return _c(
+                  "v-list-tile",
+                  { key: i, attrs: { to: menu.link } },
+                  [
+                    _c("v-list-tile-title", {
+                      domProps: { textContent: _vm._s(menu.title) }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "v-list-tile-action",
+                      [
+                        _c("v-icon", {
+                          domProps: { textContent: _vm._s(menu.icon) }
+                        })
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              })
+            ],
+            2
+          ),
+          _vm._v(" "),
+          _c(
+            "v-list-group",
+            { attrs: { "sub-group": "", "no-action": "" } },
+            [
+              _c(
+                "v-list-tile",
+                { attrs: { slot: "activator" }, slot: "activator" },
+                [_c("v-list-tile-title", [_vm._v("Produits")])],
+                1
+              ),
+              _vm._v(" "),
+              _vm._l(_vm.menu_produit, function(menu, i) {
+                return _c(
+                  "v-list-tile",
+                  { key: i, attrs: { to: menu.link } },
+                  [
+                    _c("v-list-tile-title", {
+                      domProps: { textContent: _vm._s(menu.title) }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "v-list-tile-action",
+                      [
+                        _c("v-icon", {
+                          domProps: { textContent: _vm._s(menu.icon) }
+                        })
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              })
+            ],
+            2
+          ),
+          _vm._v(" "),
+          _c(
+            "v-list-group",
+            { attrs: { "sub-group": "", "no-action": "" } },
+            [
+              _c(
+                "v-list-tile",
+                { attrs: { slot: "activator" }, slot: "activator" },
+                [_c("v-list-tile-title", [_vm._v("Clients")])],
+                1
+              ),
+              _vm._v(" "),
+              _vm._l(_vm.menu_client, function(menu, i) {
+                return _c(
+                  "v-list-tile",
+                  { key: i, attrs: { to: menu.link } },
+                  [
+                    _c("v-list-tile-title", {
+                      domProps: { textContent: _vm._s(menu.title) }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "v-list-tile-action",
+                      [
+                        _c("v-icon", {
+                          domProps: { textContent: _vm._s(menu.icon) }
+                        })
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              })
+            ],
+            2
           )
         ],
         1
@@ -37043,7 +37031,7 @@ var render = function() {
                                     _vm._v(_vm._s(props.item.remise))
                                   ]),
                                   _vm._v(" "),
-                                  _c("td", { staticClass: "text-xs-left" }, [
+                                  _c("td", { staticClass: "text-xs-right" }, [
                                     _vm._v(
                                       _vm._s(_vm.total_ht_ligne(props.item))
                                     )

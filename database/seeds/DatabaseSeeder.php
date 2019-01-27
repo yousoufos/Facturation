@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
              ClientsTableSeeder::class,
              FacturesTableSeeder::class,
              TvaTableSeeder::class,
+             ModeReglementSeeder::class,
 
 
          ]);

@@ -8,10 +8,10 @@
 		  <v-list-tile-title>Home</v-list-tile-title>
 		</v-list-tile>
 
-		<v-list-group prepend-icon="account_circle" value="true">
-		  <v-list-tile slot="activator">
+
+		  <!-- <v-list-tile slot="activator">
 			<v-list-tile-title>Users</v-list-tile-title>
-		  </v-list-tile>
+		  </v-list-tile> -->
 
 		  <v-list-group no-action sub-group value="true">
 			<v-list-tile slot="activator">
@@ -65,7 +65,7 @@
 			</v-list-tile>
 
 		  </v-list-group>
-		</v-list-group>
+
 	  </v-list>
 	</v-navigation-drawer>
 </template>

@@ -126,7 +126,7 @@
 			<td class="text-xs-left">{{ $store.getters.getProduitById(+props.item.produit_id).tva }}</td>
 			<td class="text-xs-left">{{ $store.getters.getProduitById(+props.item.produit_id).prix }}</td>
 			<td class="text-xs-left">{{ props.item.remise }}</td>
-			<td class="text-xs-left">{{ total_ht_ligne(props.item) }}</td>
+			<td class="text-xs-right">{{ total_ht_ligne(props.item) }}</td>
 
 		  </template>
 		  <template slot="footer">
@@ -383,7 +383,6 @@ export default {
                         body.push(b1)
 
         })
-        console.log(body);
 
         var doc = new jsPDF();
         doc.setFontSize(12)
@@ -397,7 +396,7 @@ export default {
             head:[['Date emission:','Date echéance:','Reference Facture:','Code Client:']],
             body:[[this.date_emission,this.date_echeance,this.reference,this.code_client]],
             theme:'plain',
-            startY:65
+            startY:65,
         })
         doc.autoTable({
         head: [head],
@@ -413,6 +412,7 @@ export default {
     doc.text('Total Tva: '+this.total_ht, 150, doc.autoTable.previous.finalY + 30+i);
     doc.text('Total TTC: '+this.total_ttc, 150, doc.autoTable.previous.finalY + 40+i);
     doc.text('Arreter la presente facture à la somme de: '+writtenForm(s[0])+ ' dinars '+(s.length>1 ? 'et '+writtenForm(s[1])+' millimes' : ''), 10, doc.autoTable.previous.finalY + 50+i);
+    didDrawPage: (HookData) => {}
 
 
 
@@ -470,7 +470,7 @@ export default {
         },
         reste(){
             if(this.facture != undefined){
-                return this.facture.total_ttc - this.total_reglement()
+                return (this.facture.total_ttc - this.total_reglement()).toFixed(3)
             }
             else{
                 return null

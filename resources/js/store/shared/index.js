@@ -101,6 +101,94 @@ export default {
                 console.log(error);
             });
         },
+        addTva ({ commit }, payload) {
+            const uri = 'http://localhost:3000/api/tva/add'
+            commit('setLoading', true);
+            axios.post(uri, payload)
+                .then(response => {
+                    const tva = response.data.tva;
+                    let m = {
+                        value:mode.value
+                    }
+                    commit('addNewTva', m)
+                    commit('setLoading', false);
+                }).catch(error => {
+                    commit('setLoading', false);
+                    console.log(error);
+                })
+        },
+        addModeReglement ({ commit }, payload) {
+            const uri = 'http://localhost:3000/api/modereglement/add'
+            commit('setLoading', true);
+            axios.post(uri, payload)
+                .then(response => {
+                    const mode = response.data.modeReglement;
+                    let m = {
+                        modeRegelemnt: mode.modeRegelement
+                    }
+                    commit('addNewModeReglement', m)
+                    commit('setLoading', false);
+                }).catch(error => {
+                    commit('setLoading', false);
+                    console.log(error);
+                })
+        },
+        deleteTva ({ commit }, payload) {
+            commit('setLoading', true)
+            const uri = 'http://localhost:3000/api/tva/delete/' + payload.id
+            axios.delete(uri).then(response => {
+                commit('removeTva', payload.index)
+                console.log(response);
+                commit('setLoading', false)
+
+            }).catch(error => {
+                commit('setLoading', false)
+                console.log(error);
+
+            })
+        },
+        deleteModeReglement ({ commit }, payload) {
+            commit('setLoading', true)
+            const uri = 'http://localhost:3000/api/modereglement/delete/' + payload.id
+            axios.delete(uri).then(response => {
+                commit('removeModeReglement', payload.index)
+                console.log(response);
+                commit('setLoading', false)
+
+            }).catch(error => {
+                commit('setLoading', false)
+                console.log(error);
+
+            })
+        },
+        editTva ({ commit }, payload) {
+            const uri = 'http://localhost:3000/api/tva/update/' + payload.id
+            commit('setLoading', true)
+            axios.put(uri, payload).then((response) => {
+                commit('editTvaLoaded', payload)
+                console.log(response);
+
+                commit('setLoading', false)
+            }).catch((error) => {
+                console.log(error);
+                commit('setLoading', false)
+
+            });
+        },
+        editModeReglement ({ commit }, payload) {
+            const uri = 'http://localhost:3000/api/modereglement/update/' + payload.id
+            commit('setLoading', true)
+            axios.put(uri, payload).then((response) => {
+                commit('editModeRegelementLoaded', payload)
+                console.log(response);
+
+                commit('setLoading', false)
+            }).catch((error) => {
+                console.log(error);
+                commit('setLoading', false)
+
+            });
+        },
         clearErrors ({ commit }) {
             commit('clearErrors')
         },

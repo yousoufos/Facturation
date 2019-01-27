@@ -3635,6 +3635,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 
 var writtenForm = __webpack_require__(/*! written-number */ "./node_modules/written-number/lib/index.js");
@@ -3646,7 +3652,6 @@ writtenForm.defaults.lang = 'fr';
   data: function data() {
     return {
       dialog: false,
-      modeReglementTab: ['espece', 'cheque', 'CB'],
       mode_reglement: null,
       montant_reglement: 0,
       validation_mode_reglement: false,
@@ -3672,7 +3677,7 @@ writtenForm.defaults.lang = 'fr';
         text: "Prix Unitaire",
         value: "prix"
       }, {
-        text: "Total Remise",
+        text: "Remise %",
         value: "remise"
       }, {
         text: "Total HT (apres remise)",
@@ -36844,22 +36849,6 @@ var render = function() {
                 [
                   _c(
                     "v-flex",
-                    { attrs: { xs12: "" } },
-                    [
-                      _c(
-                        "v-btn",
-                        {
-                          attrs: { block: "", color: "success" },
-                          on: { click: _vm.generatePdf }
-                        },
-                        [_vm._v("Pdf")]
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-flex",
                     { attrs: { xs12: "", md6: "" } },
                     [
                       _c(
@@ -37010,11 +36999,11 @@ var render = function() {
                                     )
                                   ]),
                                   _vm._v(" "),
-                                  _c("td", { staticClass: "text-xs-left" }, [
+                                  _c("td", { staticClass: "text-xs-right" }, [
                                     _vm._v(_vm._s(props.item.qte))
                                   ]),
                                   _vm._v(" "),
-                                  _c("td", { staticClass: "text-xs-left" }, [
+                                  _c("td", { staticClass: "text-xs-right" }, [
                                     _vm._v(
                                       _vm._s(
                                         _vm.$store.getters.getProduitById(
@@ -37024,7 +37013,7 @@ var render = function() {
                                     )
                                   ]),
                                   _vm._v(" "),
-                                  _c("td", { staticClass: "text-xs-left" }, [
+                                  _c("td", { staticClass: "text-xs-right" }, [
                                     _vm._v(
                                       _vm._s(
                                         _vm.$store.getters.getProduitById(
@@ -37034,7 +37023,7 @@ var render = function() {
                                     )
                                   ]),
                                   _vm._v(" "),
-                                  _c("td", { staticClass: "text-xs-left" }, [
+                                  _c("td", { staticClass: "text-xs-right" }, [
                                     _vm._v(_vm._s(props.item.remise))
                                   ]),
                                   _vm._v(" "),
@@ -37251,6 +37240,27 @@ var render = function() {
                                               "v-icon",
                                               { attrs: { dark: "" } },
                                               [_vm._v("add")]
+                                            )
+                                          ],
+                                          1
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "v-btn",
+                                          {
+                                            attrs: {
+                                              fab: "",
+                                              dark: "",
+                                              small: "",
+                                              color: "success"
+                                            },
+                                            on: { click: _vm.generatePdf }
+                                          },
+                                          [
+                                            _c(
+                                              "v-icon",
+                                              { attrs: { dark: "" } },
+                                              [_vm._v("print")]
                                             )
                                           ],
                                           1
@@ -78500,16 +78510,100 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       return loadModeReglement;
     }(),
-    clearErrors: function clearErrors(_ref3) {
+    addTva: function addTva(_ref3, payload) {
       var commit = _ref3.commit;
+      var uri = 'http://localhost:3000/api/tva/add';
+      commit('setLoading', true);
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.post(uri, payload).then(function (response) {
+        var tva = response.data.tva;
+        var m = {
+          value: mode.value
+        };
+        commit('addNewTva', m);
+        commit('setLoading', false);
+      }).catch(function (error) {
+        commit('setLoading', false);
+        console.log(error);
+      });
+    },
+    addModeReglement: function addModeReglement(_ref4, payload) {
+      var commit = _ref4.commit;
+      var uri = 'http://localhost:3000/api/modereglement/add';
+      commit('setLoading', true);
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.post(uri, payload).then(function (response) {
+        var mode = response.data.modeReglement;
+        var m = {
+          modeRegelemnt: mode.modeRegelement
+        };
+        commit('addNewModeReglement', m);
+        commit('setLoading', false);
+      }).catch(function (error) {
+        commit('setLoading', false);
+        console.log(error);
+      });
+    },
+    deleteTva: function deleteTva(_ref5, payload) {
+      var commit = _ref5.commit;
+      commit('setLoading', true);
+      var uri = 'http://localhost:3000/api/tva/delete/' + payload.id;
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.delete(uri).then(function (response) {
+        commit('removeTva', payload.index);
+        console.log(response);
+        commit('setLoading', false);
+      }).catch(function (error) {
+        commit('setLoading', false);
+        console.log(error);
+      });
+    },
+    deleteModeReglement: function deleteModeReglement(_ref6, payload) {
+      var commit = _ref6.commit;
+      commit('setLoading', true);
+      var uri = 'http://localhost:3000/api/modereglement/delete/' + payload.id;
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.delete(uri).then(function (response) {
+        commit('removeModeReglement', payload.index);
+        console.log(response);
+        commit('setLoading', false);
+      }).catch(function (error) {
+        commit('setLoading', false);
+        console.log(error);
+      });
+    },
+    editTva: function editTva(_ref7, payload) {
+      var commit = _ref7.commit;
+      var uri = 'http://localhost:3000/api/tva/update/' + payload.id;
+      commit('setLoading', true);
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.put(uri, payload).then(function (response) {
+        commit('editTvaLoaded', payload);
+        console.log(response);
+        commit('setLoading', false);
+      }).catch(function (error) {
+        console.log(error);
+        commit('setLoading', false);
+      });
+    },
+    editModeReglement: function editModeReglement(_ref8, payload) {
+      var commit = _ref8.commit;
+      var uri = 'http://localhost:3000/api/modereglement/update/' + payload.id;
+      commit('setLoading', true);
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.put(uri, payload).then(function (response) {
+        commit('editModeRegelementLoaded', payload);
+        console.log(response);
+        commit('setLoading', false);
+      }).catch(function (error) {
+        console.log(error);
+        commit('setLoading', false);
+      });
+    },
+    clearErrors: function clearErrors(_ref9) {
+      var commit = _ref9.commit;
       commit('clearErrors');
     },
-    clearSavedStatut: function clearSavedStatut(_ref4) {
-      var commit = _ref4.commit;
+    clearSavedStatut: function clearSavedStatut(_ref10) {
+      var commit = _ref10.commit;
       commit('clearSavedStatut');
     },
-    loadAll: function loadAll(_ref5) {
-      var dispatch = _ref5.dispatch;
+    loadAll: function loadAll(_ref11) {
+      var dispatch = _ref11.dispatch;
       var lignes = dispatch('loadLignesFacture');
       var facture = dispatch('loadFactures');
       var client = dispatch('loadClients');
@@ -78518,9 +78612,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       Promise.all([lignes, facture, client, produits, reglements]);
       console.log('loaded');
     },
-    chargerFacture: function chargerFacture(_ref6) {
-      var dispatch = _ref6.dispatch,
-          commit = _ref6.commit;
+    chargerFacture: function chargerFacture(_ref12) {
+      var dispatch = _ref12.dispatch,
+          commit = _ref12.commit;
       commit('setLoading', true);
       dispatch('loadLignesFacture').then(function () {
         dispatch('loadFactures').then(function () {

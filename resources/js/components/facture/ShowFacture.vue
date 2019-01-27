@@ -64,9 +64,6 @@
     </v-dialog>
   </v-layout>
 	<v-layout row justify-space-between>
-        <v-flex xs12>
-            <v-btn block color="success" @click="generatePdf">Pdf</v-btn>
-        </v-flex>
 		<v-flex xs12 md6>
 			<v-card>
 				<v-card-text>
@@ -124,10 +121,10 @@
 			<td>{{ props.item.name }}</td>
 			<td class="text-xs-left">{{ $store.getters.getProduitById(+props.item.produit_id).code }}</td>
 			<td class="text-xs-left">{{ $store.getters.getProduitById(+props.item.produit_id).designation }}</td>
-			<td class="text-xs-left">{{ props.item.qte }}</td>
-			<td class="text-xs-left">{{ $store.getters.getProduitById(+props.item.produit_id).tva }}</td>
-			<td class="text-xs-left">{{ $store.getters.getProduitById(+props.item.produit_id).prix }}</td>
-			<td class="text-xs-left">{{ props.item.remise }}</td>
+			<td class="text-xs-right">{{ props.item.qte }}</td>
+			<td class="text-xs-right">{{ $store.getters.getProduitById(+props.item.produit_id).tva }}</td>
+			<td class="text-xs-right">{{ $store.getters.getProduitById(+props.item.produit_id).prix }}</td>
+			<td class="text-xs-right">{{ props.item.remise }}</td>
 			<td class="text-xs-right">{{ total_ht_ligne(props.item) }}</td>
 
 		  </template>
@@ -190,6 +187,15 @@
                             @click="showDialog"
 							>
 						<v-icon dark>add</v-icon>
+						</v-btn>
+						<v-btn
+							fab
+							dark
+							small
+							color="success"
+                            @click="generatePdf"
+							>
+						<v-icon dark>print</v-icon>
 						</v-btn>
 					</v-flex>
 					<v-flex xs2>
@@ -264,7 +270,6 @@ export default {
 	data(){
 		return{
             dialog: false,
-           modeReglementTab:['espece','cheque','CB'],
            mode_reglement:null,
            montant_reglement:0,
            validation_mode_reglement:false,
@@ -281,7 +286,7 @@ export default {
 		{ text: "Qte", value: "qte" },
 		{ text: "TVA %", value: "tva" },
 		{ text: "Prix Unitaire", value: "prix" },
-		{ text: "Total Remise", value: "remise" },
+		{ text: "Remise %", value: "remise" },
         { text: "Total HT (apres remise)", value: "total_HT" },
 
 	  ],

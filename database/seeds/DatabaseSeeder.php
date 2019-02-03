@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
              FacturesTableSeeder::class,
              TvaTableSeeder::class,
              ModeReglementSeeder::class,
+             InformationTableSeeder::class,
 
 
          ]);

@@ -18,10 +18,10 @@
 			  <v-list-tile-title>Admin</v-list-tile-title>
 			</v-list-tile>
 
-			<v-list-tile v-for="(admin, i) in admins" :key="i" >
-			  <v-list-tile-title v-text="admin[0]"></v-list-tile-title>
+			<v-list-tile v-for="(menu, i) in admins" :key="i" :to="menu.link">
+			  <v-list-tile-title v-text="menu.title"></v-list-tile-title>
 			  <v-list-tile-action>
-				<v-icon v-text="admin[1]"></v-icon>
+				<v-icon v-text="menu.icon"></v-icon>
 			  </v-list-tile-action>
 			</v-list-tile>
 		  </v-list-group>
@@ -74,7 +74,9 @@
 export default {
 props: ["url"],
   data: () => ({
-	admins: [["Management", "people_outline"], ["Settings", "settings"]],
+	admins: [
+        { icon: "settings", title: "Parametres", link: "/facturation/parametres" },]
+        ,
 
 	menu_facturation: [
 		{ icon: "dehaze", title: "Lister", link: "/facturation/liste" },

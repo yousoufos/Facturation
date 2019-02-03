@@ -10,6 +10,7 @@ import shared from './shared'
 import produit from './produit'
 import ligneFacture from './ligneFacture'
 import reglementFacture from './reglement'
+import information from './information'
 
 export const store = new Vuex.Store({
     modules: {
@@ -20,5 +21,6 @@ export const store = new Vuex.Store({
         facture: facture,
         ligneFacture: ligneFacture,
         reglementFacture: reglementFacture,
+        information: information,
     }
 })

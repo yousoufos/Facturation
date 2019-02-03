@@ -72,7 +72,7 @@ class ModeReglementController extends Controller
      * @param  \App\ModeReglement  $modeReglement
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ModeReglement $modeReglement)
+    public function update(Request $request, $id)
     {
         $modeReglement = ModeReglement::find($id);
         $modeReglement->update($request->all());
@@ -85,7 +85,7 @@ class ModeReglementController extends Controller
      * @param  \App\ModeReglement  $modeReglement
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ModeReglement $modeReglement)
+    public function destroy($id)
     {
         $modeReglement = ModeReglement::findOrFail($id);
         $modeReglement->delete();

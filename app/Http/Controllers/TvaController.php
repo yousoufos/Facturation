@@ -71,7 +71,7 @@ class TvaController extends Controller
      * @param  \App\tva  $tva
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, tva $tva)
+    public function update(Request $request, $id)
     {
         $tva = Tva::find($id);
         $tva->update($request->all());
@@ -84,7 +84,7 @@ class TvaController extends Controller
      * @param  \App\tva  $tva
      * @return \Illuminate\Http\Response
      */
-    public function destroy(tva $tva)
+    public function destroy($id)
     {
         $tva = Tva::findOrFail($id);
         $tva->delete();

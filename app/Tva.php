@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tva extends Model
 {
-    //
+    protected $fillable = ['value'];
 }

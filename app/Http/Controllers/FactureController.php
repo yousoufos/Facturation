@@ -103,7 +103,7 @@ class FactureController extends Controller
     {
         $facture = Facture::find($id);
       $facture->update($request->all());
-      return response()->json('successfully updated');
+      return response()->json('successfully updated',200);
     }
 
     /**

@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Information;
 use Illuminate\Http\Request;
-use Intervention\Image\Image;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 
 class InformationController extends Controller
 {
@@ -22,8 +23,9 @@ class InformationController extends Controller
 
           $image = $request->get('logo');
           $name = time().'.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
-          \Image::make($request->get('logo'))->save(public_path('images/').$name);
-          $information->logo = url('Facturation/public/images/'.$name);
+          $img=Image::make($request->get('logo'));
+          Storage::put('public/'.$name, $img);
+          $information->logo = Storage::url($name);
        $information->save();
         }
        $information->update($request->except('logo'));

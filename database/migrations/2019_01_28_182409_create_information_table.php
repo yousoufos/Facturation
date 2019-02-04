@@ -23,7 +23,6 @@ class CreateInformationTable extends Migration
             $table->string('tel');
             $table->string('email');
             $table->string('logo');
-            $table->string('rib');
             $table->timestamps();
         });
     }

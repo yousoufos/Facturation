@@ -4148,7 +4148,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n@media print{\n}\n", ""]);
+exports.push([module.i, "\n@media print{\n}\r\n", ""]);
 
 // exports
 
@@ -36882,7 +36882,7 @@ var render = function() {
                                             },
                                             [
                                               _vm._v(
-                                                "\n          Le mode de regelemnt doit etre indiqué\n        "
+                                                "\r\n          Le mode de regelemnt doit etre indiqué\r\n        "
                                               )
                                             ]
                                           )
@@ -36924,7 +36924,7 @@ var render = function() {
                                             },
                                             [
                                               _vm._v(
-                                                "\n          Le montant est erroné\n        "
+                                                "\r\n          Le montant est erroné\r\n        "
                                               )
                                             ]
                                           )
@@ -77888,7 +77888,7 @@ var liste_client = vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('liste_c
 var parametres = vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('parametres', __webpack_require__(/*! ../components/parametres/parametres.vue */ "./resources/js/components/parametres/parametres.vue").default);
 /* harmony default export */ __webpack_exports__["default"] = (new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   mode: 'history',
-  base: Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"}).BASE_URL,
+  base: Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"}).BASE_URL,
   routes: [{
     path: '/facturation/create',
     name: 'create_facture',
@@ -79168,8 +79168,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/macbookpro/Desktop/Facturation/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/macbookpro/Desktop/Facturation/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\youso\Laravel_tuto\Facturation\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\youso\Laravel_tuto\Facturation\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

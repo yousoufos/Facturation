@@ -3991,6 +3991,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -4022,8 +4040,6 @@ __webpack_require__.r(__webpack_exports__);
 
       reader.onload = function (e) {
         _this.$store.dispatch('editLogo', e.target.result);
-
-        console.log(_this.information.logo);
       };
 
       reader.readAsDataURL(file);
@@ -4035,6 +4051,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     loading: function loading() {
       return this.$store.getters.loading;
+    },
+    loadingImg: function loadingImg() {
+      return this.$store.getters.getLoadingTable;
     }
   }
 });
@@ -4148,7 +4167,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n@media print{\n}\r\n", ""]);
+exports.push([module.i, "\n@media print{\n}\n", ""]);
 
 // exports
 
@@ -4205,7 +4224,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -36882,7 +36901,7 @@ var render = function() {
                                             },
                                             [
                                               _vm._v(
-                                                "\r\n          Le mode de regelemnt doit etre indiqué\r\n        "
+                                                "\n          Le mode de regelemnt doit etre indiqué\n        "
                                               )
                                             ]
                                           )
@@ -36924,7 +36943,7 @@ var render = function() {
                                             },
                                             [
                                               _vm._v(
-                                                "\r\n          Le montant est erroné\r\n        "
+                                                "\n          Le montant est erroné\n        "
                                               )
                                             ]
                                           )
@@ -37647,7 +37666,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-container",
-    { attrs: { "grid-list-xs": "" } },
+    { attrs: { "grid-list-md": "" } },
     [
       _c("navigation"),
       _vm._v(" "),
@@ -37691,22 +37710,53 @@ var render = function() {
                       [
                         _c(
                           "v-flex",
-                          { attrs: { xs12: "", sm6: "" } },
+                          { attrs: { xs12: "", md4: "" } },
                           [
-                            _c(
-                              "v-btn",
-                              {
-                                staticClass: "primary",
-                                on: { click: _vm.onPickFile }
-                              },
-                              [_vm._v("Upload File")]
-                            ),
-                            _vm._v(" "),
-                            _c("input", {
-                              ref: "fileInput",
-                              staticStyle: { display: "none" },
-                              attrs: { type: "file", accept: "image/*" },
-                              on: { change: _vm.onFilePicked }
+                            _c("v-text-field", {
+                              attrs: { label: "Nom" },
+                              model: {
+                                value: _vm.information.nom,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.information, "nom", $$v)
+                                },
+                                expression: "information.nom"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-flex",
+                          { attrs: { xs12: "", md4: "" } },
+                          [
+                            _c("v-text-field", {
+                              attrs: { label: "Raison" },
+                              model: {
+                                value: _vm.information.raison,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.information, "raison", $$v)
+                                },
+                                expression: "information.raison"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-flex",
+                          { attrs: { xs12: "", md4: "" } },
+                          [
+                            _c("v-text-field", {
+                              attrs: { label: "Matricule" },
+                              model: {
+                                value: _vm.information.matricule,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.information, "matricule", $$v)
+                                },
+                                expression: "information.matricule"
+                              }
                             })
                           ],
                           1
@@ -37719,9 +37769,32 @@ var render = function() {
                       "v-layout",
                       { attrs: { row: "", wrap: "" } },
                       [
+                        _c(
+                          "v-flex",
+                          { attrs: { xs12: "", sm3: "" } },
+                          [
+                            _c(
+                              "v-btn",
+                              {
+                                staticClass: "primary",
+                                on: { click: _vm.onPickFile }
+                              },
+                              [_vm._v("Telecharger logo")]
+                            ),
+                            _vm._v(" "),
+                            _c("input", {
+                              ref: "fileInput",
+                              staticStyle: { display: "none" },
+                              attrs: { type: "file", accept: "image/*" },
+                              on: { change: _vm.onFilePicked }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
                         _c("v-flex", { attrs: { xs12: "", sm6: "" } }, [
                           _c("img", {
-                            attrs: { src: _vm.information.logo, height: "200" }
+                            attrs: { src: _vm.information.logo, height: "100" }
                           })
                         ])
                       ],
@@ -37740,7 +37813,10 @@ var render = function() {
                               "v-btn",
                               {
                                 staticClass: "primary",
-                                attrs: { type: "submit" }
+                                attrs: {
+                                  disabled: _vm.loadingImg,
+                                  type: "submit"
+                                }
                               },
                               [_vm._v("Update")]
                             )
@@ -77888,7 +77964,7 @@ var liste_client = vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('liste_c
 var parametres = vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('parametres', __webpack_require__(/*! ../components/parametres/parametres.vue */ "./resources/js/components/parametres/parametres.vue").default);
 /* harmony default export */ __webpack_exports__["default"] = (new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   mode: 'history',
-  base: Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"}).BASE_URL,
+  base: Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"}).BASE_URL,
   routes: [{
     path: '/facturation/create',
     name: 'create_facture',
@@ -78413,12 +78489,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     updateInformation: function updateInformation(_ref3, payload) {
       var commit = _ref3.commit;
+      commit('setLoadingTable', true);
       var uri = 'http://localhost:3000/api/information/update/' + payload.id;
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.put(uri, payload).then(function (response) {
         commit('setInformation', payload);
         console.log(response.data.information);
+        commit('setLoadingTable', false);
       }).catch(function (error) {
         console.log(error);
+        commit('setLoadingTable', false);
       });
     }
   },
@@ -79168,8 +79247,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\youso\Laravel_tuto\Facturation\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\youso\Laravel_tuto\Facturation\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/macbookpro/Desktop/Facturation/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/macbookpro/Desktop/Facturation/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

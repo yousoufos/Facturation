@@ -18,17 +18,7 @@ class InformationController extends Controller
     public function update(Request $request, $id)
     {
         $information = Information::find($id);
-        if($request->get('logo'))
-       {
-
-          $image = $request->get('logo');
-          $name = time().'.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
-          $img=Image::make($request->get('logo'));
-          Storage::put('public/'.$name, $img);
-          $information->logo = Storage::url($name);
-       $information->save();
-        }
-       $information->update($request->except('logo'));
+       $information->update($request->all());
        return response()->json(['information'=> $information],200);
      }
      public function destroy($id)

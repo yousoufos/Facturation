@@ -43,14 +43,17 @@ export default {
             commit('setLogoUrl', payload)
         },
         updateInformation ({ commit }, payload) {
+            commit('setLoadingTable', true)
             const uri = 'http://localhost:3000/api/information/update/' + payload.id;
             axios.put(uri, payload).then((response) => {
                 commit('setInformation', payload)
                 console.log(response.data.information);
+                commit('setLoadingTable', false)
 
 
             }).catch((error) => {
                 console.log(error)
+                commit('setLoadingTable', false)
 
             })
 

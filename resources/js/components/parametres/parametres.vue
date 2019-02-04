@@ -1,5 +1,5 @@
 <template>
-<v-container grid-list-xs>
+<v-container grid-list-md>
     <navigation></navigation>
     <v-layout row wrap v-if="loading">
         <v-flex xs12 class="text-xs-center">
@@ -11,23 +11,41 @@
         <v-flex xs12>
             <form @submit.prevent="update">
                 <v-layout row wrap>
-                        <v-flex xs12 sm6  >
-                            <v-btn class="primary" @click="onPickFile">Upload File</v-btn>
+                    <v-flex xs12 md4 >
+                        <v-text-field
+                            label="Nom"
+                            v-model="information.nom"
+                        ></v-text-field>
+                    </v-flex>
+                    <v-flex xs12 md4>
+                        <v-text-field
+                            label="Raison"
+                            v-model="information.raison"
+                        ></v-text-field>
+                    </v-flex>
+                    <v-flex xs12 md4>
+                        <v-text-field
+                            label="Matricule"
+                            v-model="information.matricule"
+                        ></v-text-field>
+                    </v-flex>
+                </v-layout>
+                <v-layout row wrap>
+                        <v-flex xs12 sm3  >
+                            <v-btn class="primary" @click="onPickFile">Telecharger logo</v-btn>
                             <input type="file"
                             style="display:none"
                             ref="fileInput"
                             accept="image/*"
                             @change="onFilePicked">
                         </v-flex>
-                    </v-layout>
-                    <v-layout row wrap>
                         <v-flex xs12 sm6 >
-                            <img :src="information.logo" height="200" >
+                            <img :src="information.logo" height="100" >
                         </v-flex>
                     </v-layout>
                     <v-layout row wrap>
                         <v-flex xs12 sm6 >
-                            <v-btn class="primary"  type="submit">Update</v-btn>
+                            <v-btn class="primary"  :disabled="loadingImg" type="submit">Update</v-btn>
                         </v-flex>
 
                     </v-layout>
@@ -73,7 +91,6 @@ export default {
                 let vm = this;
                 reader.onload = (e) => {
                     this.$store.dispatch('editLogo',e.target.result)
-                    console.log(this.information.logo);
 
 
                 };
@@ -87,7 +104,11 @@ export default {
         },
         loading(){
             return this.$store.getters.loading
-        }
+        },
+        loadingImg(){
+            return this.$store.getters.getLoadingTable
+        },
+
 
     },
 

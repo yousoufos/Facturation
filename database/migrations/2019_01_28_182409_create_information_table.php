@@ -22,7 +22,8 @@ class CreateInformationTable extends Migration
             $table->string('adresse');
             $table->string('tel');
             $table->string('email');
-            $table->string('logo');
+            $table->binary('logo');
+            $table->string('rib');
             $table->timestamps();
         });
     }

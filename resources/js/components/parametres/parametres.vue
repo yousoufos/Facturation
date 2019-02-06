@@ -11,7 +11,7 @@
         <v-flex xs12>
             <v-card>
                 <v-card-title primary-title class="primary" >
-                    <span class="headline">Societé</span>
+                    <span class="headline">Parametres de la Societé</span>
                 </v-card-title>
                 <v-card-text>
                     <form @submit.prevent="update">
@@ -75,7 +75,7 @@
                         </v-textarea>
                     </v-flex>
                     <v-flex md2>
-                        <v-btn :disabled="loadingImg" class="primary" @click="onPickFile">Telecharger logo</v-btn>
+                        <v-btn :disabled="loadingImg" class="primary" @click="onPickFile">Logo</v-btn>
                             <input type="file"
                             style="display:none"
                             ref="fileInput"
@@ -96,8 +96,16 @@
             </form>
                 </v-card-text>
             </v-card>
+        </v-flex>
+        <v-flex xs12 mt-5>
+            <v-card>
+                <v-card-title primary-title class="primary">
+                    <span class="headline">Parametres de facturation</span>
+                </v-card-title>
+                <v-card-text>
 
-
+                </v-card-text>
+            </v-card>
         </v-flex>
     </v-layout>
 </v-container>

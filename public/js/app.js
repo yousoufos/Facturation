@@ -4055,6 +4055,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -4222,7 +4230,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n@media print{\n}\r\n", ""]);
+exports.push([module.i, "\n@media print{\n}\n", ""]);
 
 // exports
 
@@ -4279,7 +4287,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -36956,7 +36964,7 @@ var render = function() {
                                             },
                                             [
                                               _vm._v(
-                                                "\r\n          Le mode de regelemnt doit etre indiqué\r\n        "
+                                                "\n          Le mode de regelemnt doit etre indiqué\n        "
                                               )
                                             ]
                                           )
@@ -36998,7 +37006,7 @@ var render = function() {
                                             },
                                             [
                                               _vm._v(
-                                                "\r\n          Le montant est erroné\r\n        "
+                                                "\n          Le montant est erroné\n        "
                                               )
                                             ]
                                           )
@@ -37762,7 +37770,7 @@ var render = function() {
                         },
                         [
                           _c("span", { staticClass: "headline" }, [
-                            _vm._v("Societé")
+                            _vm._v("Parametres de la Societé")
                           ])
                         ]
                       ),
@@ -37984,7 +37992,7 @@ var render = function() {
                                         attrs: { disabled: _vm.loadingImg },
                                         on: { click: _vm.onPickFile }
                                       },
-                                      [_vm._v("Telecharger logo")]
+                                      [_vm._v("Logo")]
                                     ),
                                     _vm._v(" "),
                                     _c("input", {
@@ -38041,6 +38049,34 @@ var render = function() {
                           1
                         )
                       ])
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-flex",
+                { attrs: { xs12: "", "mt-5": "" } },
+                [
+                  _c(
+                    "v-card",
+                    [
+                      _c(
+                        "v-card-title",
+                        {
+                          staticClass: "primary",
+                          attrs: { "primary-title": "" }
+                        },
+                        [
+                          _c("span", { staticClass: "headline" }, [
+                            _vm._v("Parametres de facturation")
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("v-card-text")
                     ],
                     1
                   )
@@ -78181,7 +78217,7 @@ var liste_client = vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('liste_c
 var parametres = vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('parametres', __webpack_require__(/*! ../components/parametres/parametres.vue */ "./resources/js/components/parametres/parametres.vue").default);
 /* harmony default export */ __webpack_exports__["default"] = (new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   mode: 'history',
-  base: Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"}).BASE_URL,
+  base: Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"}).BASE_URL,
   routes: [{
     path: '/facturation/create',
     name: 'create_facture',
@@ -79476,8 +79512,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\youso\Laravel_tuto\Facturation\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\youso\Laravel_tuto\Facturation\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/macbookpro/Desktop/Facturation/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/macbookpro/Desktop/Facturation/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

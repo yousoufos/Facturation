@@ -4009,17 +4009,72 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       imageUrl: '',
-      image: null
+      image: null,
+      nom: null
     };
   },
   methods: {
     update: function update() {
       var info = {
         id: this.information.id,
+        nom: this.$refs.nom.value,
+        matricule: this.$refs.matricule.value,
+        registre: this.$refs.registre.value,
+        raison: this.$refs.raison.value,
+        email: this.$refs.email.value,
+        adresse: this.$refs.adresse.value,
+        tel: this.$refs.tel.value,
+        rib: this.$refs.rib.value,
         logo: this.information.logo
       };
       this.$store.dispatch('updateInformation', info);
@@ -4167,7 +4222,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n@media print{\n}\n", ""]);
+exports.push([module.i, "\n@media print{\n}\r\n", ""]);
 
 // exports
 
@@ -4224,7 +4279,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -36901,7 +36956,7 @@ var render = function() {
                                             },
                                             [
                                               _vm._v(
-                                                "\n          Le mode de regelemnt doit etre indiqué\n        "
+                                                "\r\n          Le mode de regelemnt doit etre indiqué\r\n        "
                                               )
                                             ]
                                           )
@@ -36943,7 +36998,7 @@ var render = function() {
                                             },
                                             [
                                               _vm._v(
-                                                "\n          Le montant est erroné\n        "
+                                                "\r\n          Le montant est erroné\r\n        "
                                               )
                                             ]
                                           )
@@ -37692,144 +37747,306 @@ var render = function() {
             "v-layout",
             { attrs: { row: "", wrap: "" } },
             [
-              _c("v-flex", { attrs: { xs12: "" } }, [
-                _c(
-                  "form",
-                  {
-                    on: {
-                      submit: function($event) {
-                        $event.preventDefault()
-                        return _vm.update($event)
-                      }
-                    }
-                  },
-                  [
-                    _c(
-                      "v-layout",
-                      { attrs: { row: "", wrap: "" } },
-                      [
+              _c(
+                "v-flex",
+                { attrs: { xs12: "" } },
+                [
+                  _c(
+                    "v-card",
+                    [
+                      _c(
+                        "v-card-title",
+                        {
+                          staticClass: "primary",
+                          attrs: { "primary-title": "" }
+                        },
+                        [
+                          _c("span", { staticClass: "headline" }, [
+                            _vm._v("Societé")
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("v-card-text", [
                         _c(
-                          "v-flex",
-                          { attrs: { xs12: "", md4: "" } },
-                          [
-                            _c("v-text-field", {
-                              attrs: { label: "Nom" },
-                              model: {
-                                value: _vm.information.nom,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.information, "nom", $$v)
-                                },
-                                expression: "information.nom"
+                          "form",
+                          {
+                            on: {
+                              submit: function($event) {
+                                $event.preventDefault()
+                                return _vm.update($event)
                               }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "v-flex",
-                          { attrs: { xs12: "", md4: "" } },
-                          [
-                            _c("v-text-field", {
-                              attrs: { label: "Raison" },
-                              model: {
-                                value: _vm.information.raison,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.information, "raison", $$v)
-                                },
-                                expression: "information.raison"
-                              }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "v-flex",
-                          { attrs: { xs12: "", md4: "" } },
-                          [
-                            _c("v-text-field", {
-                              attrs: { label: "Matricule" },
-                              model: {
-                                value: _vm.information.matricule,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.information, "matricule", $$v)
-                                },
-                                expression: "information.matricule"
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "v-layout",
-                      { attrs: { row: "", wrap: "" } },
-                      [
-                        _c(
-                          "v-flex",
-                          { attrs: { xs12: "", sm3: "" } },
+                            }
+                          },
                           [
                             _c(
-                              "v-btn",
-                              {
-                                staticClass: "primary",
-                                on: { click: _vm.onPickFile }
-                              },
-                              [_vm._v("Telecharger logo")]
+                              "v-layout",
+                              { attrs: { row: "", wrap: "" } },
+                              [
+                                _c(
+                                  "v-flex",
+                                  { attrs: { xs12: "", md4: "" } },
+                                  [
+                                    _c("v-text-field", {
+                                      ref: "nom",
+                                      attrs: { label: "Nom" },
+                                      model: {
+                                        value: _vm.information.nom,
+                                        callback: function($$v) {
+                                          _vm.$set(_vm.information, "nom", $$v)
+                                        },
+                                        expression: "information.nom"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "v-flex",
+                                  { attrs: { xs12: "", md4: "" } },
+                                  [
+                                    _c("v-text-field", {
+                                      ref: "raison",
+                                      attrs: { label: "Raison" },
+                                      model: {
+                                        value: _vm.information.raison,
+                                        callback: function($$v) {
+                                          _vm.$set(
+                                            _vm.information,
+                                            "raison",
+                                            $$v
+                                          )
+                                        },
+                                        expression: "information.raison"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "v-flex",
+                                  { attrs: { xs12: "", md4: "" } },
+                                  [
+                                    _c("v-text-field", {
+                                      ref: "matricule",
+                                      attrs: { label: "Matricule" },
+                                      model: {
+                                        value: _vm.information.matricule,
+                                        callback: function($$v) {
+                                          _vm.$set(
+                                            _vm.information,
+                                            "matricule",
+                                            $$v
+                                          )
+                                        },
+                                        expression: "information.matricule"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
                             ),
                             _vm._v(" "),
-                            _c("input", {
-                              ref: "fileInput",
-                              staticStyle: { display: "none" },
-                              attrs: { type: "file", accept: "image/*" },
-                              on: { change: _vm.onFilePicked }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c("v-flex", { attrs: { xs12: "", sm6: "" } }, [
-                          _c("img", {
-                            attrs: { src: _vm.information.logo, height: "100" }
-                          })
-                        ])
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "v-layout",
-                      { attrs: { row: "", wrap: "" } },
-                      [
-                        _c(
-                          "v-flex",
-                          { attrs: { xs12: "", sm6: "" } },
-                          [
                             _c(
-                              "v-btn",
-                              {
-                                staticClass: "primary",
-                                attrs: {
-                                  disabled: _vm.loadingImg,
-                                  type: "submit"
-                                }
-                              },
-                              [_vm._v("Update")]
+                              "v-layout",
+                              { attrs: { row: "", wrap: "" } },
+                              [
+                                _c(
+                                  "v-flex",
+                                  { attrs: { xs12: "", md4: "" } },
+                                  [
+                                    _c("v-text-field", {
+                                      ref: "registre",
+                                      attrs: { label: "Registre du commerce" },
+                                      model: {
+                                        value: _vm.information.registre,
+                                        callback: function($$v) {
+                                          _vm.$set(
+                                            _vm.information,
+                                            "registre",
+                                            $$v
+                                          )
+                                        },
+                                        expression: "information.registre"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "v-flex",
+                                  { attrs: { xs12: "", md4: "" } },
+                                  [
+                                    _c("v-text-field", {
+                                      ref: "rib",
+                                      attrs: { label: "RIB" },
+                                      model: {
+                                        value: _vm.information.rib,
+                                        callback: function($$v) {
+                                          _vm.$set(_vm.information, "rib", $$v)
+                                        },
+                                        expression: "information.rib"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "v-flex",
+                                  { attrs: { xs12: "", md4: "" } },
+                                  [
+                                    _c("v-text-field", {
+                                      ref: "email",
+                                      attrs: { label: "Email" },
+                                      model: {
+                                        value: _vm.information.email,
+                                        callback: function($$v) {
+                                          _vm.$set(
+                                            _vm.information,
+                                            "email",
+                                            $$v
+                                          )
+                                        },
+                                        expression: "information.email"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "v-layout",
+                              { attrs: { row: "", wrap: "" } },
+                              [
+                                _c(
+                                  "v-flex",
+                                  { attrs: { xs12: "", md4: "" } },
+                                  [
+                                    _c("v-text-field", {
+                                      ref: "tel",
+                                      attrs: { label: "Telephone" },
+                                      model: {
+                                        value: _vm.information.tel,
+                                        callback: function($$v) {
+                                          _vm.$set(_vm.information, "tel", $$v)
+                                        },
+                                        expression: "information.tel"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "v-flex",
+                                  { attrs: { xs12: "", md4: "" } },
+                                  [
+                                    _c("v-textarea", {
+                                      ref: "adresse",
+                                      attrs: {
+                                        box: "",
+                                        rows: "5",
+                                        label: "Adresse"
+                                      },
+                                      model: {
+                                        value: _vm.information.adresse,
+                                        callback: function($$v) {
+                                          _vm.$set(
+                                            _vm.information,
+                                            "adresse",
+                                            $$v
+                                          )
+                                        },
+                                        expression: "information.adresse"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "v-flex",
+                                  { attrs: { md2: "" } },
+                                  [
+                                    _c(
+                                      "v-btn",
+                                      {
+                                        staticClass: "primary",
+                                        attrs: { disabled: _vm.loadingImg },
+                                        on: { click: _vm.onPickFile }
+                                      },
+                                      [_vm._v("Telecharger logo")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      ref: "fileInput",
+                                      staticStyle: { display: "none" },
+                                      attrs: {
+                                        type: "file",
+                                        accept: "image/*"
+                                      },
+                                      on: { change: _vm.onFilePicked }
+                                    })
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c("v-flex", { attrs: { md2: "" } }, [
+                                  _c("img", {
+                                    attrs: {
+                                      src: _vm.information.logo,
+                                      height: "100"
+                                    }
+                                  })
+                                ])
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "v-layout",
+                              { attrs: { row: "", wrap: "" } },
+                              [
+                                _c(
+                                  "v-flex",
+                                  { attrs: { xs12: "", sm6: "" } },
+                                  [
+                                    _c(
+                                      "v-btn",
+                                      {
+                                        staticClass: "primary",
+                                        attrs: {
+                                          disabled: _vm.loadingImg,
+                                          type: "submit"
+                                        }
+                                      },
+                                      [_vm._v("Update")]
+                                    )
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
                             )
                           ],
                           1
                         )
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                )
-              ])
+                      ])
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
             ],
             1
           )
@@ -77964,7 +78181,7 @@ var liste_client = vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('liste_c
 var parametres = vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('parametres', __webpack_require__(/*! ../components/parametres/parametres.vue */ "./resources/js/components/parametres/parametres.vue").default);
 /* harmony default export */ __webpack_exports__["default"] = (new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   mode: 'history',
-  base: Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"}).BASE_URL,
+  base: Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"}).BASE_URL,
   routes: [{
     path: '/facturation/create',
     name: 'create_facture',
@@ -78492,7 +78709,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       commit('setLoadingTable', true);
       var uri = 'http://localhost:3000/api/information/update/' + payload.id;
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.put(uri, payload).then(function (response) {
-        commit('setInformation', payload);
+        var info = {
+          id: response.data.information.id,
+          nom: response.data.information.nom,
+          raison: response.data.information.raison,
+          matricule: response.data.information.matricule,
+          registre: response.data.information.registre,
+          adresse: response.data.information.adresse,
+          tel: response.data.information.tel,
+          email: response.data.information.email,
+          logo: response.data.information.logo,
+          rib: response.data.information.rib
+        };
+        commit('setInformation', info);
         console.log(response.data.information);
         commit('setLoadingTable', false);
       }).catch(function (error) {
@@ -79247,8 +79476,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/macbookpro/Desktop/Facturation/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/macbookpro/Desktop/Facturation/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\youso\Laravel_tuto\Facturation\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\youso\Laravel_tuto\Facturation\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

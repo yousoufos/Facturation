@@ -9,40 +9,83 @@
     </v-layout>
     <v-layout row wrap v-else>
         <v-flex xs12>
-            <form @submit.prevent="update">
+            <v-card>
+                <v-card-title primary-title class="primary" >
+                    <span class="headline">Societé</span>
+                </v-card-title>
+                <v-card-text>
+                    <form @submit.prevent="update">
                 <v-layout row wrap>
                     <v-flex xs12 md4 >
                         <v-text-field
                             label="Nom"
                             v-model="information.nom"
+                            ref="nom"
                         ></v-text-field>
                     </v-flex>
                     <v-flex xs12 md4>
                         <v-text-field
                             label="Raison"
                             v-model="information.raison"
+                            ref="raison"
                         ></v-text-field>
                     </v-flex>
                     <v-flex xs12 md4>
                         <v-text-field
                             label="Matricule"
                             v-model="information.matricule"
+                            ref="matricule"
                         ></v-text-field>
                     </v-flex>
                 </v-layout>
                 <v-layout row wrap>
-                        <v-flex xs12 sm3  >
-                            <v-btn class="primary" @click="onPickFile">Telecharger logo</v-btn>
+                    <v-flex xs12 md4 >
+                        <v-text-field
+                            label="Registre du commerce"
+                            v-model="information.registre"
+                            ref="registre"
+                        ></v-text-field>
+                    </v-flex>
+                    <v-flex xs12 md4>
+                        <v-text-field
+                            label="RIB"
+                            v-model="information.rib"
+                            ref="rib"
+                        ></v-text-field>
+                    </v-flex>
+                    <v-flex xs12 md4>
+                        <v-text-field
+                            label="Email"
+                            v-model="information.email"
+                            ref="email"
+                        ></v-text-field>
+                    </v-flex>
+                </v-layout>
+                <v-layout row wrap>
+                    <v-flex xs12 md4 >
+                        <v-text-field
+                            label="Telephone"
+                            v-model="information.tel"
+                            ref="tel"
+                        ></v-text-field>
+                    </v-flex>
+                    <v-flex xs12 md4>
+                        <v-textarea box rows="5" label="Adresse" v-model="information.adresse" ref="adresse">
+
+                        </v-textarea>
+                    </v-flex>
+                    <v-flex md2>
+                        <v-btn :disabled="loadingImg" class="primary" @click="onPickFile">Telecharger logo</v-btn>
                             <input type="file"
                             style="display:none"
                             ref="fileInput"
                             accept="image/*"
                             @change="onFilePicked">
-                        </v-flex>
-                        <v-flex xs12 sm6 >
-                            <img :src="information.logo" height="100" >
-                        </v-flex>
-                    </v-layout>
+                    </v-flex>
+                    <v-flex md2>
+                        <img :src="information.logo" height="100" >
+                    </v-flex>
+                </v-layout>
                     <v-layout row wrap>
                         <v-flex xs12 sm6 >
                             <v-btn class="primary"  :disabled="loadingImg" type="submit">Update</v-btn>
@@ -51,6 +94,9 @@
                     </v-layout>
 
             </form>
+                </v-card-text>
+            </v-card>
+
 
         </v-flex>
     </v-layout>
@@ -62,7 +108,8 @@ export default {
     data(){
         return{
             imageUrl:'',
-            image:null
+            image:null,
+            nom:null
 
         }
 
@@ -70,11 +117,19 @@ export default {
     },
     methods:{
         update(){
-            const info={
+            let info ={
                 id : this.information.id,
-                logo : this.information.logo
-            }
-            this.$store.dispatch('updateInformation',info)
+                nom : this.$refs.nom.value,
+                matricule : this.$refs.matricule.value,
+                registre : this.$refs.registre.value,
+                raison : this.$refs.raison.value,
+                email : this.$refs.email.value,
+                adresse : this.$refs.adresse.value,
+                tel : this.$refs.tel.value,
+                rib : this.$refs.rib.value,
+                logo : this.information.logo,
+                  }
+                this.$store.dispatch('updateInformation',info)
 
         },
         onPickFile(){

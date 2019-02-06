@@ -46,7 +46,20 @@ export default {
             commit('setLoadingTable', true)
             const uri = 'http://localhost:3000/api/information/update/' + payload.id;
             axios.put(uri, payload).then((response) => {
-                commit('setInformation', payload)
+                let info = {
+                    id: response.data.information.id,
+                    nom: response.data.information.nom,
+                    raison: response.data.information.raison,
+                    matricule: response.data.information.matricule,
+                    registre: response.data.information.registre,
+                    adresse: response.data.information.adresse,
+                    tel: response.data.information.tel,
+                    email: response.data.information.email,
+                    logo: response.data.information.logo,
+                    rib: response.data.information.rib,
+
+                }
+                commit('setInformation', info)
                 console.log(response.data.information);
                 commit('setLoadingTable', false)
 

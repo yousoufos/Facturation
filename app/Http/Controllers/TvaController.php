@@ -37,7 +37,7 @@ class TvaController extends Controller
     public function store(Request $request)
     {
         $tva = new Tva;
-        $tva->value = $request->get('tva');
+        $tva->value = $request->get('value');
         $tva->save();
         return response()->json(['tva'=> $tva]);
     }

@@ -4063,12 +4063,62 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       imageUrl: '',
       image: null,
-      nom: null
+      nom: null,
+      newTva: null,
+      dialog: false
     };
   },
   methods: {
@@ -4106,6 +4156,20 @@ __webpack_require__.r(__webpack_exports__);
       };
 
       reader.readAsDataURL(file);
+    },
+    deleteTva: function deleteTva(id) {
+      this.$store.dispatch('deleteTva', id);
+    },
+    saveTva: function saveTva() {
+      var obj = {
+        value: this.newTva
+      };
+      this.$store.dispatch('addTva', obj);
+      this.dialog = false;
+    },
+    addTva: function addTva() {
+      this.dialog = true;
+      this.newTva = null;
     }
   },
   computed: {
@@ -4117,6 +4181,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     loadingImg: function loadingImg() {
       return this.$store.getters.getLoadingTable;
+    },
+    tva: function tva() {
+      return this.$store.getters.getLoadedTva;
     }
   }
 });
@@ -4230,7 +4297,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n@media print{\n}\n", ""]);
+exports.push([module.i, "\n@media print{\n}\r\n", ""]);
 
 // exports
 
@@ -4287,7 +4354,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -36964,7 +37031,7 @@ var render = function() {
                                             },
                                             [
                                               _vm._v(
-                                                "\n          Le mode de regelemnt doit etre indiqué\n        "
+                                                "\r\n          Le mode de regelemnt doit etre indiqué\r\n        "
                                               )
                                             ]
                                           )
@@ -37006,7 +37073,7 @@ var render = function() {
                                             },
                                             [
                                               _vm._v(
-                                                "\n          Le montant est erroné\n        "
+                                                "\r\n          Le montant est erroné\r\n        "
                                               )
                                             ]
                                           )
@@ -37756,6 +37823,109 @@ var render = function() {
             { attrs: { row: "", wrap: "" } },
             [
               _c(
+                "v-dialog",
+                {
+                  attrs: { persistent: "", "max-width": "600px" },
+                  model: {
+                    value: _vm.dialog,
+                    callback: function($$v) {
+                      _vm.dialog = $$v
+                    },
+                    expression: "dialog"
+                  }
+                },
+                [
+                  _c(
+                    "form",
+                    [
+                      _c(
+                        "v-card",
+                        [
+                          _c("v-card-title", [
+                            _c("span", { staticClass: "headline" }, [
+                              _vm._v("Nouvelle valuer TVA")
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "v-card-text",
+                            [
+                              _c(
+                                "v-container",
+                                { attrs: { "grid-list-md": "" } },
+                                [
+                                  _c(
+                                    "v-layout",
+                                    { attrs: { wrap: "" } },
+                                    [
+                                      _c(
+                                        "v-flex",
+                                        {
+                                          attrs: { xs12: "", sm6: "", md6: "" }
+                                        },
+                                        [
+                                          _c("v-text-field", {
+                                            attrs: { label: "Valeur" },
+                                            model: {
+                                              value: _vm.newTva,
+                                              callback: function($$v) {
+                                                _vm.newTva = $$v
+                                              },
+                                              expression: "newTva"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-card-actions",
+                            [
+                              _c("v-spacer"),
+                              _vm._v(" "),
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: { color: "blue darken-1", flat: "" },
+                                  on: {
+                                    click: function($event) {
+                                      _vm.dialog = false
+                                    }
+                                  }
+                                },
+                                [_vm._v("Close")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: { color: "blue darken-1", flat: "" },
+                                  on: { click: _vm.saveTva }
+                                },
+                                [_vm._v("Save")]
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
                 "v-flex",
                 { attrs: { xs12: "" } },
                 [
@@ -38076,7 +38246,125 @@ var render = function() {
                         ]
                       ),
                       _vm._v(" "),
-                      _c("v-card-text")
+                      _c(
+                        "v-card-text",
+                        [
+                          _c(
+                            "v-layout",
+                            { attrs: { row: "", wrap: "" } },
+                            [
+                              _c(
+                                "v-flex",
+                                { attrs: { xs12: "", sm6: "" } },
+                                [
+                                  _c(
+                                    "v-card",
+                                    [
+                                      _c(
+                                        "v-toolbar",
+                                        {
+                                          attrs: {
+                                            color: "light-blue",
+                                            dark: ""
+                                          }
+                                        },
+                                        [
+                                          _c("v-toolbar-title", [
+                                            _vm._v("Tva %")
+                                          ]),
+                                          _vm._v(" "),
+                                          _c("v-spacer"),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-btn",
+                                            {
+                                              staticClass: "white",
+                                              attrs: { icon: "" },
+                                              on: { click: _vm.addTva }
+                                            },
+                                            [
+                                              _c(
+                                                "v-icon",
+                                                {
+                                                  attrs: {
+                                                    fab: "",
+                                                    dark: "",
+                                                    color: "indigo"
+                                                  }
+                                                },
+                                                [_vm._v("add")]
+                                              )
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _vm._l(_vm.tva, function(item) {
+                                        return _c(
+                                          "v-list-tile",
+                                          { key: item.id },
+                                          [
+                                            _c(
+                                              "v-list-tile-content",
+                                              [
+                                                _c("v-list-tile-title", [
+                                                  _vm._v(_vm._s(item.value))
+                                                ])
+                                              ],
+                                              1
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "v-list-tile-action",
+                                              [
+                                                _c(
+                                                  "v-btn",
+                                                  {
+                                                    attrs: {
+                                                      icon: "",
+                                                      ripple: ""
+                                                    },
+                                                    on: {
+                                                      click: function($event) {
+                                                        _vm.deleteTva(item.id)
+                                                      }
+                                                    }
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "v-icon",
+                                                      {
+                                                        attrs: {
+                                                          color:
+                                                            "grey lighten-1"
+                                                        }
+                                                      },
+                                                      [_vm._v("delete")]
+                                                    )
+                                                  ],
+                                                  1
+                                                )
+                                              ],
+                                              1
+                                            )
+                                          ],
+                                          1
+                                        )
+                                      })
+                                    ],
+                                    2
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
                     ],
                     1
                   )
@@ -78217,7 +78505,7 @@ var liste_client = vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('liste_c
 var parametres = vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('parametres', __webpack_require__(/*! ../components/parametres/parametres.vue */ "./resources/js/components/parametres/parametres.vue").default);
 /* harmony default export */ __webpack_exports__["default"] = (new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   mode: 'history',
-  base: Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"}).BASE_URL,
+  base: Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"}).BASE_URL,
   routes: [{
     path: '/facturation/create',
     name: 'create_facture',
@@ -79276,6 +79564,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   Object.keys(obj).forEach(function (key) {
                     var val = obj[key];
                     tva.push({
+                      id: val.id,
                       value: val.value
                     });
                   });
@@ -79318,6 +79607,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   Object.keys(obj).forEach(function (key) {
                     var val = obj[key];
                     mode.push({
+                      id: val.id,
                       modeReglement: val.modeReglement
                     });
                   });
@@ -79345,16 +79635,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     addTva: function addTva(_ref3, payload) {
       var commit = _ref3.commit;
       var uri = 'http://localhost:3000/api/tva/add';
-      commit('setLoading', true);
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.post(uri, payload).then(function (response) {
         var tva = response.data.tva;
         var m = {
-          value: mode.value
+          id: tva.id,
+          value: tva.value
         };
         commit('addNewTva', m);
-        commit('setLoading', false);
       }).catch(function (error) {
-        commit('setLoading', false);
         console.log(error);
       });
     },
@@ -79365,6 +79653,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.post(uri, payload).then(function (response) {
         var mode = response.data.modeReglement;
         var m = {
+          id: mode.id,
           modeRegelemnt: mode.modeRegelement
         };
         commit('addNewModeReglement', m);
@@ -79376,21 +79665,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     deleteTva: function deleteTva(_ref5, payload) {
       var commit = _ref5.commit;
-      commit('setLoading', true);
-      var uri = 'http://localhost:3000/api/tva/delete/' + payload.id;
+      var uri = 'http://localhost:3000/api/tva/delete/' + payload;
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.delete(uri).then(function (response) {
         commit('removeTva', payload.index);
         console.log(response);
-        commit('setLoading', false);
       }).catch(function (error) {
-        commit('setLoading', false);
         console.log(error);
       });
     },
     deleteModeReglement: function deleteModeReglement(_ref6, payload) {
       var commit = _ref6.commit;
       commit('setLoading', true);
-      var uri = 'http://localhost:3000/api/modereglement/delete/' + payload.id;
+      var uri = 'http://localhost:3000/api/modereglement/delete/' + payload;
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.delete(uri).then(function (response) {
         commit('removeModeReglement', payload.index);
         console.log(response);
@@ -79512,8 +79798,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/macbookpro/Desktop/Facturation/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/macbookpro/Desktop/Facturation/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\youso\Laravel_tuto\Facturation\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\youso\Laravel_tuto\Facturation\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

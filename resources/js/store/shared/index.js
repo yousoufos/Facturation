@@ -69,6 +69,7 @@ export default {
                 Object.keys(obj).forEach((key) => {
                     const val = obj[key];
                     tva.push({
+                        id:val.id,
                         value: val.value,
                     });
                 });
@@ -89,6 +90,7 @@ export default {
                 Object.keys(obj).forEach((key) => {
                     const val = obj[key];
                     mode.push({
+                        id:val.id,
                         modeReglement: val.modeReglement,
                     });
                 });
@@ -103,17 +105,18 @@ export default {
         },
         addTva ({ commit }, payload) {
             const uri = 'http://localhost:3000/api/tva/add'
-            commit('setLoading', true);
+
             axios.post(uri, payload)
                 .then(response => {
                     const tva = response.data.tva;
                     let m = {
-                        value:mode.value
+                        id:tva.id,
+                        value:tva.value
                     }
                     commit('addNewTva', m)
-                    commit('setLoading', false);
+
                 }).catch(error => {
-                    commit('setLoading', false);
+
                     console.log(error);
                 })
         },
@@ -124,6 +127,7 @@ export default {
                 .then(response => {
                     const mode = response.data.modeReglement;
                     let m = {
+                        id:mode.id,
                         modeRegelemnt: mode.modeRegelement
                     }
                     commit('addNewModeReglement', m)
@@ -134,22 +138,22 @@ export default {
                 })
         },
         deleteTva ({ commit }, payload) {
-            commit('setLoading', true)
-            const uri = 'http://localhost:3000/api/tva/delete/' + payload.id
+
+            const uri = 'http://localhost:3000/api/tva/delete/' + payload
             axios.delete(uri).then(response => {
                 commit('removeTva', payload.index)
                 console.log(response);
-                commit('setLoading', false)
+
 
             }).catch(error => {
-                commit('setLoading', false)
+
                 console.log(error);
 
             })
         },
         deleteModeReglement ({ commit }, payload) {
             commit('setLoading', true)
-            const uri = 'http://localhost:3000/api/modereglement/delete/' + payload.id
+            const uri = 'http://localhost:3000/api/modereglement/delete/' + payload
             axios.delete(uri).then(response => {
                 commit('removeModeReglement', payload.index)
                 console.log(response);

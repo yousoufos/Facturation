@@ -8,6 +8,29 @@
         </v-flex>
     </v-layout>
     <v-layout row wrap v-else>
+        <v-dialog v-model="dialog" persistent max-width="600px">
+        <form>
+      <v-card>
+        <v-card-title>
+          <span class="headline">Nouvelle valuer TVA</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container grid-list-md>
+            <v-layout wrap>
+              <v-flex xs12 sm6 md6>
+                <v-text-field label="Valeur" v-model="newTva"></v-text-field>
+              </v-flex>
+            </v-layout>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" flat @click="dialog = false">Close</v-btn>
+          <v-btn color="blue darken-1" flat @click="saveTva">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+      </form>
+    </v-dialog>
         <v-flex xs12>
             <v-card>
                 <v-card-title primary-title class="primary" >
@@ -103,7 +126,32 @@
                     <span class="headline">Parametres de facturation</span>
                 </v-card-title>
                 <v-card-text>
+                    <v-layout row wrap>
+                        <v-flex xs12 sm6>
+                            <v-card>
+                                <v-toolbar color="light-blue" dark>
+                                <v-toolbar-title>Tva %</v-toolbar-title>
+                                <v-spacer></v-spacer>
+                                <v-btn icon class="white" @click="addTva">
+                                    <v-icon fab	dark color="indigo">add</v-icon>
+                                </v-btn>
+                                </v-toolbar>
 
+                                 <v-list-tile
+                                    v-for="item in tva"
+                                    :key="item.id"                                >
+                                <v-list-tile-content>
+                                <v-list-tile-title>{{ item.value }}</v-list-tile-title>
+                                </v-list-tile-content>
+                                <v-list-tile-action>
+                                <v-btn icon ripple @click="deleteTva(item.id)">
+                                    <v-icon color="grey lighten-1">delete</v-icon>
+                                </v-btn>
+                                </v-list-tile-action>
+                                </v-list-tile>
+                            </v-card>
+                        </v-flex>
+                    </v-layout>
                 </v-card-text>
             </v-card>
         </v-flex>
@@ -117,7 +165,9 @@ export default {
         return{
             imageUrl:'',
             image:null,
-            nom:null
+            nom:null,
+            newTva:null,
+            dialog:false,
 
         }
 
@@ -149,16 +199,30 @@ export default {
                     return;
                 this.createImage(files[0]);
             },
-            createImage(file) {
-                let reader = new FileReader();
-                let vm = this;
-                reader.onload = (e) => {
-                    this.$store.dispatch('editLogo',e.target.result)
+        createImage(file) {
+            let reader = new FileReader();
+            let vm = this;
+            reader.onload = (e) => {
+                this.$store.dispatch('editLogo',e.target.result)
+            };
+            reader.readAsDataURL(file);
+        },
+        deleteTva(id){
+            this.$store.dispatch('deleteTva',id)
+        },
+        saveTva(){
+            let obj={
+                value:this.newTva
+            }
+            this.$store.dispatch('addTva',obj)
+            this.dialog=false
 
+        },
+        addTva(){
+            this.dialog=true
+            this.newTva=null
+        }
 
-                };
-                reader.readAsDataURL(file);
-            },
 
     },
     computed:{
@@ -171,6 +235,9 @@ export default {
         loadingImg(){
             return this.$store.getters.getLoadingTable
         },
+        tva(){
+            return this.$store.getters.getLoadedTva
+        }
 
 
     },

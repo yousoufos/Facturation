@@ -7,7 +7,8 @@
             </v-progress-circular>
         </v-flex>
     </v-layout>
-    <v-layout row wrap v-else>
+    <div v-else>
+    <v-layout row wrap >
         <v-dialog v-model="dialog" persistent max-width="600px">
         <form>
       <v-card>
@@ -27,6 +28,29 @@
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" flat @click="dialog = false">Close</v-btn>
           <v-btn color="blue darken-1" flat @click="saveTva">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+      </form>
+    </v-dialog>
+    <v-dialog v-model="dialogReglement" persistent max-width="600px">
+        <form>
+      <v-card>
+        <v-card-title>
+          <span class="headline">Nouveau Mode de reglement</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container grid-list-md>
+            <v-layout wrap>
+              <v-flex xs12 sm6 md6>
+                <v-text-field label="Valeur" v-model="newReglement"></v-text-field>
+              </v-flex>
+            </v-layout>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" flat @click="dialogReglement = false">Close</v-btn>
+          <v-btn color="blue darken-1" flat @click="saveReglement">Save</v-btn>
         </v-card-actions>
       </v-card>
       </form>
@@ -129,14 +153,18 @@
                     <v-layout row wrap>
                         <v-flex xs12 sm6>
                             <v-card>
+
                                 <v-toolbar color="light-blue" dark>
                                 <v-toolbar-title>Tva %</v-toolbar-title>
+
                                 <v-spacer></v-spacer>
                                 <v-btn icon class="white" @click="addTva">
                                     <v-icon fab	dark color="indigo">add</v-icon>
                                 </v-btn>
                                 </v-toolbar>
-
+                                <template>
+  <v-progress-linear v-if=" loadingTva" :indeterminate="loadingTva"></v-progress-linear>
+</template>
                                  <v-list-tile
                                     v-for="item in tva"
                                     :key="item.id"                                >
@@ -151,11 +179,41 @@
                                 </v-list-tile>
                             </v-card>
                         </v-flex>
+
+                        <v-flex xs12 sm6>
+                            <v-card>
+
+                                <v-toolbar color="light-blue" dark>
+                                <v-toolbar-title>Mode Reglement</v-toolbar-title>
+
+                                <v-spacer></v-spacer>
+                                <v-btn icon class="white" @click="addReglement">
+                                    <v-icon fab	dark color="indigo">add</v-icon>
+                                </v-btn>
+                                </v-toolbar>
+                                <template>
+  <v-progress-linear v-if=" loadingReglement" :indeterminate="loadingReglement"></v-progress-linear>
+</template>
+                                 <v-list-tile
+                                    v-for="item in reglements"
+                                    :key="item.id"                                >
+                                <v-list-tile-content>
+                                <v-list-tile-title>{{ item.modeReglement }}</v-list-tile-title>
+                                </v-list-tile-content>
+                                <v-list-tile-action>
+                                <v-btn icon ripple @click="deleteReglement(item.id)">
+                                    <v-icon color="grey lighten-1">delete</v-icon>
+                                </v-btn>
+                                </v-list-tile-action>
+                                </v-list-tile>
+                            </v-card>
+                        </v-flex>
                     </v-layout>
                 </v-card-text>
             </v-card>
         </v-flex>
     </v-layout>
+    </div>
 </v-container>
 </template>
 
@@ -168,6 +226,8 @@ export default {
             nom:null,
             newTva:null,
             dialog:false,
+            dialogReglement:false,
+            newReglement:null
 
         }
 
@@ -210,6 +270,9 @@ export default {
         deleteTva(id){
             this.$store.dispatch('deleteTva',id)
         },
+        deleteReglement(id){
+            this.$store.dispatch('deleteModeReglement',id)
+        },
         saveTva(){
             let obj={
                 value:this.newTva
@@ -218,10 +281,22 @@ export default {
             this.dialog=false
 
         },
+        saveReglement(){
+            let obj={
+                modeReglement:this.newReglement
+            }
+            this.$store.dispatch('addModeReglement',obj)
+            this.dialogReglement=false
+
+        },
         addTva(){
             this.dialog=true
             this.newTva=null
-        }
+        },
+        addReglement(){
+            this.dialogReglement=true
+            this.newReglement=null
+        },
 
 
     },
@@ -235,9 +310,18 @@ export default {
         loadingImg(){
             return this.$store.getters.getLoadingTable
         },
+        loadingTva(){
+             return this.$store.getters.getLoadingTva
+        },
+        loadingReglement(){
+            return this.$store.getters.getLoadingReglement
+        },
         tva(){
             return this.$store.getters.getLoadedTva
-        }
+        },
+        reglements(){
+            return this.$store.getters.getLoadedModeReglement
+        },
 
 
     },

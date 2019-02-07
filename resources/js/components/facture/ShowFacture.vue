@@ -431,8 +431,11 @@ export default {
     watch:{
         reste(val){
             let fact = this.facture
-            if(!this.loading){
-                if(val === 0){
+            if(this.loading===false){
+                console.log(val);
+
+                if(val == 0){
+
                 fact.statut = 'Close'
                 this.$store.dispatch('changeStatut',fact)
             }else {

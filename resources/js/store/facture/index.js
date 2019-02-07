@@ -21,7 +21,7 @@ export default {
             const uri = 'http://localhost:3000/api/facture/update/' + payload.id
             axios.put(uri, payload).then((response) => {
                 commit('setStatutFacture', payload)
-                console.log(response);
+                console.log(response.data);
 
 
             }).catch((error) => {

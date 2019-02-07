@@ -6,12 +6,17 @@ export default {
         savedStatut: false,
         loadingTable:false,
         loadedTva: null,
-        loadedModeReglement:null
+        loadedModeReglement:null,
+        loadingTva: false,
+        loadingReglement:false
 
     },
     mutations: {
         setLoading (state, payload) {
             state.loading = payload
+        },
+        setLoadingTva (state, payload) {
+            state.loadingTva = payload
         },
         seterreurs (state, payload) {
             state.erreurs = payload
@@ -27,6 +32,9 @@ export default {
         },
         setLoadingTable (state,payload) {
             state.loadingTable = payload
+        },
+        setLoadingReglement (state,payload) {
+            state.loadingReglement = payload
         },
         setLoadedTva (state, payload) {
             state.loadedTva = payload
@@ -104,6 +112,7 @@ export default {
             });
         },
         addTva ({ commit }, payload) {
+            commit('setLoadingTva', true);
             const uri = 'http://localhost:3000/api/tva/add'
 
             axios.post(uri, payload)
@@ -114,53 +123,54 @@ export default {
                         value:tva.value
                     }
                     commit('addNewTva', m)
-
+                    commit('setLoadingTva', false);
                 }).catch(error => {
-
+                    commit('setLoadingTva', false);
                     console.log(error);
                 })
         },
         addModeReglement ({ commit }, payload) {
             const uri = 'http://localhost:3000/api/modereglement/add'
-            commit('setLoading', true);
+            commit('setLoadingReglement', true);
             axios.post(uri, payload)
                 .then(response => {
                     const mode = response.data.modeReglement;
                     let m = {
                         id:mode.id,
-                        modeRegelemnt: mode.modeRegelement
+                        modeReglement: mode.modeReglement
                     }
                     commit('addNewModeReglement', m)
-                    commit('setLoading', false);
+                    commit('setLoadingReglement', false);
                 }).catch(error => {
-                    commit('setLoading', false);
+                    commit('setLoadingReglement', false);
                     console.log(error);
                 })
         },
         deleteTva ({ commit }, payload) {
-
+            commit('setLoadingTva', true);
             const uri = 'http://localhost:3000/api/tva/delete/' + payload
             axios.delete(uri).then(response => {
                 commit('removeTva', payload.index)
                 console.log(response);
+                commit('setLoadingTva', false);
 
 
             }).catch(error => {
-
+                commit('setLoadingTva', false);
                 console.log(error);
 
             })
         },
         deleteModeReglement ({ commit }, payload) {
-            commit('setLoading', true)
+            commit('setLoadingReglement', true)
             const uri = 'http://localhost:3000/api/modereglement/delete/' + payload
             axios.delete(uri).then(response => {
                 commit('removeModeReglement', payload.index)
                 console.log(response);
-                commit('setLoading', false)
+                commit('setLoadingReglement', false)
 
             }).catch(error => {
-                commit('setLoading', false)
+                commit('setLoadingReglement', false)
                 console.log(error);
 
             })
@@ -251,8 +261,17 @@ export default {
         getLoadingTable (state) {
             return state.loadingTable
         },
+        getLoadingTva (state) {
+            return state.loadingTva
+        },
+        getLoadingReglement (state) {
+            return state.loadingReglement
+        },
         getLoadedTva (state) {
-            return state.loadedTva
+            return state.getLoadedTva
+            // return state.loadedTva.sort((tvaA, tvaB) => {
+            //     return tvaB.value - tvaA.value
+            // })
         },
         getLoadedModeReglement (state) {
             return state.loadedModeReglement

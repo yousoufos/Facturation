@@ -21,7 +21,7 @@ Route::post('/facture/reglementfacture/add', 'ReglementController@store');
 Route::post('/produit/add', 'ProduitController@store');
 Route::post('/client/add', 'ProduitController@store');
 Route::post('/tva/add', 'TvaController@store');
-Route::post('/modereglement/add', 'ModeReglegmentController@store');
+Route::post('/modereglement/add', 'ModeReglementController@store');
 Route::get('/facture/lignesfacture', 'LigneFactureController@index');
 Route::get('/facture/reglementfacture', 'ReglementController@index');
 Route::get('/client', 'ClientController@index');

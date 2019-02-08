@@ -268,10 +268,10 @@ export default {
             return state.loadingReglement
         },
         getLoadedTva (state) {
-            return state.getLoadedTva
-            // return state.loadedTva.sort((tvaA, tvaB) => {
-            //     return tvaB.value - tvaA.value
-            // })
+            //return state.getLoadedTva
+            return state.loadedTva.sort((tvaA, tvaB) => {
+                return tvaB.value - tvaA.value
+            })
         },
         getLoadedModeReglement (state) {
             return state.loadedModeReglement

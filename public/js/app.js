@@ -80163,9 +80163,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return state.loadingReglement;
     },
     getLoadedTva: function getLoadedTva(state) {
-      return state.getLoadedTva; // return state.loadedTva.sort((tvaA, tvaB) => {
-      //     return tvaB.value - tvaA.value
-      // })
+      //return state.getLoadedTva
+      return state.loadedTva.sort(function (tvaA, tvaB) {
+        return tvaB.value - tvaA.value;
+      });
     },
     getLoadedModeReglement: function getLoadedModeReglement(state) {
       return state.loadedModeReglement;

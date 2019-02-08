@@ -68,6 +68,7 @@
                             label="Nom"
                             v-model="information.nom"
                             ref="nom"
+                            v-validate="'required'" data-vv-name="nom" :error-messages="errors.collect('nom')"
                         ></v-text-field>
                     </v-flex>
                     <v-flex xs12 md4>
@@ -75,6 +76,7 @@
                             label="Raison"
                             v-model="information.raison"
                             ref="raison"
+                             v-validate="'required'" data-vv-name="raison" :error-messages="errors.collect('raison')"
                         ></v-text-field>
                     </v-flex>
                     <v-flex xs12 md4>
@@ -82,6 +84,7 @@
                             label="Matricule"
                             v-model="information.matricule"
                             ref="matricule"
+                            v-validate="'required'" data-vv-name="matricule" :error-messages="errors.collect('matricule')"
                         ></v-text-field>
                     </v-flex>
                 </v-layout>
@@ -105,6 +108,7 @@
                             label="Email"
                             v-model="information.email"
                             ref="email"
+                            v-validate="'email'" data-vv-name="email" :error-messages="errors.collect('email')"
                         ></v-text-field>
                     </v-flex>
                 </v-layout>
@@ -218,7 +222,14 @@
 </template>
 
 <script>
+
 export default {
+    $_veeValidate: {
+      validator: 'new'
+    },
+     mounted () {
+      this.$validator.localize('en', this.dictionary)
+    },
     data(){
         return{
             imageUrl:'',
@@ -227,15 +238,41 @@ export default {
             newTva:null,
             dialog:false,
             dialogReglement:false,
-            newReglement:null
+            newReglement:null,
+            dictionary: {
+            custom: {
+          nom: {
+            required:'Champs requis',
+          },
+          raison: {
+            required: 'Champs requis'
+          },
+          matricule:{
+              required: 'Champs requis'
+          },
+          tel:{
+              required: 'Champs requis'
+          },
+          adresse:{
+              required: 'Champs requis'
+          },
+          email:{
+               required: 'Champs requis',
+               email:"Entrez un email valide"
+          },
 
+        }
+
+        }
         }
 
 
     },
     methods:{
         update(){
-            let info ={
+            this.$validator.validate().then(result=>{
+               if(result){
+                   let info ={
                 id : this.information.id,
                 nom : this.$refs.nom.value,
                 matricule : this.$refs.matricule.value,
@@ -248,6 +285,9 @@ export default {
                 logo : this.information.logo,
                   }
                 this.$store.dispatch('updateInformation',info)
+               }
+           });
+
 
         },
         onPickFile(){

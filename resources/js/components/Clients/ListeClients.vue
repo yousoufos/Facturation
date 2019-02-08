@@ -123,8 +123,6 @@ export default {
     return {
         create:false,
          dictionary: {
-        attributes: {
-        },
         custom: {
           nom: {
             required:'Champs requis',

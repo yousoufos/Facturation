@@ -1925,7 +1925,6 @@ __webpack_require__.r(__webpack_exports__);
     return {
       create: false,
       dictionary: {
-        attributes: {},
         custom: {
           nom: {
             required: 'Champs requis'
@@ -4171,7 +4170,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  $_veeValidate: {
+    validator: 'new'
+  },
+  mounted: function mounted() {
+    this.$validator.localize('en', this.dictionary);
+  },
   data: function data() {
     return {
       imageUrl: '',
@@ -4180,24 +4189,54 @@ __webpack_require__.r(__webpack_exports__);
       newTva: null,
       dialog: false,
       dialogReglement: false,
-      newReglement: null
+      newReglement: null,
+      dictionary: {
+        custom: {
+          nom: {
+            required: 'Champs requis'
+          },
+          raison: {
+            required: 'Champs requis'
+          },
+          matricule: {
+            required: 'Champs requis'
+          },
+          tel: {
+            required: 'Champs requis'
+          },
+          adresse: {
+            required: 'Champs requis'
+          },
+          email: {
+            required: 'Champs requis',
+            email: "Entrez un email valide"
+          }
+        }
+      }
     };
   },
   methods: {
     update: function update() {
-      var info = {
-        id: this.information.id,
-        nom: this.$refs.nom.value,
-        matricule: this.$refs.matricule.value,
-        registre: this.$refs.registre.value,
-        raison: this.$refs.raison.value,
-        email: this.$refs.email.value,
-        adresse: this.$refs.adresse.value,
-        tel: this.$refs.tel.value,
-        rib: this.$refs.rib.value,
-        logo: this.information.logo
-      };
-      this.$store.dispatch('updateInformation', info);
+      var _this = this;
+
+      this.$validator.validate().then(function (result) {
+        if (result) {
+          var info = {
+            id: _this.information.id,
+            nom: _this.$refs.nom.value,
+            matricule: _this.$refs.matricule.value,
+            registre: _this.$refs.registre.value,
+            raison: _this.$refs.raison.value,
+            email: _this.$refs.email.value,
+            adresse: _this.$refs.adresse.value,
+            tel: _this.$refs.tel.value,
+            rib: _this.$refs.rib.value,
+            logo: _this.information.logo
+          };
+
+          _this.$store.dispatch('updateInformation', info);
+        }
+      });
     },
     onPickFile: function onPickFile() {
       this.$refs.fileInput.click();
@@ -4208,13 +4247,13 @@ __webpack_require__.r(__webpack_exports__);
       this.createImage(files[0]);
     },
     createImage: function createImage(file) {
-      var _this = this;
+      var _this2 = this;
 
       var reader = new FileReader();
       var vm = this;
 
       reader.onload = function (e) {
-        _this.$store.dispatch('editLogo', e.target.result);
+        _this2.$store.dispatch('editLogo', e.target.result);
       };
 
       reader.readAsDataURL(file);
@@ -4287,7 +4326,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -4382,7 +4421,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n@media print{\n}\n", ""]);
+exports.push([module.i, "\n@media print{\n}\r\n", ""]);
 
 // exports
 
@@ -4439,7 +4478,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -37116,7 +37155,7 @@ var render = function() {
                                             },
                                             [
                                               _vm._v(
-                                                "\n          Le mode de regelemnt doit etre indiqué\n        "
+                                                "\r\n          Le mode de regelemnt doit etre indiqué\r\n        "
                                               )
                                             ]
                                           )
@@ -37158,7 +37197,7 @@ var render = function() {
                                             },
                                             [
                                               _vm._v(
-                                                "\n          Le montant est erroné\n        "
+                                                "\r\n          Le montant est erroné\r\n        "
                                               )
                                             ]
                                           )
@@ -38177,8 +38216,22 @@ var render = function() {
                                       { attrs: { xs12: "", md4: "" } },
                                       [
                                         _c("v-text-field", {
+                                          directives: [
+                                            {
+                                              name: "validate",
+                                              rawName: "v-validate",
+                                              value: "required",
+                                              expression: "'required'"
+                                            }
+                                          ],
                                           ref: "nom",
-                                          attrs: { label: "Nom" },
+                                          attrs: {
+                                            label: "Nom",
+                                            "data-vv-name": "nom",
+                                            "error-messages": _vm.errors.collect(
+                                              "nom"
+                                            )
+                                          },
                                           model: {
                                             value: _vm.information.nom,
                                             callback: function($$v) {
@@ -38200,8 +38253,22 @@ var render = function() {
                                       { attrs: { xs12: "", md4: "" } },
                                       [
                                         _c("v-text-field", {
+                                          directives: [
+                                            {
+                                              name: "validate",
+                                              rawName: "v-validate",
+                                              value: "required",
+                                              expression: "'required'"
+                                            }
+                                          ],
                                           ref: "raison",
-                                          attrs: { label: "Raison" },
+                                          attrs: {
+                                            label: "Raison",
+                                            "data-vv-name": "raison",
+                                            "error-messages": _vm.errors.collect(
+                                              "raison"
+                                            )
+                                          },
                                           model: {
                                             value: _vm.information.raison,
                                             callback: function($$v) {
@@ -38223,8 +38290,22 @@ var render = function() {
                                       { attrs: { xs12: "", md4: "" } },
                                       [
                                         _c("v-text-field", {
+                                          directives: [
+                                            {
+                                              name: "validate",
+                                              rawName: "v-validate",
+                                              value: "required",
+                                              expression: "'required'"
+                                            }
+                                          ],
                                           ref: "matricule",
-                                          attrs: { label: "Matricule" },
+                                          attrs: {
+                                            label: "Matricule",
+                                            "data-vv-name": "matricule",
+                                            "error-messages": _vm.errors.collect(
+                                              "matricule"
+                                            )
+                                          },
                                           model: {
                                             value: _vm.information.matricule,
                                             callback: function($$v) {
@@ -38301,8 +38382,22 @@ var render = function() {
                                       { attrs: { xs12: "", md4: "" } },
                                       [
                                         _c("v-text-field", {
+                                          directives: [
+                                            {
+                                              name: "validate",
+                                              rawName: "v-validate",
+                                              value: "email",
+                                              expression: "'email'"
+                                            }
+                                          ],
                                           ref: "email",
-                                          attrs: { label: "Email" },
+                                          attrs: {
+                                            label: "Email",
+                                            "data-vv-name": "email",
+                                            "error-messages": _vm.errors.collect(
+                                              "email"
+                                            )
+                                          },
                                           model: {
                                             value: _vm.information.email,
                                             callback: function($$v) {
@@ -78878,7 +78973,7 @@ var liste_client = vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('liste_c
 var parametres = vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('parametres', __webpack_require__(/*! ../components/parametres/parametres.vue */ "./resources/js/components/parametres/parametres.vue").default);
 /* harmony default export */ __webpack_exports__["default"] = (new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   mode: 'history',
-  base: Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"}).BASE_URL,
+  base: Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"}).BASE_URL,
   routes: [{
     path: '/facturation/create',
     name: 'create_facture',
@@ -80194,8 +80289,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/macbookpro/Desktop/Facturation/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/macbookpro/Desktop/Facturation/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\youso\Laravel_tuto\Facturation\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\youso\Laravel_tuto\Facturation\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

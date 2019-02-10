@@ -18,6 +18,18 @@ import VueAxios from 'vue-axios'
 
 Vue.use(VueAxios, axios)
 
+import Echo from 'laravel-echo'
+
+window.Pusher = require('pusher-js');
+
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: process.env.MIX_PUSHER_APP_KEY,
+    cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+    forceTLS: true,
+    encrypted: false,
+});
+
 
 /**
  * The following block of code may be used to automatically register your
@@ -54,6 +66,7 @@ const app = new Vue({
         // this.$store.dispatch('loadProduits')
         // this.$store.dispatch('loadReglements')
         //this.$store.dispatch('loadAll')
+
         this.$store.dispatch('chargerFacture')
     },
 })

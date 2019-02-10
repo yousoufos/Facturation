@@ -18,7 +18,7 @@ export default {
     },
     actions: {
         changeStatut ({commit},payload) {
-            const uri = 'http://localhost:3000/api/facture/update/' + payload.id
+            const uri = 'http://localhost:' + process.env.MIX_URI_PORT +'/api/facture/update/' + payload.id
             axios.put(uri, payload).then((response) => {
                 commit('setStatutFacture', payload)
                 console.log(response.data);
@@ -31,7 +31,7 @@ export default {
 
         },
         async loadFactures ({ commit, getters }) {
-            const uri = 'http://localhost:3000/api/facture';
+            const uri = 'http://localhost:' + process.env.MIX_URI_PORT +'/api/facture';
             //commit('setLoading', true);
              await axios.get(uri).then((response) => {
                 const facture = [];
@@ -65,7 +65,7 @@ export default {
             });
         },
         saveFacture ({ commit }, payload) {
-            const uri = 'http://localhost:3000/api/facture/create'
+            const uri = 'http://localhost:' + process.env.MIX_URI_PORT +'/api/facture/create'
             commit('setLoading', true)
             axios.post(uri, payload)
                 .then(response => {

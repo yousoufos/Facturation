@@ -19,7 +19,7 @@ export default {
 	},
 	actions: {
 		async loadReglements ({commit}) {
-			const uri = 'http://localhost:3000/api/facture/reglementfacture';
+            const uri = 'http://localhost:' + process.env.MIX_URI_PORT +'/api/facture/reglementfacture';
 			//commit('setLoading', true);
             await axios.get(uri).then((response) => {
                 const reglement = [];
@@ -43,7 +43,7 @@ export default {
             });
         },
         saveReglement ({ commit }, payload) {
-            const uri = 'http://localhost:3000/api/facture/reglementfacture/add'
+            const uri = 'http://localhost:' + process.env.MIX_URI_PORT +'/api/facture/reglementfacture/add'
             commit('setLoadingTable', true)
             axios.post(uri, payload)
                 .then(response => {
@@ -67,7 +67,7 @@ export default {
         },
         deleteReglement ({ commit }, payload) {
             commit('setLoadingTable', true)
-            const uri = 'http://localhost:3000/api/facture/reglementfacture/delete/'+payload.id
+            const uri = 'http://localhost:' + process.env.MIX_URI_PORT +'/api/facture/reglementfacture/delete/'+payload.id
             axios.delete(uri).then(response => {
                 commit('removeLigneReglement',payload.index)
                 console.log(response);

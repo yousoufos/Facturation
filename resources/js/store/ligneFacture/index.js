@@ -13,7 +13,7 @@ state.loadedLignesFacture.push(payload)
     },
     actions: {
         async loadLignesFacture({commit}){
-            const uri = 'http://localhost:3000/api/facture/lignesfacture/';
+            const uri = 'http://localhost:' + process.env.MIX_URI_PORT +'/api/facture/lignesfacture/';
             //commit('setLoading', true);
             await axios.get(uri).then((response) => {
               const lignes = [];

@@ -162,7 +162,7 @@
                                 <v-toolbar-title>Tva %</v-toolbar-title>
 
                                 <v-spacer></v-spacer>
-                                <v-btn icon class="white" @click="addTva">
+                                <v-btn v-if="!loadingTva" icon class="white" @click="addTva">
                                     <v-icon fab	dark color="indigo">add</v-icon>
                                 </v-btn>
                                 </v-toolbar>
@@ -229,6 +229,25 @@ export default {
     },
      mounted () {
       this.$validator.localize('en', this.dictionary)
+
+        window.Echo.channel("newTva").listen(".tva-created", e => {
+            let tva={
+                id:e.tva.id,
+                value:e.tva.value
+            }
+
+          this.$store.commit("addNewTva", e.tva)
+        });
+        window.Echo.channel("delTva").listen(".tva-deleted", e => {
+            let tva={
+                id:e.tva.id,
+                value:e.tva.value
+            }
+        console.log(e.tva);
+
+          this.$store.commit("removeTva", e.tva.id)
+        });
+
     },
     data(){
         return{

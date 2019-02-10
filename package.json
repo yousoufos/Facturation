@@ -37,8 +37,10 @@
     "dependencies": {
         "jspdf": "^1.5.3",
         "jspdf-autotable": "^3.0.4",
+        "laravel-echo": "^1.5.2",
         "material-design-icons-iconfont": "^4.0.3",
         "moment": "^2.23.0",
+        "pusher-js": "^4.3.1",
         "vee-validate": "^2.1.5",
         "vue-axios": "^2.1.4",
         "vue-moment": "^4.0.0",

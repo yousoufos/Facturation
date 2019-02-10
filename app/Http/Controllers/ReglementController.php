@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Reglement;
+use App\Events\ReglementAdd;
 use Illuminate\Http\Request;
 
 class ReglementController extends Controller
@@ -42,6 +43,7 @@ class ReglementController extends Controller
         $reglement->date_reglement = $request->get('date_reglement');
         $reglement->facture_id = $request->get('facture_id');
         $reglement->save();
+        broadcast(new ReglementAdd($reglement));
         return response()->json(['reglement'=> $reglement]);
     }
 

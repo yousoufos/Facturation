@@ -501,7 +501,31 @@ export default {
             return this.$store.getters.getLoadedModeReglement
         }
 
-	}
+    },
+    mounted(){
+        window.Echo.channel("newReglement").listen(".reglement-created", e => {
+            let reg = {
+                        id: e.reglement.id,
+                        montant: e.reglement.montant,
+                        mode_reglement: e.reglement.mode_reglement,
+                        date_reglement: e.reglement.date_reglement,
+                        facture_id: e.reglement.facture_id
+
+                    }
+
+
+          this.$store.commit('addNewReglement', reg)
+        });
+        window.Echo.channel("updateFacture").listen(".Facture-updated", e => {
+            let fact = {
+                        id: e.facture.id,
+                        statut: e.facture.statut,
+                    }
+
+
+          this.$store.commit('setStatutFacture', fact)
+        });
+    }
 }
 </script>
 

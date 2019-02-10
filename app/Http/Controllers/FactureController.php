@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Facture;
 use App\LigneFacture;
 use Illuminate\Http\Request;
+use App\Events\FactureUpdate;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreFactureRequest;
 
@@ -103,6 +104,7 @@ class FactureController extends Controller
     {
         $facture = Facture::find($id);
       $facture->update($request->all());
+      broadcast(new FactureUpdate($facture));
       return response()->json($facture->statut,200);
     }
 

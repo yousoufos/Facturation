@@ -20,8 +20,8 @@ export default {
         changeStatut ({commit},payload) {
             const uri = 'http://localhost:' + process.env.MIX_URI_PORT +'/api/facture/update/' + payload.id
             axios.put(uri, payload).then((response) => {
-                commit('setStatutFacture', payload)
-                console.log(response.data);
+                // commit('setStatutFacture', payload)
+
 
 
             }).catch((error) => {

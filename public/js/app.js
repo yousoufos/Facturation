@@ -3886,6 +3886,29 @@ writtenForm.defaults.lang = 'fr';
     mode: function mode() {
       return this.$store.getters.getLoadedModeReglement;
     }
+  },
+  mounted: function mounted() {
+    var _this2 = this;
+
+    window.Echo.channel("newReglement").listen(".reglement-created", function (e) {
+      var reg = {
+        id: e.reglement.id,
+        montant: e.reglement.montant,
+        mode_reglement: e.reglement.mode_reglement,
+        date_reglement: e.reglement.date_reglement,
+        facture_id: e.reglement.facture_id
+      };
+
+      _this2.$store.commit('addNewReglement', reg);
+    });
+    window.Echo.channel("updateFacture").listen(".Facture-updated", function (e) {
+      var fact = {
+        id: e.facture.id,
+        statut: e.facture.statut
+      };
+
+      _this2.$store.commit('setStatutFacture', fact);
+    });
   }
 });
 
@@ -89371,9 +89394,7 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
     changeStatut: function changeStatut(_ref, payload) {
       var commit = _ref.commit;
       var uri = 'http://localhost:' + "8000" + '/api/facture/update/' + payload.id;
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.put(uri, payload).then(function (response) {
-        commit('setStatutFacture', payload);
-        console.log(response.data);
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.put(uri, payload).then(function (response) {// commit('setStatutFacture', payload)
       }).catch(function (error) {
         console.log(error);
       });
@@ -90017,15 +90038,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var uri = 'http://localhost:' + "8000" + '/api/facture/reglementfacture/add';
       commit('setLoadingTable', true);
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.post(uri, payload).then(function (response) {
-        var reglement = response.data.reglement;
-        var reg = {
-          id: reglement.id,
-          montant: reglement.montant,
-          mode_reglement: reglement.mode_reglement,
-          date_reglement: reglement.date_reglement,
-          facture_id: reglement.facture_id
-        };
-        commit('addNewReglement', reg);
+        var reglement = response.data.reglement; // let reg = {
+        //     id: reglement.id,
+        //     montant: reglement.montant,
+        //     mode_reglement: reglement.mode_reglement,
+        //     date_reglement: reglement.date_reglement,
+        //     facture_id: reglement.facture_id
+        // }
+        // commit('addNewReglement', reg)
+
         commit('setLoadingTable', false);
       }).catch(function (error) {
         commit('setLoadingTable', false); //commit('seterreurs', error.response.data.errors)

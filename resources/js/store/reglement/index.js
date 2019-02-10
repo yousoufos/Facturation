@@ -48,15 +48,15 @@ export default {
             axios.post(uri, payload)
                 .then(response => {
                     const reglement = response.data.reglement;
-                    let reg = {
-                        id: reglement.id,
-                        montant: reglement.montant,
-                        mode_reglement: reglement.mode_reglement,
-                        date_reglement: reglement.date_reglement,
-                        facture_id: reglement.facture_id
+                    // let reg = {
+                    //     id: reglement.id,
+                    //     montant: reglement.montant,
+                    //     mode_reglement: reglement.mode_reglement,
+                    //     date_reglement: reglement.date_reglement,
+                    //     facture_id: reglement.facture_id
 
-                    }
-                    commit('addNewReglement', reg)
+                    // }
+                    // commit('addNewReglement', reg)
                     commit('setLoadingTable',false)
                 }).catch(error => {
                     commit('setLoadingTable', false)

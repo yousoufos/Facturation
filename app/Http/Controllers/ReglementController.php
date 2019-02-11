@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Reglement;
 use App\Events\ReglementAdd;
 use Illuminate\Http\Request;
+use App\Events\ReglementDeleted;
 
 class ReglementController extends Controller
 {
@@ -90,6 +91,7 @@ class ReglementController extends Controller
     public function destroy($id)
     {
         $reglement = Reglement::findOrFail($id);
+        broadcast(new ReglementDeleted($reglement));
         $reglement->delete();
         return response()->json('Reglement '.$id.' effacé avec succée');
     }

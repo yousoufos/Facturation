@@ -12,7 +12,8 @@ export default {
             state.loadReglements.push(payload)
         },
         removeLigneReglement (state, payload) {
-            const index = state.loadReglements.indexOf(payload)
+            const index = state.loadReglements.indexOf(state.loadReglements.find(reglement => reglement.id === payload.id))
+
             state.loadReglements.splice(index, 1)
         }
 
@@ -69,7 +70,7 @@ export default {
             commit('setLoadingTable', true)
             const uri = 'http://localhost:' + process.env.MIX_URI_PORT +'/api/facture/reglementfacture/delete/'+payload.id
             axios.delete(uri).then(response => {
-                commit('removeLigneReglement',payload.index)
+                //commit('removeLigneReglement',payload.index)
                 console.log(response);
                 commit('setLoadingTable', false)
 

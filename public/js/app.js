@@ -3909,6 +3909,13 @@ writtenForm.defaults.lang = 'fr';
 
       _this2.$store.commit('setStatutFacture', fact);
     });
+    window.Echo.channel("delReglement").listen(".reglement-deleted", function (e) {
+      var reg = {
+        id: e.reglement.id
+      };
+
+      _this2.$store.commit('removeLigneReglement', reg);
+    });
   }
 });
 
@@ -89981,7 +89988,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       state.loadReglements.push(payload);
     },
     removeLigneReglement: function removeLigneReglement(state, payload) {
-      var index = state.loadReglements.indexOf(payload);
+      var index = state.loadReglements.indexOf(state.loadReglements.find(function (reglement) {
+        return reglement.id === payload.id;
+      }));
       state.loadReglements.splice(index, 1);
     }
   },
@@ -90059,7 +90068,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       commit('setLoadingTable', true);
       var uri = 'http://localhost:' + "8000" + '/api/facture/reglementfacture/delete/' + payload.id;
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.delete(uri).then(function (response) {
-        commit('removeLigneReglement', payload.index);
+        //commit('removeLigneReglement',payload.index)
         console.log(response);
         commit('setLoadingTable', false);
       }).catch(function (error) {

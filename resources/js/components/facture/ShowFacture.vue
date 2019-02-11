@@ -525,6 +525,15 @@ export default {
 
           this.$store.commit('setStatutFacture', fact)
         });
+        window.Echo.channel("delReglement").listen(".reglement-deleted", e => {
+            let reg = {
+                        id: e.reglement.id,
+
+                    }
+
+
+          this.$store.commit('removeLigneReglement',reg)
+        });
     }
 }
 </script>

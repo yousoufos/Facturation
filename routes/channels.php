@@ -20,6 +20,9 @@ Broadcast::channel('delTva', function(){
 Broadcast::channel('newReglement', function(){
         return true;
     });
+Broadcast::channel('delReglement', function(){
+        return true;
+    });
 Broadcast::channel('updateFacture', function(){
         return true;
     });

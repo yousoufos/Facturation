@@ -139,7 +139,7 @@ export default {
                         id:mode.id,
                         modeReglement: mode.modeReglement
                     }
-                    commit('addNewModeReglement', m)
+                    //commit('addNewModeReglement', m)
                     commit('setLoadingReglement', false);
                 }).catch(error => {
                     commit('setLoadingReglement', false);
@@ -165,7 +165,7 @@ export default {
             commit('setLoadingReglement', true)
             const uri = 'http://localhost:' + process.env.MIX_URI_PORT +'/api/modereglement/delete/' + payload
             axios.delete(uri).then(response => {
-                commit('removeModeReglement', payload.index)
+                //commit('removeModeReglement', payload.index)
                 console.log(response);
                 commit('setLoadingReglement', false)
 

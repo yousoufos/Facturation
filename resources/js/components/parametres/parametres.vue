@@ -243,9 +243,26 @@ export default {
                 id:e.tva.id,
                 value:e.tva.value
             }
-        console.log(e.tva);
+
 
           this.$store.commit("removeTva", e.tva.id)
+        });
+        window.Echo.channel("newModeReglement").listen(".modeReglement-created", e => {
+            let reg={
+                id:e.reglement.id,
+                modeReglement:e.reglement.modeReglement
+            }
+
+          this.$store.commit("addNewModeReglement", reg)
+        });
+        window.Echo.channel("delModeReglement").listen(".modeReglement-deleted", e => {
+            let reg={
+                id:e.reglement.id,
+                modeReglement:e.reglement.modeReglement
+            }
+
+
+          this.$store.commit("removeModeReglement", reg.id)
         });
 
     },

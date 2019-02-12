@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\ModeReglement;
 use Illuminate\Http\Request;
+use App\Events\ModeReglementAdd;
+use App\Events\ModeReglementDeleted;
 
 class ModeReglementController extends Controller
 {
@@ -39,7 +41,9 @@ class ModeReglementController extends Controller
     {
         $modeReglement = new ModeReglement;
         $modeReglement->modeReglement = $request->get('modeReglement');
+
         $modeReglement->save();
+        broadcast(new ModeReglementAdd($modeReglement));
         return response()->json(['modeReglement'=> $modeReglement]);
     }
 
@@ -88,6 +92,7 @@ class ModeReglementController extends Controller
     public function destroy($id)
     {
         $modeReglement = ModeReglement::findOrFail($id);
+        broadcast(new ModeReglementDeleted($modeReglement));
         $modeReglement->delete();
         return response()->json('modeReglement '.$id.' effacé avec succée');
     }

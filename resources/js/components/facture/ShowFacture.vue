@@ -380,6 +380,8 @@ export default {
     },
     generatePdf(){
         let i = 10
+        let t =30
+        let j=120
         let body =[]
         let head =['Code','Designation','Qte','Tva%','Prix Unitaire','Remise','Total HT']
         const obj = this.facture.lignes;
@@ -393,22 +395,23 @@ export default {
 
         var doc = new jsPDF();
         doc.setFontSize(12)
-        doc.rect(10,10,75,40,'S')
-        doc.text('Client: '+this.client.nom,12,15)
+        doc.rect(10+j,10,75,40,'S')
+        doc.text('Client: '+this.client.nom,12+j,15)
         doc.setFontSize(10)
-        doc.text('Raison: '+this.client.raison,12,22)
-        doc.text('Adresse: '+this.client.adresse,12,29)
-        doc.text('TVA: '+this.client.matricule,12,40)
+        doc.text('Raison: '+this.client.raison,12+j,22)
+        doc.text('Adresse: '+this.client.adresse,12+j,29)
+        doc.text('TVA: '+this.client.matricule,12+j,40)
+        doc.addImage(this.societe.logo, 'JPEG', 10, 10, 20, 20)
         doc.autoTable({
             head:[['Date emission:','Date echéance:','Reference Facture:','Code Client:']],
             body:[[this.date_emission,this.date_echeance,this.reference,this.code_client]],
             theme:'plain',
-            startY:65,
+            startY:65+t,
         })
         doc.autoTable({
         head: [head],
         body: body,
-        startY:80
+        startY:80+t
     });
     doc.setLineWidth(0.5)
     doc.setDrawColor(0, 0, 0)
@@ -499,6 +502,9 @@ export default {
         },
         mode(){
             return this.$store.getters.getLoadedModeReglement
+        },
+        societe(){
+            return this.$store.getters.getInformation
         }
 
     },

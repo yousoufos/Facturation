@@ -130,7 +130,7 @@
                             <input type="file"
                             style="display:none"
                             ref="fileInput"
-                            accept="image/*"
+                            accept=".jpg,.jpeg"
                             @change="onFilePicked">
                     </v-flex>
                     <v-flex md2>
@@ -191,7 +191,7 @@
                                 <v-toolbar-title>Mode Reglement</v-toolbar-title>
 
                                 <v-spacer></v-spacer>
-                                <v-btn icon class="white" @click="addReglement">
+                                <v-btn v-if="!loadingReglement" icon class="white" @click="addReglement">
                                     <v-icon fab	dark color="indigo">add</v-icon>
                                 </v-btn>
                                 </v-toolbar>

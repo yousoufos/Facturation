@@ -37,7 +37,7 @@
           <v-container grid-list-md>
             <v-layout wrap>
               <v-flex xs12 sm6 md6>
-                <v-text-field label="Code Produit" v-model="nom" v-validate="'required'" data-vv-name="nom" :error-messages="errors.collect('nom')"></v-text-field>
+                <v-text-field label="Nom" v-model="nom" v-validate="'required'" data-vv-name="nom" :error-messages="errors.collect('nom')"></v-text-field>
               </v-flex>
               <v-flex xs12 sm6 md6>
                 <v-text-field label="Raison" v-model="raison" v-validate="'required'" data-vv-name="raison" :error-messages="errors.collect('raison')"></v-text-field>

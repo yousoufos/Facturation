@@ -59,12 +59,11 @@
         d-flex
       >
         <v-select
-          :items="clientListName "
+          :items="clientListName"
           item-text="nom"
           item-value="id"
           label="Client"
           v-model="client_id"
-          @change="clientSelected"
         ></v-select>
         <v-alert
           :value="validation_client"
@@ -516,13 +515,13 @@ export default {
         }
 
     },
-    clientSelected () {
-      this.client.nom = this.$store.getters.getClient(this.client_id).nom
-      this.client.adresse = this.$store.getters.getClient(this.client_id).adresse
-      this.client.raison = this.$store.getters.getClient(this.client_id).raison
-      this.client.matricule = this.$store.getters.getClient(this.client_id).matricule
-      this.client.mail = this.$store.getters.getClient(this.client_id).mail
-      this.client.tel = this.$store.getters.getClient(this.client_id).tel
+    clientSelected (val) {
+      this.client.nom = this.$store.getters.getClient(val).nom
+      this.client.adresse = this.$store.getters.getClient(val).adresse
+      this.client.raison = this.$store.getters.getClient(val).raison
+      this.client.matricule = this.$store.getters.getClient(val).matricule
+      this.client.mail = this.$store.getters.getClient(val).mail
+      this.client.tel = this.$store.getters.getClient(val).tel
     },
     resetFields () {
       this.produit_id = null,
@@ -567,8 +566,9 @@ export default {
       }
 
     },
-    test (item, key) {
-      this.ligne_tab[0].qte = 10
+    test () {
+
+
 
 
     },
@@ -656,10 +656,53 @@ export default {
     },
     saved () {
       return this.$store.getters.savedStatut;
+    },
+    loadedClients(){
+        return this.$store.getters.loadedClients
     }
   },
-  watch:{
+  mounted(){
+        window.Echo.channel("newFacture").listen(".facture-created", e => {
+            const lignes = [];
+                    const obj = e.lignes;
+                    Object.keys(obj).forEach((key) => {
+                        const value = obj[key];
+                        lignes.push({
+                            id: value.id,
+                            produit_id: value.produit_id,
+                            facture_id: value.facture_id,
+                            qte: value.qte,
+                            remise: value.remise,
+                        });
+                    })
+                    const f = e.facture;
+                    let facture = {
+                        id:f.id,
+                        client_id: f.client_id,
+                        date_emission: f.date_emission,
+                        date_echeance: f.date_echeance,
+                        statut: f.statut,
+                        total_ht: f.total_ht,
+                        total_ttc: f.total_ttc,
+                        total_remise: f.total_remise,
+                        total_tva: f.total_tva,
+                        reference: f.reference,
+                        lignes: lignes
+                    }
 
+                    this.$store.commit('createFacture', facture)
+                    this.$store.commit('createLignesFacture', lignes)
+        });
+  },
+  watch:{
+      client_id(val){
+          if(val!=null){
+              this.clientSelected(val)
+          }
+
+
+
+      }
   }
 };
 </script>

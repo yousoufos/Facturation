@@ -70,7 +70,7 @@ export default {
     },
     actions: {
         async loadTva ({ commit }) {
-            const uri = 'http://localhost:' + process.env.MIX_URI_PORT +'/api/tva/'
+            const uri   = process.env.MIX_URI_PORT +'/api/tva/'
             await axios.get(uri).then((response) => {
                 const tva = [];
                 const obj = response.data.tva;
@@ -91,7 +91,7 @@ export default {
             });
         },
         async loadModeReglement ({ commit }) {
-            const uri = 'http://localhost:' + process.env.MIX_URI_PORT +'/api/modereglement/'
+            const uri   = process.env.MIX_URI_PORT +'/api/modereglement/'
             await axios.get(uri).then((response) => {
                 const mode = [];
                 const obj = response.data.modeReglement;
@@ -113,7 +113,7 @@ export default {
         },
         addTva ({ commit }, payload) {
             commit('setLoadingTva', true);
-            const uri = 'http://localhost:' + process.env.MIX_URI_PORT +'/api/tva/add'
+            const uri   = process.env.MIX_URI_PORT +'/api/tva/add'
 
             axios.post(uri, payload)
                 .then(response => {
@@ -130,7 +130,7 @@ export default {
                 })
         },
         addModeReglement ({ commit }, payload) {
-            const uri = 'http://localhost:' + process.env.MIX_URI_PORT +'/api/modereglement/add'
+            const uri   = process.env.MIX_URI_PORT +'/api/modereglement/add'
             commit('setLoadingReglement', true);
             axios.post(uri, payload)
                 .then(response => {
@@ -148,7 +148,7 @@ export default {
         },
         deleteTva ({ commit }, payload) {
             commit('setLoadingTva', true);
-            const uri = 'http://localhost:' + process.env.MIX_URI_PORT + '/api/tva/delete/' + payload
+            const uri   = process.env.MIX_URI_PORT + '/api/tva/delete/' + payload
             axios.delete(uri).then(response => {
                  //commit('removeTva', payload.index)
                 console.log(response);
@@ -163,7 +163,7 @@ export default {
         },
         deleteModeReglement ({ commit }, payload) {
             commit('setLoadingReglement', true)
-            const uri = 'http://localhost:' + process.env.MIX_URI_PORT +'/api/modereglement/delete/' + payload
+            const uri   = process.env.MIX_URI_PORT +'/api/modereglement/delete/' + payload
             axios.delete(uri).then(response => {
                 //commit('removeModeReglement', payload.index)
                 console.log(response);
@@ -176,7 +176,7 @@ export default {
             })
         },
         editTva ({ commit }, payload) {
-            const uri = 'http://localhost:' + process.env.MIX_URI_PORT +'/api/tva/update/' + payload.id
+            const uri   = process.env.MIX_URI_PORT +'/api/tva/update/' + payload.id
             commit('setLoading', true)
             axios.put(uri, payload).then((response) => {
                 commit('editTvaLoaded', payload)
@@ -190,7 +190,7 @@ export default {
             });
         },
         editModeReglement ({ commit }, payload) {
-            const uri = 'http://localhost:' + process.env.MIX_URI_PORT +'/api/modereglement/update/' + payload.id
+            const uri   = process.env.MIX_URI_PORT +'/api/modereglement/update/' + payload.id
             commit('setLoading', true)
             axios.put(uri, payload).then((response) => {
                 commit('editModeRegelementLoaded', payload)

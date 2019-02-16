@@ -32,7 +32,7 @@ export default {
     actions: {
         editProduit ({ commit }, payload) {
 
-            const uri = 'http://localhost:' + process.env.MIX_URI_PORT +'/api/produit/update/' + payload.id
+            const uri   = process.env.MIX_URI_PORT +'/api/produit/update/' + payload.id
             commit('setLoadingTable', true)
             axios.put(uri, payload).then((response) => {
                 commit('editProduitLoaded', payload)
@@ -47,7 +47,7 @@ export default {
         },
         deleteProduit ({ commit }, payload) {
             commit('setLoadingTable', true)
-            const uri = 'http://localhost:' + process.env.MIX_URI_PORT +'/api/produit/delete/'+payload.id
+            const uri   = process.env.MIX_URI_PORT +'/api/produit/delete/'+payload.id
             axios.delete(uri).then(response => {
                 commit('removeProduit',payload.index)
                 console.log(response);
@@ -63,7 +63,7 @@ export default {
             commit,
             dispatch,
         }) {
-            const uri = 'http://localhost:' + process.env.MIX_URI_PORT +'/api/produit';
+            const uri   = process.env.MIX_URI_PORT +'/api/produit';
             //commit('setLoading', true);
             await axios.get(uri).then((response) => {
                 const Produit = [];
@@ -102,7 +102,7 @@ export default {
             commit('setProduitListName', clt);
         },
         saveProduit ({ commit }, payload) {
-            const uri = 'http://localhost:' + process.env.MIX_URI_PORT +'/api/produit/add'
+            const uri   = process.env.MIX_URI_PORT +'/api/produit/add'
             commit('setLoading', true);
             axios.post(uri, payload)
                 .then(response => {

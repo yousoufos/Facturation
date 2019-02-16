@@ -1,11 +1,13 @@
 <?php
+namespace App;
 
-namespace App\Http\Controllers;
+
 
 use App\tva;
 use App\Events\TvaCreated;
 use App\Events\TvaDeleted;
 use Illuminate\Http\Request;
+use Illuminate\Broadcasting\InteractsWithSockets;
 
 class TvaController extends Controller
 {
@@ -41,7 +43,7 @@ class TvaController extends Controller
         $tva = new Tva;
         $tva->value = $request->get('value');
         $tva->save();
-        broadcast(new TvaCreated($tva));
+        broadcast(new TvaCreated($tva))->toOthers();
         return response()->json(['tva'=> $tva]);
     }
 
@@ -90,7 +92,7 @@ class TvaController extends Controller
     public function destroy($id)
     {
         $tva = Tva::findOrFail($id);
-        broadcast(new TvaDeleted($tva));
+        broadcast(new TvaDeleted($tva))->toOthers();
         $tva->delete();
         return response()->json('tva '.$id.' effacé avec succée');
     }

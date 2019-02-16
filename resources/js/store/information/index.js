@@ -17,7 +17,7 @@ export default {
         async loadInformation ({
             commit,
         }) {
-            const uri = 'http://localhost:' + process.env.MIX_URI_PORT +'/api/information';
+            const uri   = process.env.MIX_URI_PORT +'/api/information';
             await axios.get(uri).then((response) => {
                 const value = response.data.information
                 const info = {
@@ -44,7 +44,7 @@ export default {
         },
         updateInformation ({ commit }, payload) {
             commit('setLoadingTable', true)
-            const uri = 'http://localhost:' + process.env.MIX_URI_PORT +'/api/information/update/' + payload.id;
+            const uri   = process.env.MIX_URI_PORT +'/api/information/update/' + payload.id;
             axios.put(uri, payload).then((response) => {
                 let info = {
                     id: response.data.information.id,

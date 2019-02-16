@@ -18,7 +18,7 @@ export default {
     },
     actions: {
         changeStatut ({commit},payload) {
-            const uri = 'http://localhost:' + process.env.MIX_URI_PORT +'/api/facture/update/' + payload.id
+            const uri   = process.env.MIX_URI_PORT +'/api/facture/update/' + payload.id
             axios.put(uri, payload).then((response) => {
                 // commit('setStatutFacture', payload)
 
@@ -31,7 +31,7 @@ export default {
 
         },
         async loadFactures ({ commit, getters }) {
-            const uri = 'http://localhost:' + process.env.MIX_URI_PORT +'/api/facture';
+            const uri   = process.env.MIX_URI_PORT +'/api/facture';
             //commit('setLoading', true);
              await axios.get(uri).then((response) => {
                 const facture = [];
@@ -65,39 +65,39 @@ export default {
             });
         },
         saveFacture ({ commit }, payload) {
-            const uri = 'http://localhost:' + process.env.MIX_URI_PORT +'/api/facture/create'
+            const uri   = process.env.MIX_URI_PORT +'/api/facture/create'
             commit('setLoading', true)
             axios.post(uri, payload)
                 .then(response => {
-                    const lignes = [];
-                    const obj = response.data.lignes;
-                    Object.keys(obj).forEach((key) => {
-                        const value = obj[key];
-                        lignes.push({
-                            id: value.id,
-                            produit_id: value.produit_id,
-                            facture_id: value.facture_id,
-                            qte: value.qte,
-                            remise: value.remise,
-                        });
-                    })
-                    const f = response.data.facture;
-                    let facture = {
-                        id:f.id,
-                        client_id: payload.client_id,
-                        date_emission: payload.date_emission,
-                        date_echeance: payload.date_echeance,
-                        statut: payload.statut,
-                        total_ht: payload.total_ht,
-                        total_ttc: payload.total_ttc,
-                        total_remise: payload.total_remise,
-                        total_tva: payload.total_tva,
-                        reference: f.reference,
-                        lignes: lignes
-                    }
+                    // const lignes = [];
+                    // const obj = response.data.lignes;
+                    // Object.keys(obj).forEach((key) => {
+                    //     const value = obj[key];
+                    //     lignes.push({
+                    //         id: value.id,
+                    //         produit_id: value.produit_id,
+                    //         facture_id: value.facture_id,
+                    //         qte: value.qte,
+                    //         remise: value.remise,
+                    //     });
+                    // })
+                    // const f = response.data.facture;
+                    // let facture = {
+                    //     id:f.id,
+                    //     client_id: payload.client_id,
+                    //     date_emission: payload.date_emission,
+                    //     date_echeance: payload.date_echeance,
+                    //     statut: payload.statut,
+                    //     total_ht: payload.total_ht,
+                    //     total_ttc: payload.total_ttc,
+                    //     total_remise: payload.total_remise,
+                    //     total_tva: payload.total_tva,
+                    //     reference: f.reference,
+                    //     lignes: lignes
+                    // }
 
-                    commit('createFacture', facture)
-                    commit('createLignesFacture', lignes)
+                    // commit('createFacture', facture)
+                    // commit('createLignesFacture', lignes)
                     commit('setLoading', false)
                     commit('setSavedStatut', true)
                     console.log('Ajout de facture avec succee');

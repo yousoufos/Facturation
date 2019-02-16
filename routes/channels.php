@@ -26,6 +26,9 @@ Broadcast::channel('delReglement', function(){
 Broadcast::channel('updateFacture', function(){
         return true;
     });
+Broadcast::channel('newFacture', function(){
+        return true;
+    });
 Broadcast::channel('newModeReglement', function(){
         return true;
     });

@@ -31,7 +31,7 @@ export default {
   },
     actions: {
         editClient ({ commit }, payload) {
-            const uri = 'http://localhost:'+process.env.MIX_URI_PORT+'/api/client/update/' + payload.id
+            const uri  =process.env.MIX_URI_PORT+'/api/client/update/' + payload.id
             commit('setLoadingTable', true)
             axios.put(uri, payload).then((response) => {
                 commit('editClientLoaded', payload)
@@ -46,7 +46,7 @@ export default {
         },
         deleteClient ({ commit }, payload) {
             commit('setLoadingTable', true)
-            const uri = 'http://localhost:' + process.env.MIX_URI_PORT +'/api/client/delete/' + payload.id
+            const uri   = process.env.MIX_URI_PORT +'/api/client/delete/' + payload.id
             axios.delete(uri).then(response => {
                 commit('removeClient', payload.index)
                 console.log(response);
@@ -59,7 +59,7 @@ export default {
             })
         },
         saveClient ({ commit }, payload) {
-            const uri = 'http://localhost:' + process.env.MIX_URI_PORT +'/api/client/add'
+            const uri   = process.env.MIX_URI_PORT +'/api/client/add'
             commit('setLoadingTable', true);
             axios.post(uri, payload)
                 .then(response => {
@@ -86,7 +86,7 @@ export default {
       commit,
       dispatch,
     }) {
-        const uri = 'http://localhost:' + process.env.MIX_URI_PORT +'/api/client';
+        const uri   = process.env.MIX_URI_PORT +'/api/client';
       //commit('setLoading', true);
       await axios.get(uri).then((response) => {
         const client = [];

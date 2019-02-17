@@ -9,8 +9,9 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 
-class ClientDeleted
+class ClientDeleted implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -19,9 +20,10 @@ class ClientDeleted
      *
      * @return void
      */
-    public function __construct()
+    public $client;
+    public function __construct($client)
     {
-        //
+        $this->client=$client;
     }
 
     /**
@@ -31,6 +33,9 @@ class ClientDeleted
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('channel-name');
+        return new Channel('delClient');
     }
+    public function broadcastAs(){
+            return 'client-deleted';
+        }
 }

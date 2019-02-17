@@ -11,7 +11,7 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 
-class ClientCreated implements ShouldBroadcastNow
+class InformationUpdated implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -20,10 +20,10 @@ class ClientCreated implements ShouldBroadcastNow
      *
      * @return void
      */
-    public $client;
-    public function __construct($client)
+    public $information;
+    public function __construct($information)
     {
-        $this->client=$client;
+        $this->information=$information;
     }
 
     /**
@@ -33,9 +33,9 @@ class ClientCreated implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new Channel('newClient');
+        return new Channel('updateInformation');
     }
     public function broadcastAs(){
-            return 'client-created';
+            return 'information-updated';
         }
 }

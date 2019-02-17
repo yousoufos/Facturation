@@ -9,8 +9,9 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 
-class ClientUpdated
+class ClientUpdated implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -19,9 +20,10 @@ class ClientUpdated
      *
      * @return void
      */
-    public function __construct()
+    public $client;
+    public function __construct($client)
     {
-        //
+        $this->client=$client;
     }
 
     /**
@@ -31,6 +33,9 @@ class ClientUpdated
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('channel-name');
+        return new Channel('updateClient');
     }
+    public function broadcastAs(){
+            return 'client-updated';
+        }
 }

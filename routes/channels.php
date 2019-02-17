@@ -35,3 +35,24 @@ Broadcast::channel('newModeReglement', function(){
 Broadcast::channel('delModeReglement', function(){
         return true;
     });
+Broadcast::channel('newClient', function(){
+        return true;
+    });
+Broadcast::channel('delClient', function(){
+        return true;
+    });
+Broadcast::channel('updateClient', function(){
+        return true;
+    });
+Broadcast::channel('newProduit', function(){
+        return true;
+    });
+Broadcast::channel('delProduit', function(){
+        return true;
+    });
+Broadcast::channel('updateProduit', function(){
+        return true;
+    });
+Broadcast::channel('updateInformation', function(){
+        return true;
+    });

@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\produit;
 use Illuminate\Http\Request;
+use App\Events\ProduitCreated;
+use App\Events\ProduitDeleted;
+use App\Events\ProduitUpdated;
 use App\Http\Requests\StoreProduitRequest;
 
 class ProduitController extends Controller
@@ -43,6 +46,7 @@ class ProduitController extends Controller
         $produit->prix = $request->get('prix');
         $produit->tva = $request->get('tva');
         $produit->save();
+        broadcast(new ProduitCreated($produit));
         return response()->json(['produit'=> $produit]);
 
     }
@@ -80,6 +84,7 @@ class ProduitController extends Controller
     {
         $produit = Produit::find($id);
         $produit->update($request->all());
+        broadcast(new ProduitUpdated($produit));
         return response()->json('successfully updated');
     }
 
@@ -92,6 +97,7 @@ class ProduitController extends Controller
     public function destroy($id)
     {
      $produit = Produit::findOrFail($id);
+     broadcast(new ProduitDeleted($produit));
         $produit->delete();
         return response()->json('Produit '.$id.' effacé avec succée');
     }

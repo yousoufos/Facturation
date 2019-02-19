@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\client;
 use Illuminate\Http\Request;
+use App\Events\ClientCreated;
+use App\Events\ClientDeleted;
+use App\Events\ClientUpdated;
 use App\Http\Requests\StoreClientRequest;
 
 class ClientController extends Controller
@@ -45,6 +48,7 @@ class ClientController extends Controller
         $client->email = $request->get('email');
         $client->adresse = $request->get('adresse');
         $client->save();
+         broadcast(new ClientCreated($client));
         return response()->json(['client'=> $client]);
     }
 
@@ -81,6 +85,7 @@ class ClientController extends Controller
     {
         $client = Client::find($id);
         $client->update($request->all());
+        broadcast(new ClientUpdated($client));
         return response()->json('successfully updated');
     }
 
@@ -90,8 +95,11 @@ class ClientController extends Controller
      * @param  \App\client  $client
      * @return \Illuminate\Http\Response
      */
-    public function destroy(client $client)
+    public function destroy($id)
     {
-        //
+        $client = Client::findOrFail($id);
+        broadcast(new ClientDeleted($client));
+        $client->delete();
+        return response()->json('client '.$id.' effacé avec succée');
     }
 }

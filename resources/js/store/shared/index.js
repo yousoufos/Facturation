@@ -78,7 +78,7 @@ export default {
                     const val = obj[key];
                     tva.push({
                         id:val.id,
-                        value: val.value,
+                        value: Number(val.value),
                     });
                 });
                 commit('setLoadedTva', tva);

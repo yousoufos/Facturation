@@ -82,7 +82,7 @@ export default {
           return moment(d).format("DD-MM-YYYY")
       },
       getClientName(item){
-          return this.$store.getters.getClient(+item.client_id).nom
+          return this.$store.getters.getClient(item.id).nom
       },
       getStatutClass(item){
           if(item.statut === 'En cours'){

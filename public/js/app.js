@@ -3370,7 +3370,7 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
       return moment(d).format("DD-MM-YYYY");
     },
     getClientName: function getClientName(item) {
-      return this.$store.getters.getClient(+item.client_id).nom;
+      return this.$store.getters.getClient(item.id).nom;
     },
     getStatutClass: function getStatutClass(item) {
       if (item.statut === 'En cours') {
@@ -92014,7 +92014,7 @@ var liste_client = vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('liste_c
 var parametres = vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('parametres', __webpack_require__(/*! ../components/parametres/parametres.vue */ "./resources/js/components/parametres/parametres.vue").default);
 /* harmony default export */ __webpack_exports__["default"] = (new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   mode: 'history',
-  base: Object({"MIX_PUSHER_APP_CLUSTER":"eu","MIX_PUSHER_APP_KEY":"6603ece663054ffd7568","MIX_URI_PORT":"http://192.168.1.2:3000","NODE_ENV":"development"}).BASE_URL,
+  base: Object({"MIX_PUSHER_APP_CLUSTER":"eu","MIX_PUSHER_APP_KEY":"6603ece663054ffd7568","MIX_URI_PORT":"http://localhost:3000","NODE_ENV":"development"}).BASE_URL,
   routes: [{
     path: '/facturation/create',
     name: 'create_facture',
@@ -92111,7 +92111,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   actions: {
     editClient: function editClient(_ref, payload) {
       var commit = _ref.commit;
-      var uri = "http://192.168.1.2:3000" + '/api/client/update/' + payload.id;
+      var uri = "http://localhost:3000" + '/api/client/update/' + payload.id;
       commit('setLoadingTable', true);
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.put(uri, payload).then(function (response) {
         commit('editClientLoaded', payload);
@@ -92125,7 +92125,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     deleteClient: function deleteClient(_ref2, payload) {
       var commit = _ref2.commit;
       commit('setLoadingTable', true);
-      var uri = "http://192.168.1.2:3000" + '/api/client/delete/' + payload.id;
+      var uri = "http://localhost:3000" + '/api/client/delete/' + payload.id;
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.delete(uri).then(function (response) {
         commit('removeClient', payload.index);
         console.log(response);
@@ -92137,7 +92137,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     saveClient: function saveClient(_ref3, payload) {
       var commit = _ref3.commit;
-      var uri = "http://192.168.1.2:3000" + '/api/client/add';
+      var uri = "http://localhost:3000" + '/api/client/add';
       commit('setLoadingTable', true);
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.post(uri, payload).then(function (response) {
         client = response.data.client;
@@ -92167,7 +92167,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 commit = _ref4.commit, dispatch = _ref4.dispatch;
-                uri = "http://192.168.1.2:3000" + '/api/client'; //commit('setLoading', true);
+                uri = "http://localhost:3000" + '/api/client'; //commit('setLoading', true);
 
                 _context.next = 4;
                 return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(uri).then(function (response) {
@@ -92283,7 +92283,7 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
   actions: {
     changeStatut: function changeStatut(_ref, payload) {
       var commit = _ref.commit;
-      var uri = "http://192.168.1.2:3000" + '/api/facture/update/' + payload.id;
+      var uri = "http://localhost:3000" + '/api/facture/update/' + payload.id;
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.put(uri, payload).then(function (response) {// commit('setStatutFacture', payload)
       }).catch(function (error) {
         console.log(error);
@@ -92299,7 +92299,7 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
             switch (_context.prev = _context.next) {
               case 0:
                 commit = _ref2.commit, getters = _ref2.getters;
-                uri = "http://192.168.1.2:3000" + '/api/facture'; //commit('setLoading', true);
+                uri = "http://localhost:3000" + '/api/facture'; //commit('setLoading', true);
 
                 _context.next = 4;
                 return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(uri).then(function (response) {
@@ -92346,7 +92346,7 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
     }(),
     saveFacture: function saveFacture(_ref3, payload) {
       var commit = _ref3.commit;
-      var uri = "http://192.168.1.2:3000" + '/api/facture/create';
+      var uri = "http://localhost:3000" + '/api/facture/create';
       commit('setLoading', true);
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.post(uri, payload).then(function (response) {
         // const lignes = [];
@@ -92495,7 +92495,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 commit = _ref.commit;
-                uri = "http://192.168.1.2:3000" + '/api/information';
+                uri = "http://localhost:3000" + '/api/information';
                 _context.next = 4;
                 return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(uri).then(function (response) {
                   var value = response.data.information;
@@ -92538,7 +92538,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     updateInformation: function updateInformation(_ref3, payload) {
       var commit = _ref3.commit;
       commit('setLoadingTable', true);
-      var uri = "http://192.168.1.2:3000" + '/api/information/update/' + payload.id;
+      var uri = "http://localhost:3000" + '/api/information/update/' + payload.id;
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.put(uri, payload).then(function (response) {
         var info = {
           id: response.data.information.id,
@@ -92613,7 +92613,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 commit = _ref.commit;
-                uri = "http://192.168.1.2:3000" + '/api/facture/lignesfacture/'; //commit('setLoading', true);
+                uri = "http://localhost:3000" + '/api/facture/lignesfacture/'; //commit('setLoading', true);
 
                 _context.next = 4;
                 return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(uri).then(function (response) {
@@ -92715,7 +92715,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   actions: {
     editProduit: function editProduit(_ref, payload) {
       var commit = _ref.commit;
-      var uri = "http://192.168.1.2:3000" + '/api/produit/update/' + payload.id;
+      var uri = "http://localhost:3000" + '/api/produit/update/' + payload.id;
       commit('setLoadingTable', true);
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.put(uri, payload).then(function (response) {
         commit('editProduitLoaded', payload);
@@ -92729,7 +92729,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     deleteProduit: function deleteProduit(_ref2, payload) {
       var commit = _ref2.commit;
       commit('setLoadingTable', true);
-      var uri = "http://192.168.1.2:3000" + '/api/produit/delete/' + payload.id;
+      var uri = "http://localhost:3000" + '/api/produit/delete/' + payload.id;
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.delete(uri).then(function (response) {
         commit('removeProduit', payload.index);
         console.log(response);
@@ -92749,7 +92749,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 commit = _ref3.commit, dispatch = _ref3.dispatch;
-                uri = "http://192.168.1.2:3000" + '/api/produit'; //commit('setLoading', true);
+                uri = "http://localhost:3000" + '/api/produit'; //commit('setLoading', true);
 
                 _context.next = 4;
                 return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(uri).then(function (response) {
@@ -92801,7 +92801,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     saveProduit: function saveProduit(_ref5, payload) {
       var commit = _ref5.commit;
-      var uri = "http://192.168.1.2:3000" + '/api/produit/add';
+      var uri = "http://localhost:3000" + '/api/produit/add';
       commit('setLoading', true);
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.post(uri, payload).then(function (response) {
         var produit = response.data.produit;
@@ -92888,7 +92888,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 commit = _ref.commit;
-                uri = "http://192.168.1.2:3000" + '/api/facture/reglementfacture'; //commit('setLoading', true);
+                uri = "http://localhost:3000" + '/api/facture/reglementfacture'; //commit('setLoading', true);
 
                 _context.next = 4;
                 return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(uri).then(function (response) {
@@ -92927,7 +92927,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }(),
     saveReglement: function saveReglement(_ref2, payload) {
       var commit = _ref2.commit;
-      var uri = "http://192.168.1.2:3000" + '/api/facture/reglementfacture/add';
+      var uri = "http://localhost:3000" + '/api/facture/reglementfacture/add';
       commit('setLoadingTable', true);
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.post(uri, payload).then(function (response) {
         var reglement = response.data.reglement; // let reg = {
@@ -92949,7 +92949,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     deleteReglement: function deleteReglement(_ref3, payload) {
       var commit = _ref3.commit;
       commit('setLoadingTable', true);
-      var uri = "http://192.168.1.2:3000" + '/api/facture/reglementfacture/delete/' + payload.id;
+      var uri = "http://localhost:3000" + '/api/facture/reglementfacture/delete/' + payload.id;
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.delete(uri).then(function (response) {
         //commit('removeLigneReglement',payload.index)
         console.log(response);
@@ -93073,7 +93073,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 commit = _ref.commit;
-                uri = "http://192.168.1.2:3000" + '/api/tva/';
+                uri = "http://localhost:3000" + '/api/tva/';
                 _context.next = 4;
                 return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(uri).then(function (response) {
                   var tva = [];
@@ -93082,7 +93082,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     var val = obj[key];
                     tva.push({
                       id: val.id,
-                      value: val.value
+                      value: Number(val.value)
                     });
                   });
                   commit('setLoadedTva', tva);
@@ -93116,7 +93116,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context2.prev = _context2.next) {
               case 0:
                 commit = _ref2.commit;
-                uri = "http://192.168.1.2:3000" + '/api/modereglement/';
+                uri = "http://localhost:3000" + '/api/modereglement/';
                 _context2.next = 4;
                 return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(uri).then(function (response) {
                   var mode = [];
@@ -93152,7 +93152,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     addTva: function addTva(_ref3, payload) {
       var commit = _ref3.commit;
       commit('setLoadingTva', true);
-      var uri = "http://192.168.1.2:3000" + '/api/tva/add';
+      var uri = "http://localhost:3000" + '/api/tva/add';
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.post(uri, payload).then(function (response) {
         var tva = response.data.tva;
         var m = {
@@ -93168,7 +93168,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     addModeReglement: function addModeReglement(_ref4, payload) {
       var commit = _ref4.commit;
-      var uri = "http://192.168.1.2:3000" + '/api/modereglement/add';
+      var uri = "http://localhost:3000" + '/api/modereglement/add';
       commit('setLoadingReglement', true);
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.post(uri, payload).then(function (response) {
         var mode = response.data.modeReglement;
@@ -93186,7 +93186,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     deleteTva: function deleteTva(_ref5, payload) {
       var commit = _ref5.commit;
       commit('setLoadingTva', true);
-      var uri = "http://192.168.1.2:3000" + '/api/tva/delete/' + payload;
+      var uri = "http://localhost:3000" + '/api/tva/delete/' + payload;
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.delete(uri).then(function (response) {
         //commit('removeTva', payload.index)
         console.log(response);
@@ -93199,7 +93199,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     deleteModeReglement: function deleteModeReglement(_ref6, payload) {
       var commit = _ref6.commit;
       commit('setLoadingReglement', true);
-      var uri = "http://192.168.1.2:3000" + '/api/modereglement/delete/' + payload;
+      var uri = "http://localhost:3000" + '/api/modereglement/delete/' + payload;
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.delete(uri).then(function (response) {
         //commit('removeModeReglement', payload.index)
         console.log(response);
@@ -93211,7 +93211,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     editTva: function editTva(_ref7, payload) {
       var commit = _ref7.commit;
-      var uri = "http://192.168.1.2:3000" + '/api/tva/update/' + payload.id;
+      var uri = "http://localhost:3000" + '/api/tva/update/' + payload.id;
       commit('setLoading', true);
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.put(uri, payload).then(function (response) {
         commit('editTvaLoaded', payload);
@@ -93224,7 +93224,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     editModeReglement: function editModeReglement(_ref8, payload) {
       var commit = _ref8.commit;
-      var uri = "http://192.168.1.2:3000" + '/api/modereglement/update/' + payload.id;
+      var uri = "http://localhost:3000" + '/api/modereglement/update/' + payload.id;
       commit('setLoading', true);
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.put(uri, payload).then(function (response) {
         commit('editModeRegelementLoaded', payload);

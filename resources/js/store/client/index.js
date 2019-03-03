@@ -16,8 +16,9 @@ export default {
           state.loadedClients.push(payload)
       },
     removeClient (state, payload) {
-          const index = state.loadedClients.indexOf(payload)
-          state.loadedClients.splice(index, 1)
+        state.loadedClients.splice(state.loadedClients.findIndex(function (client) {
+            return client.id === payload;
+        }), 1);
       },
     editClientLoaded (state, payload) {
           let clt = state.loadedClients.find(client => client.id === payload.id)

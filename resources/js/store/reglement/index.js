@@ -12,9 +12,9 @@ export default {
             state.loadReglements.push(payload)
         },
         removeLigneReglement (state, payload) {
-            const index = state.loadReglements.indexOf(state.loadReglements.find(reglement => reglement.id === payload.id))
-
-            state.loadReglements.splice(index, 1)
+            state.loadReglements.splice(state.loadReglements.findIndex(function (reglement) {
+                return reglement.id === payload.id;
+            }), 1);
         }
 
 	},

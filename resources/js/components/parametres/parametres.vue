@@ -243,6 +243,7 @@ export default {
                 id:e.tva.id,
                 value:e.tva.value
             }
+    console.log('Event delTva was sent '+e.tva.value);
 
 
           this.$store.commit("removeTva", e.tva.id)

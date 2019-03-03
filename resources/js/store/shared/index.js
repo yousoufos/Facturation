@@ -46,8 +46,9 @@ export default {
             state.loadedTva.push(payload)
         },
         removeTva (state, payload) {
-            const index = state.loadedTva.indexOf(payload)
-            state.loadedTva.splice(index, 1)
+            state.loadedTva.splice(state.loadedTva.findIndex(function (tva) {
+                return tva.id === payload;
+            }), 1);
         },
         editTvaLoaded (state, payload) {
             let tva = state.loadedTva.find(tva => tva.id === payload.id)
@@ -57,8 +58,9 @@ export default {
             state.loadedModeReglement.push(payload)
         },
         removeModeReglement (state, payload) {
-            const index = state.loadedModeReglement.indexOf(payload)
-            state.loadedModeReglement.splice(index, 1)
+            state.loadedModeReglement.splice(state.loadedModeReglement.findIndex(function (modeReglement) {
+                return modeReglement.id === payload;
+            }), 1);
         },
         editModeRegelementLoaded (state, payload) {
             let mode = state.loadedModeReglement.find(modereglement => modereglement.id === payload.id)

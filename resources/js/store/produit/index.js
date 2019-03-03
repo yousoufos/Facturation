@@ -17,8 +17,9 @@ export default {
             state.loadedProduits.push(payload)
         },
         removeProduit (state, payload) {
-            const index = state.loadedProduits.indexOf(payload)
-            state.loadedProduits.splice(index, 1)
+            state.loadedProduits.splice(state.loadedProduits.findIndex(function (produit) {
+                return produit.id === payload;
+            }), 1);
         },
         editProduitLoaded (state, payload) {
             let prod = state.loadedProduits.find(produit => produit.id === payload.id)

@@ -62,18 +62,20 @@ export default {
         saveClient ({ commit }, payload) {
             const uri   = process.env.MIX_URI_PORT +'/api/client/add'
             commit('setLoadingTable', true);
+
+
             axios.post(uri, payload)
                 .then(response => {
-                    client = response.data.client;
+                    const client = response.data.client;
                     let clt = {
-                        nom: produit.nom,
-                        raison: produit.raison,
-                        matricule: produit.matricule,
-                        tel: produit.tel,
-                        email: produit.email,
-                        adresse: produit.adresse,
+                        nom: client.nom,
+                        raison: client.raison,
+                        matricule: client.matricule,
+                        tel: client.tel,
+                        email: client.email,
+                        adresse: client.adresse,
                     }
-                    commit('addNewProduit', clt)
+                    commit('addNewClient', clt)
                     commit('setLoadingTable', false);
                 }).catch(error => {
                     commit('setLoadingTable', false);

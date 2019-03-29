@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Events\FactureUpdate;
 use App\Events\FactureCreated;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Http\Requests\StoreFactureRequest;
 
 class FactureController extends Controller
@@ -56,7 +57,7 @@ class FactureController extends Controller
         $facture->total_remise = $request->get('total_remise');
         $facture->total_tva = $request->get('total_tva');
         $facture->save();
-
+Log::info($facture);
         $lignes = $request->get('lignes');
         $li=array();
          foreach($lignes as $key=>$ligne)
@@ -70,6 +71,7 @@ class FactureController extends Controller
             array_push($li,$l);
          }
          broadcast(new FactureCreated($facture,$li));
+
         return response()->json(['lignes'=> $li,'facture' => $facture]);
     }
 

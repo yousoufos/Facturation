@@ -402,6 +402,10 @@ export default {
         doc.text('Adresse: '+this.client.adresse,12+j,29)
         doc.text('TVA: '+this.client.matricule,12+j,40)
         doc.addImage(this.societe.logo, 'JPEG', 10, 10, 20, 20)
+        doc.text('Payer à :',10,40)
+        doc.text(this.societe.raison+', '+this.societe.nom,10,45)
+        doc.text(this.societe.adresse,10,50)
+        doc.text(this.societe.matricule,10,55)
         doc.autoTable({
             head:[['Date emission:','Date echéance:','Reference Facture:','Code Client:']],
             body:[[this.date_emission,this.date_echeance,this.reference,this.code_client]],
@@ -457,16 +461,16 @@ export default {
             return this.$store.getters.loading
         },
         total_ttc(){
-            return this.facture.total_ttc
+            return eval(this.facture.total_ttc).toFixed(3)
         },
         total_ht(){
-            return this.facture.total_ht
+            return eval(this.facture.total_ht).toFixed(3)
         },
         total_remise(){
-            return this.facture.total_remise
+            return eval(this.facture.total_remise).toFixed(3)
         },
         total_tva(){
-            return this.facture.total_tva
+            return eval(this.facture.total_tva).toFixed(3)
         },
 
         date_emission(){

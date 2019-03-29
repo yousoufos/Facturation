@@ -19,11 +19,11 @@ class CreateFacturesTable extends Migration
             $table->unsignedInteger('client_id')->nullable();
             $table->dateTime('date_emission')->nullable();
             $table->dateTime('date_echeance')->nullable();
-            $table->decimal('total_ht')->nullable();
-            $table->decimal('total_ttc')->nullable();
-            $table->decimal('total_remise')->nullable();
-            $table->decimal('total_tva')->nullable();
-            $table->string('statut')->nullable();
+            $table->decimal('total_ht',10,3)->nullable();
+            $table->decimal('total_ttc',10,3)->nullable();
+            $table->decimal('total_remise',10,3)->nullable();
+            $table->decimal('total_tva',10,3)->nullable();
+            $table->decimal('statut')->nullable();
             $table->timestamps();
 
         });

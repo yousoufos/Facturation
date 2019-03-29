@@ -555,12 +555,13 @@ export default {
           date_emission: this.$refs["datefacture"].date,
           date_echeance: this.$refs["dateecheance"].date,
           statut: this.statut,
-          total_ht: this.total_ht,
-          total_ttc: this.total_ttc,
-          total_remise: this.total_remise,
-          total_tva: this.total_tva,
+          total_ht: eval(this.total_ht).toFixed(3),
+          total_ttc: eval(this.total_ttc).toFixed(3),
+          total_remise: eval(this.total_remise).toFixed(3),
+          total_tva: eval(this.total_tva).toFixed(3),
           lignes: this.lignes
-        };
+        }
+
         this.$store.dispatch("saveFacture", facture);
         this.resetFields()
       }
@@ -690,7 +691,10 @@ export default {
                         lignes: lignes
                     }
 
+
                     this.$store.commit('createFacture', facture)
+
+
                     this.$store.commit('createLignesFacture', lignes)
         });
   },

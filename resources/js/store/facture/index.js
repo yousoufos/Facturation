@@ -10,6 +10,8 @@ export default {
         },
         createFacture (state, payload) {
             state.loadedFactures.push(payload)
+
+
         },
         setStatutFacture (state, payload) {
             state.loadedFactures.find(facture => facture.id === payload.id).statut = payload.statut

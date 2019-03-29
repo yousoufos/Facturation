@@ -109,6 +109,19 @@
         </v-data-table>
       </v-flex>
     </v-layout>
+    <v-snackbar
+            v-model="snack"
+            :timeout="3000"
+            :color="snackColor"
+            :top="true"
+          >
+            {{ snackText }}
+            <v-btn
+              flat
+              @click="snack = false"
+            >Close</v-btn>
+          </v-snackbar>
+
     </div>
 
   </v-container>
@@ -167,6 +180,9 @@ export default {
         { text: "Adresse", value: "adresse" },
         { text: "Actions", value: "name", sortable: false }
       ],
+      snack: false,
+      snackColor: '',
+      snackText: '',
     }
     },
     methods:{
@@ -220,6 +236,9 @@ export default {
                      }
                    if(this.create){
                      this.$store.dispatch('saveClient',client)
+                     this.snack =true
+                     this.snackColor="sucess"
+                     this.snackText="Client Ajouté avec suceé"
                    }
                    else{
                        this.$store.dispatch('editClient',client)

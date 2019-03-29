@@ -19,7 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/facture/create', 'FactureController@store');
 Route::post('/facture/reglementfacture/add', 'ReglementController@store');
 Route::post('/produit/add', 'ProduitController@store');
-Route::post('/client/add', 'ProduitController@store');
+Route::post('/client/add', 'ClientController@store');
 Route::post('/tva/add', 'TvaController@store');
 Route::post('/modereglement/add', 'ModeReglementController@store');
 Route::get('/facture/lignesfacture', 'LigneFactureController@index');

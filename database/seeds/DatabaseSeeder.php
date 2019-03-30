@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
              TvaTableSeeder::class,
              ModeReglementSeeder::class,
              InformationTableSeeder::class,
+             LaratrustSeeder::class
 
 
          ]);

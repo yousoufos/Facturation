@@ -2,7 +2,8 @@ import axios from 'axios'
 export default {
     state: {
         isLoggedIn: !!localStorage.getItem('token'),
-        user:null
+        user: null,
+        test:'test'
     },
     mutations: {
         loginUser (state) {

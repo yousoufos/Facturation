@@ -24,6 +24,8 @@ Vue.router = router
 Vue.use(VueRouter)
 Vue.use(VueAxios, axios)
 
+window.Store = store;
+
 router.beforeEach((to, from, next) => {
 
     // check if the route requires authentication and user is not logged in
@@ -35,7 +37,7 @@ router.beforeEach((to, from, next) => {
     }
 
     // if logged in redirect to dashboard
-    if (to.path === '/login' && store.state.isLoggedIn) {
+    if (to.path === '/login' && store.getters.isLogged) {
         console.log('yes');
         next({ name: 'parametres' })
 

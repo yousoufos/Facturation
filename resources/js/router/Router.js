@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import { store } from '../store/index'
 Vue.use(Router)
+
 
 const facturation = Vue.component('facturation', require('../components/facture/CreateFacture.vue').default);
 const liste_facture = Vue.component('liste_facture', require('../components/facture/ListeFactures.vue').default);
@@ -66,7 +68,30 @@ export default new Router({
             path: '/facturation/parametres',
             name: 'parametres',
             component: parametres,
-            meta: { requiresAuth: true }
+            beforeEnter: (to, from, next) => {
+
+                // check if the route requires authentication and user is not logged in
+                console.log('test');
+
+                if (!store.getters.isLogged) {
+                    // redirect to login page
+                    console.log('non')
+                    next({ name: 'login' })
+                    return
+                }
+
+                // if logged in redirect to dashboard
+                if (to.path === '/login' && store.getters.isLogged) {
+                    console.log('yes');
+                    next({ name: 'parametres' })
+
+
+                    return
+                }
+
+                next()
+
+        }
 
         },
         {

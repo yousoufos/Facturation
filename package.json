@@ -35,6 +35,8 @@
         "vue-template-compiler": "^2.6.9"
     },
     "dependencies": {
+        "@websanova/vue-auth": "^2.21.14-beta",
+        "es6-promise": "^4.2.6",
         "jspdf": "^1.5.3",
         "jspdf-autotable": "^3.0.13",
         "laravel-echo": "^1.5.3",

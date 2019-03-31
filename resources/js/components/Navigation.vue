@@ -65,6 +65,19 @@
 			</v-list-tile>
 
 		  </v-list-group>
+          <v-list-group sub-group no-action v-if="isLogged" >
+			<v-list-tile slot="activator">
+			  <v-list-tile-title>Bonjour, {{ loggedUser.name }}</v-list-tile-title>
+			</v-list-tile>
+
+			<v-list-tile v-for="(menu, i) in menu_auth" :key="i" :to="menu.link">
+			  <v-list-tile-title v-text="menu.title"></v-list-tile-title>
+			  <v-list-tile-action>
+				<v-icon v-text="menu.icon"></v-icon>
+			  </v-list-tile-action>
+			</v-list-tile>
+
+		  </v-list-group>
 
 	  </v-list>
 	</v-navigation-drawer>
@@ -87,9 +100,19 @@ props: ["url"],
     ],
     menu_client:[
         {icon:"dehaze", title:"Lister",link:"/facturation/client/liste"}
+    ],
+    menu_auth:[
+        {icon:"dehaze", title:"Logout",link:"/facturation/logout"}
     ]
   }),
-  computed: {},
+  computed: {
+      isLogged(){
+          return this.$store.getters.isLogged
+      },
+      loggedUser(){
+          return this.$store.getters.getLoggedUser
+      }
+  },
   methods: {}
 }
 </script>

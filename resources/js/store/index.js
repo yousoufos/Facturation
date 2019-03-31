@@ -11,6 +11,7 @@ import produit from './produit'
 import ligneFacture from './ligneFacture'
 import reglementFacture from './reglement'
 import information from './information'
+import auth from './auth'
 
 export const store = new Vuex.Store({
     modules: {
@@ -22,5 +23,6 @@ export const store = new Vuex.Store({
         ligneFacture: ligneFacture,
         reglementFacture: reglementFacture,
         information: information,
+        auth: auth,
     }
 })

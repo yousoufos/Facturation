@@ -16,4 +16,4 @@ Route::get('/facturation{any}', [
     'as' => 'root_facturation'	,
     'uses' => 'PageController@facturation'
 
-    ])->where('any','.*');
+    ])->where('any', '^(?!api\/)[\/\w\.-]*');

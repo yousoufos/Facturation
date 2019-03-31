@@ -7,6 +7,7 @@ window.Vue = require('vue')
 import {
     store
 } from './store/index'
+import VueRouter from 'vue-router'
 import router from './router/Router'
 import VeeValidate from 'vee-validate';
 Vue.use(VeeValidate)
@@ -15,8 +16,36 @@ Vue.use(Vuetify)
 import App from './components/App.vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import VueAuth from '@websanova/vue-auth'
+import 'es6-promise/auto'
+import auth from './auth'
 
+Vue.router = router
+Vue.use(VueRouter)
 Vue.use(VueAxios, axios)
+
+router.beforeEach((to, from, next) => {
+
+    // check if the route requires authentication and user is not logged in
+    if (to.matched.some(route => route.meta.requiresAuth) && !store.getters.isLogged) {
+        // redirect to login page
+        console.log('non')
+        next({ name: 'login' })
+        return
+    }
+
+    // if logged in redirect to dashboard
+    if (to.path === '/login' && store.state.isLoggedIn) {
+        console.log('yes');
+        next({ name: 'parametres' })
+
+
+        return
+    }
+
+    next()
+})
+
 
 import Echo from 'laravel-echo'
 

@@ -16,9 +16,7 @@ Vue.use(Vuetify)
 import App from './components/App.vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-import VueAuth from '@websanova/vue-auth'
 import 'es6-promise/auto'
-import auth from './auth'
 
 Vue.router = router
 Vue.use(VueRouter)
@@ -26,27 +24,26 @@ Vue.use(VueAxios, axios)
 
 window.Store = store;
 
-router.beforeEach((to, from, next) => {
+// router.beforeEach((to, from, next) => {
+//     console.log('router beforeeach');
 
-    // check if the route requires authentication and user is not logged in
-    if (to.matched.some(route => route.meta.requiresAuth) && !store.getters.isLogged) {
-        // redirect to login page
-        console.log('non')
-        next({ name: 'login' })
-        return
-    }
+//     // check if the route requires authentication and user is not logged in
+//     if (to.matched.some(route => route.meta.requiresAuth) && !store.getters.isLogged) {
+//         // redirect to login page
+//         next({ name: 'login' })
+//         return
+//     }
 
-    // if logged in redirect to dashboard
-    if (to.path === '/login' && store.getters.isLogged) {
-        console.log('yes');
-        next({ name: 'parametres' })
+//     // if logged in redirect to dashboard
+//     if (to.path === '/login' && store.getters.isLogged) {
+//         next({ name: 'parametres' })
 
 
-        return
-    }
+//         return
+//     }
 
-    next()
-})
+//     next()
+// })
 
 
 import Echo from 'laravel-echo'
@@ -97,7 +94,7 @@ const app = new Vue({
         // this.$store.dispatch('loadProduits')
         // this.$store.dispatch('loadReglements')
         //this.$store.dispatch('loadAll')
-
+        localStorage.clear();
         this.$store.dispatch('chargerFacture')
     },
 })

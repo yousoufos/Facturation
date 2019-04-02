@@ -12,7 +12,7 @@ state.loadedLignesFacture.push(payload)
 }
     },
     actions: {
-        async loadLignesFacture({commit}){
+        async loadLignesFacture({commit,dispatch}){
             const uri   = process.env.MIX_URI_PORT +'/api/facture/lignesfacture/';
             //commit('setLoading', true);
             await axios.get(uri).then((response) => {
@@ -28,7 +28,7 @@ state.loadedLignesFacture.push(payload)
                       remise: value.remise,
                     });
               })
-              commit('setLoadedLignesFacture', lignes);
+                commit('setLoadedLignesFacture', lignes);
               //commit('setLoading', false);
             }).catch((error) => {
               //commit('setLoading', false);

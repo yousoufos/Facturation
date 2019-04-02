@@ -230,8 +230,9 @@ export default {
                                  dispatch('loadTva').then(() => {
                                      dispatch('loadModeReglement').then(() => {
                                          dispatch('loadInformation').then(() => {
-                                             commit('setLoading', false);
-                                         })
+                                                 commit('setLoading', false)
+
+                                             })
 
                                      })
 

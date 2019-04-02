@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import { store } from '../store/index'
+import AuthGuard from './auth-guard'
 Vue.use(Router)
 
 
@@ -50,7 +50,7 @@ export default new Router({
             path: '/facturation/produit/liste',
             name: 'liste_produit',
             component: liste_produit,
-            meta: { requiresAuth: true }
+
 
         },
         {
@@ -68,37 +68,14 @@ export default new Router({
             path: '/facturation/parametres',
             name: 'parametres',
             component: parametres,
-            beforeEnter: (to, from, next) => {
-
-                // check if the route requires authentication and user is not logged in
-                console.log('test');
-
-                if (!store.getters.isLogged) {
-                    // redirect to login page
-                    console.log('non')
-                    next({ name: 'login' })
-                    return
-                }
-
-                // if logged in redirect to dashboard
-                if (to.path === '/login' && store.getters.isLogged) {
-                    console.log('yes');
-                    next({ name: 'parametres' })
-
-
-                    return
-                }
-
-                next()
-
-        }
+            beforeEnter:AuthGuard
 
         },
         {
             path: '*',
             name:'home',
             component: home,
-            meta: { requiresAuth: false }
+
 
         },
         {

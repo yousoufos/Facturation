@@ -67,7 +67,7 @@
 		  </v-list-group>
           <v-list-group sub-group no-action v-if="isLogged" >
 			<v-list-tile slot="activator">
-			  <v-list-tile-title>Bonjour, {{ loggedUser.name }}</v-list-tile-title>
+			  <v-list-tile-title>Bonjour</v-list-tile-title>
 			</v-list-tile>
 
 			<v-list-tile v-for="(menu, i) in menu_auth" :key="i" :to="menu.link">
@@ -109,9 +109,9 @@ props: ["url"],
       isLogged(){
           return this.$store.getters.isLogged
       },
-      loggedUser(){
-          return this.$store.getters.getLoggedUser
-      }
+    //   loggedUser(){
+    //       return this.$store.getters.getLoggedUser
+    //   }
   },
   methods: {}
 }

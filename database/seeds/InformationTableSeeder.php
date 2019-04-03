@@ -22,6 +22,7 @@ class InformationTableSeeder extends Seeder
             'email' =>'Example@example.com',
             'logo' =>'http://nouvelentrepreneur.fr/wp-content/uploads/sites/7/2017/06/entreprise.jpg',
             'rib' =>'Example',
+            'user_id' => 1,
         ]);
 }
 }

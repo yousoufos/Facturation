@@ -1,9 +1,9 @@
 import axios from 'axios'
 export default {
     state: {
-        isLoggedIn: !!localStorage.getItem('token'),
+        isLoggedIn: false ,// !!localStorage.getItem('token'),
         user: null,
-        test:'test'
+        wait:false
     },
     mutations: {
         loginUser (state) {
@@ -14,17 +14,24 @@ export default {
         },
         setUser (state,payload) {
             state.user = payload
+        },
+        setWait (state, payload) {
+            state.wait =payload
         }
     },
     actions: {
-        login ({ commit,dispatch }, payload) {
+        async login ({ commit, dispatch,state }, payload) {
+            commit('setLoading', true);
             const uri = process.env.MIX_URI_PORT + '/api/auth/login'
-            axios.post(uri, payload.loginfo).then(response => {
+            await axios.post(uri, payload.loginfo).then(response => {
                 // login user, store the token and redirect to dashboard
                 commit('loginUser')
                 localStorage.setItem('token', response.data.token)
-                payload.router.push({ name: 'parametres' })
-                dispatch('loggedUser')
+                dispatch('loggedUser').then(() => { payload.router.push({ name: 'home' })})
+
+
+                commit('setLoading', false);
+
 
 
             }).catch(error => {
@@ -33,6 +40,7 @@ export default {
             })
         },
         async loggedUser ({ commit }) {
+
             const uri = process.env.MIX_URI_PORT + '/api/auth/user'
             await axios.get(uri, {
                 headers: {
@@ -49,8 +57,11 @@ export default {
                 commit('setUser', user)
 
 
+
             }).catch(error => {
                 console.log(error);
+                commit('logoutUser')
+
 
 
             })
@@ -81,10 +92,5 @@ export default {
         getLoggedUser (state) {
             return state.user
         },
-        hasRole (state,val) {
-            return state.user.roles.some(item => item.name === val)
-
-
-        }
     }
 }

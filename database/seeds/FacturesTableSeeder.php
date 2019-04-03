@@ -20,6 +20,7 @@ class FacturesTableSeeder extends Seeder
             $facture = Facture::create([
                 'reference' => 'FACT-2018-'.$b,
                 'client_id' => $i,
+                'user_id' => 1,
                 'date_emission' => date('Y-m-d',strtotime($i.'-12-2018')),
                 'date_echeance' => date('Y-m-d',strtotime($i.'-12-2018')),
                 'total_ht' => mt_rand(1000,2000),

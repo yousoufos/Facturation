@@ -2129,6 +2129,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -2214,7 +2216,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = (_defineProperty({
   props: ["url"],
   data: function data() {
     return {
@@ -2249,13 +2253,19 @@ __webpack_require__.r(__webpack_exports__);
       }]
     };
   },
+  methods: {},
   computed: {
     isLogged: function isLogged() {
       return this.$store.getters.isLogged;
+    },
+    loggedUser: function loggedUser() {
+      return this.$store.getters.getLoggedUser;
+    },
+    loading: function loading() {
+      return this.$store.getters.loading;
     }
-  },
-  methods: {}
-});
+  }
+}, "methods", {}));
 
 /***/ }),
 
@@ -2552,12 +2562,60 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       email: null,
       password: null,
-      loginError: false
+      loginError: false,
+      passwordRules: [function (v) {
+        return !!v || 'Password is required';
+      }],
+      emailRules: [function (v) {
+        return !!v || 'E-mail is required';
+      }, function (v) {
+        return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid';
+      }],
+      valid: false,
+      e1: false
     };
   },
   mounted: function mounted() {//
@@ -2565,14 +2623,17 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     submitLogin: function submitLogin() {
       this.loginError = false;
-      var param = {
-        loginfo: {
-          email: this.email,
-          password: this.password
-        },
-        router: this.$router
-      };
-      this.$store.dispatch("login", param);
+
+      if (this.$refs.form.validate()) {
+        var param = {
+          loginfo: {
+            email: this.email,
+            password: this.password
+          },
+          router: this.$router
+        };
+        this.$store.dispatch("login", param);
+      }
     }
   }
 });
@@ -4609,7 +4670,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -49333,219 +49394,257 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "v-navigation-drawer",
-    {
-      staticClass: "blue-grey lighten-3",
-      attrs: { app: "", stateless: "", value: "true", width: "250", fixed: "" }
-    },
-    [
-      _c(
-        "v-list",
+  return !_vm.loading
+    ? _c(
+        "div",
         [
           _c(
-            "v-list-tile",
-            { attrs: { to: "/facturation" } },
-            [
-              _c("v-list-tile-action", [_c("v-icon", [_vm._v("home")])], 1),
-              _vm._v(" "),
-              _c("v-list-tile-title", [_vm._v("Home")])
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-list-group",
-            { attrs: { "no-action": "", "sub-group": "", value: "true" } },
+            "v-navigation-drawer",
+            {
+              staticClass: "blue-grey lighten-3",
+              attrs: {
+                app: "",
+                stateless: "",
+                value: "true",
+                width: "250",
+                fixed: ""
+              }
+            },
             [
               _c(
-                "v-list-tile",
-                { attrs: { slot: "activator" }, slot: "activator" },
-                [_c("v-list-tile-title", [_vm._v("Admin")])],
-                1
-              ),
-              _vm._v(" "),
-              _vm._l(_vm.admins, function(menu, i) {
-                return _c(
-                  "v-list-tile",
-                  { key: i, attrs: { to: menu.link } },
-                  [
-                    _c("v-list-tile-title", {
-                      domProps: { textContent: _vm._s(menu.title) }
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "v-list-tile-action",
-                      [
-                        _c("v-icon", {
-                          domProps: { textContent: _vm._s(menu.icon) }
-                        })
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                )
-              })
-            ],
-            2
-          ),
-          _vm._v(" "),
-          _c(
-            "v-list-group",
-            { attrs: { "sub-group": "", "no-action": "" } },
-            [
-              _c(
-                "v-list-tile",
-                { attrs: { slot: "activator" }, slot: "activator" },
-                [_c("v-list-tile-title", [_vm._v("Facturation")])],
-                1
-              ),
-              _vm._v(" "),
-              _vm._l(_vm.menu_facturation, function(menu, i) {
-                return _c(
-                  "v-list-tile",
-                  { key: i, attrs: { to: menu.link } },
-                  [
-                    _c("v-list-tile-title", {
-                      domProps: { textContent: _vm._s(menu.title) }
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "v-list-tile-action",
-                      [
-                        _c("v-icon", {
-                          domProps: { textContent: _vm._s(menu.icon) }
-                        })
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                )
-              })
-            ],
-            2
-          ),
-          _vm._v(" "),
-          _c(
-            "v-list-group",
-            { attrs: { "sub-group": "", "no-action": "" } },
-            [
-              _c(
-                "v-list-tile",
-                { attrs: { slot: "activator" }, slot: "activator" },
-                [_c("v-list-tile-title", [_vm._v("Produits")])],
-                1
-              ),
-              _vm._v(" "),
-              _vm._l(_vm.menu_produit, function(menu, i) {
-                return _c(
-                  "v-list-tile",
-                  { key: i, attrs: { to: menu.link } },
-                  [
-                    _c("v-list-tile-title", {
-                      domProps: { textContent: _vm._s(menu.title) }
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "v-list-tile-action",
-                      [
-                        _c("v-icon", {
-                          domProps: { textContent: _vm._s(menu.icon) }
-                        })
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                )
-              })
-            ],
-            2
-          ),
-          _vm._v(" "),
-          _c(
-            "v-list-group",
-            { attrs: { "sub-group": "", "no-action": "" } },
-            [
-              _c(
-                "v-list-tile",
-                { attrs: { slot: "activator" }, slot: "activator" },
-                [_c("v-list-tile-title", [_vm._v("Clients")])],
-                1
-              ),
-              _vm._v(" "),
-              _vm._l(_vm.menu_client, function(menu, i) {
-                return _c(
-                  "v-list-tile",
-                  { key: i, attrs: { to: menu.link } },
-                  [
-                    _c("v-list-tile-title", {
-                      domProps: { textContent: _vm._s(menu.title) }
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "v-list-tile-action",
-                      [
-                        _c("v-icon", {
-                          domProps: { textContent: _vm._s(menu.icon) }
-                        })
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                )
-              })
-            ],
-            2
-          ),
-          _vm._v(" "),
-          _vm.isLogged
-            ? _c(
-                "v-list-group",
-                { attrs: { "sub-group": "", "no-action": "" } },
+                "v-list",
                 [
                   _c(
                     "v-list-tile",
-                    { attrs: { slot: "activator" }, slot: "activator" },
-                    [_c("v-list-tile-title", [_vm._v("Bonjour")])],
+                    { attrs: { to: "/facturation" } },
+                    [
+                      _c(
+                        "v-list-tile-action",
+                        [_c("v-icon", [_vm._v("home")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("v-list-tile-title", [_vm._v("Home")])
+                    ],
                     1
                   ),
                   _vm._v(" "),
-                  _vm._l(_vm.menu_auth, function(menu, i) {
-                    return _c(
-                      "v-list-tile",
-                      { key: i, attrs: { to: menu.link } },
-                      [
-                        _c("v-list-tile-title", {
-                          domProps: { textContent: _vm._s(menu.title) }
-                        }),
-                        _vm._v(" "),
-                        _c(
-                          "v-list-tile-action",
+                  _vm.loggedUser.roles.some(function(item) {
+                    return item.name === "superadministrator"
+                  })
+                    ? _c(
+                        "v-list-group",
+                        {
+                          attrs: {
+                            "no-action": "",
+                            "sub-group": "",
+                            value: "true"
+                          }
+                        },
+                        [
+                          _c(
+                            "v-list-tile",
+                            { attrs: { slot: "activator" }, slot: "activator" },
+                            [_c("v-list-tile-title", [_vm._v("Admin")])],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _vm._l(_vm.admins, function(menu, i) {
+                            return _c(
+                              "v-list-tile",
+                              { key: i, attrs: { to: menu.link } },
+                              [
+                                _c("v-list-tile-title", {
+                                  domProps: { textContent: _vm._s(menu.title) }
+                                }),
+                                _vm._v(" "),
+                                _c(
+                                  "v-list-tile-action",
+                                  [
+                                    _c("v-icon", {
+                                      domProps: {
+                                        textContent: _vm._s(menu.icon)
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          })
+                        ],
+                        2
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c(
+                    "v-list-group",
+                    { attrs: { "sub-group": "", "no-action": "" } },
+                    [
+                      _c(
+                        "v-list-tile",
+                        { attrs: { slot: "activator" }, slot: "activator" },
+                        [_c("v-list-tile-title", [_vm._v("Facturation")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _vm._l(_vm.menu_facturation, function(menu, i) {
+                        return _c(
+                          "v-list-tile",
+                          { key: i, attrs: { to: menu.link } },
                           [
-                            _c("v-icon", {
-                              domProps: { textContent: _vm._s(menu.icon) }
-                            })
+                            _c("v-list-tile-title", {
+                              domProps: { textContent: _vm._s(menu.title) }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "v-list-tile-action",
+                              [
+                                _c("v-icon", {
+                                  domProps: { textContent: _vm._s(menu.icon) }
+                                })
+                              ],
+                              1
+                            )
                           ],
                           1
                         )
-                      ],
-                      1
-                    )
-                  })
+                      })
+                    ],
+                    2
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-list-group",
+                    { attrs: { "sub-group": "", "no-action": "" } },
+                    [
+                      _c(
+                        "v-list-tile",
+                        { attrs: { slot: "activator" }, slot: "activator" },
+                        [_c("v-list-tile-title", [_vm._v("Produits")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _vm._l(_vm.menu_produit, function(menu, i) {
+                        return _c(
+                          "v-list-tile",
+                          { key: i, attrs: { to: menu.link } },
+                          [
+                            _c("v-list-tile-title", {
+                              domProps: { textContent: _vm._s(menu.title) }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "v-list-tile-action",
+                              [
+                                _c("v-icon", {
+                                  domProps: { textContent: _vm._s(menu.icon) }
+                                })
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      })
+                    ],
+                    2
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-list-group",
+                    { attrs: { "sub-group": "", "no-action": "" } },
+                    [
+                      _c(
+                        "v-list-tile",
+                        { attrs: { slot: "activator" }, slot: "activator" },
+                        [_c("v-list-tile-title", [_vm._v("Clients")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _vm._l(_vm.menu_client, function(menu, i) {
+                        return _c(
+                          "v-list-tile",
+                          { key: i, attrs: { to: menu.link } },
+                          [
+                            _c("v-list-tile-title", {
+                              domProps: { textContent: _vm._s(menu.title) }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "v-list-tile-action",
+                              [
+                                _c("v-icon", {
+                                  domProps: { textContent: _vm._s(menu.icon) }
+                                })
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      })
+                    ],
+                    2
+                  ),
+                  _vm._v(" "),
+                  _vm.isLogged
+                    ? _c(
+                        "v-list-group",
+                        { attrs: { "sub-group": "", "no-action": "" } },
+                        [
+                          _c(
+                            "v-list-tile",
+                            { attrs: { slot: "activator" }, slot: "activator" },
+                            [
+                              _c("v-list-tile-title", [
+                                _vm._v(
+                                  "Bonjour, " + _vm._s(_vm.loggedUser.name)
+                                )
+                              ])
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _vm._l(_vm.menu_auth, function(menu, i) {
+                            return _c(
+                              "v-list-tile",
+                              { key: i, attrs: { to: menu.link } },
+                              [
+                                _c("v-list-tile-title", {
+                                  domProps: { textContent: _vm._s(menu.title) }
+                                }),
+                                _vm._v(" "),
+                                _c(
+                                  "v-list-tile-action",
+                                  [
+                                    _c("v-icon", {
+                                      domProps: {
+                                        textContent: _vm._s(menu.icon)
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          })
+                        ],
+                        2
+                      )
+                    : _vm._e()
                 ],
-                2
+                1
               )
-            : _vm._e()
+            ],
+            1
+          )
         ],
         1
       )
-    ],
-    1
-  )
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -49984,102 +50083,131 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "card card-default" }, [
-      _c("div", { staticClass: "card-header" }, [_vm._v("Connexion")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-body" }, [
-        _vm.loginError
-          ? _c("div", { staticClass: "alert alert-danger" }, [
-              _c("p", [
-                _vm._v(
-                  "Erreur, impossible de se connecter avec ces identifiants."
-                )
-              ])
-            ])
-          : _vm._e(),
-        _vm._v(" "),
-        _c(
-          "form",
-          {
-            attrs: { autocomplete: "off", method: "post" },
-            on: {
-              submit: function($event) {
-                $event.preventDefault()
-                return _vm.submitLogin($event)
-              }
-            }
-          },
-          [
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", { attrs: { for: "email" } }, [_vm._v("E-mail")]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.email,
-                    expression: "email"
-                  }
+  return _c(
+    "v-container",
+    { staticClass: "loginOverlay", attrs: { fluid: "", "fill-height": "" } },
+    [
+      _c(
+        "v-layout",
+        { attrs: { flex: "", "align-center": "", "justify-center": "" } },
+        [
+          _c(
+            "v-flex",
+            { attrs: { xs12: "", sm4: "", "elevation-6": "" } },
+            [
+              _c(
+                "v-toolbar",
+                { staticClass: "pt-5 blue darken-4" },
+                [
+                  _c("v-toolbar-title", { staticClass: "white--text" }, [
+                    _c("h4", [_vm._v("Facturation")])
+                  ])
                 ],
-                staticClass: "form-control",
-                attrs: {
-                  type: "email",
-                  id: "email",
-                  placeholder: "user@example.com",
-                  required: ""
-                },
-                domProps: { value: _vm.email },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.email = $event.target.value
-                  }
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", { attrs: { for: "password" } }, [
-                _vm._v("Mot de passe")
-              ]),
+                1
+              ),
               _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.password,
-                    expression: "password"
-                  }
+              _c(
+                "v-card",
+                [
+                  _c("v-card-text", { staticClass: "pt-4" }, [
+                    _c(
+                      "div",
+                      [
+                        _c(
+                          "v-form",
+                          {
+                            ref: "form",
+                            model: {
+                              value: _vm.valid,
+                              callback: function($$v) {
+                                _vm.valid = $$v
+                              },
+                              expression: "valid"
+                            }
+                          },
+                          [
+                            _c("v-text-field", {
+                              attrs: {
+                                label: "Entrez votre adresse email",
+                                rules: _vm.emailRules,
+                                required: ""
+                              },
+                              model: {
+                                value: _vm.email,
+                                callback: function($$v) {
+                                  _vm.email = $$v
+                                },
+                                expression: "email"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("v-text-field", {
+                              attrs: {
+                                label: "Entrez votre mot de passe",
+                                min: "8",
+                                "append-icon": _vm.e1
+                                  ? "visibility"
+                                  : "visibility_off",
+                                type: _vm.e1 ? "password" : "text",
+                                rules: _vm.passwordRules,
+                                counter: "",
+                                required: ""
+                              },
+                              on: {
+                                "click:append": function() {
+                                  return (_vm.e1 = !_vm.e1)
+                                }
+                              },
+                              model: {
+                                value: _vm.password,
+                                callback: function($$v) {
+                                  _vm.password = $$v
+                                },
+                                expression: "password"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "v-layout",
+                              { attrs: { "justify-space-between": "" } },
+                              [
+                                _c(
+                                  "v-btn",
+                                  {
+                                    class: {
+                                      "blue darken-4 white--text": _vm.valid,
+                                      disabled: !_vm.valid
+                                    },
+                                    on: { click: _vm.submitLogin }
+                                  },
+                                  [_vm._v("Login")]
+                                ),
+                                _vm._v(" "),
+                                _c("a", { attrs: { href: "" } }, [
+                                  _vm._v("Mot de passe oublié")
+                                ])
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ])
                 ],
-                staticClass: "form-control",
-                attrs: { type: "password", id: "password", required: "" },
-                domProps: { value: _vm.password },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.password = $event.target.value
-                  }
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c(
-              "button",
-              { staticClass: "btn btn-default", attrs: { type: "submit" } },
-              [_vm._v("Connexion")]
-            )
-          ]
-        )
-      ])
-    ])
-  ])
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -53060,6 +53188,18 @@ function normalizeComponent (
   }
 }
 
+
+/***/ }),
+
+/***/ "./node_modules/vue-router-multiguard/dist/vue-router-multiguard.min.js":
+/*!******************************************************************************!*\
+  !*** ./node_modules/vue-router-multiguard/dist/vue-router-multiguard.min.js ***!
+  \******************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+!function(t,r){ true?module.exports=r():undefined}(this,function(){return function(t){function r(n){if(e[n])return e[n].exports;var o=e[n]={i:n,l:!1,exports:{}};return t[n].call(o.exports,o,o.exports,r),o.l=!0,o.exports}var e={};return r.m=t,r.c=e,r.d=function(t,e,n){r.o(t,e)||Object.defineProperty(t,e,{configurable:!1,enumerable:!0,get:n})},r.n=function(t){var e=t&&t.__esModule?function(){return t.default}:function(){return t};return r.d(e,"a",e),e},r.o=function(t,r){return Object.prototype.hasOwnProperty.call(t,r)},r.p="/dist/",r(r.s=0)}([function(t,r,e){"use strict";function n(t){return void 0===t}function o(t,r,e,u){var i=t.slice(0),f=i.shift();if(n(f))return void u();f(r,e,function(t){if(n(t))return void o(i,r,e,u);u(t)})}t.exports=function(t){if(!Array.isArray(t))throw new Error("You must specify an array of guards");return function(r,e,n){return o(t,r,e,n)}}}])});
+//# sourceMappingURL=vue-router-multiguard.min.js.map
 
 /***/ }),
 
@@ -95035,13 +95175,6 @@ var app = new Vue({
     return h(__webpack_require__(/*! ./components/App */ "./resources/js/components/App.vue").default);
   },
   created: function created() {
-    //  this.$store.dispatch('loadFactures')
-    //  this.$store.dispatch('loadLignesFacture')
-    //  this.$store.dispatch('loadClients')
-    // this.$store.dispatch('loadProduits')
-    // this.$store.dispatch('loadReglements')
-    //this.$store.dispatch('loadAll')
-    localStorage.clear();
     this.$store.dispatch('chargerFacture');
   }
 });
@@ -96275,7 +96408,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
-/* harmony import */ var _auth_guard__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./auth-guard */ "./resources/js/router/auth-guard.js");
+/* harmony import */ var vue_router_multiguard__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-router-multiguard */ "./node_modules/vue-router-multiguard/dist/vue-router-multiguard.min.js");
+/* harmony import */ var vue_router_multiguard__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_router_multiguard__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _auth_guard__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./auth-guard */ "./resources/js/router/auth-guard.js");
+/* harmony import */ var _superadmin_guard__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./superadmin-guard */ "./resources/js/router/superadmin-guard.js");
+
+
 
 
 
@@ -96297,16 +96435,19 @@ var logout = vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('logout', __we
   routes: [{
     path: '/facturation/create',
     name: 'create_facture',
-    component: facturation
+    component: facturation,
+    beforeEnter: _auth_guard__WEBPACK_IMPORTED_MODULE_3__["default"]
   }, {
     path: '/facturation/liste',
     name: 'liste_facture',
-    component: liste_facture
+    component: liste_facture,
+    beforeEnter: _auth_guard__WEBPACK_IMPORTED_MODULE_3__["default"]
   }, {
     path: '/facturation/show/:factureId',
     name: 'showfacture',
     props: true,
-    component: show_facture
+    component: show_facture,
+    beforeEnter: _auth_guard__WEBPACK_IMPORTED_MODULE_3__["default"]
   }, {
     path: '/facturation/test/:id',
     name: 'test',
@@ -96315,24 +96456,23 @@ var logout = vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('logout', __we
   }, {
     path: '/facturation/produit/liste',
     name: 'liste_produit',
-    component: liste_produit
+    component: liste_produit,
+    beforeEnter: _auth_guard__WEBPACK_IMPORTED_MODULE_3__["default"]
   }, {
     path: '/facturation/client/liste',
     name: 'liste_client',
-    component: liste_client
-  }, {
-    path: '/facturation/test',
-    name: 'test',
-    component: test
+    component: liste_client,
+    beforeEnter: _auth_guard__WEBPACK_IMPORTED_MODULE_3__["default"]
   }, {
     path: '/facturation/parametres',
     name: 'parametres',
     component: parametres,
-    beforeEnter: _auth_guard__WEBPACK_IMPORTED_MODULE_2__["default"]
+    beforeEnter: vue_router_multiguard__WEBPACK_IMPORTED_MODULE_2___default()([_auth_guard__WEBPACK_IMPORTED_MODULE_3__["default"], _superadmin_guard__WEBPACK_IMPORTED_MODULE_4__["default"]])
   }, {
     path: '*',
     name: 'home',
-    component: home
+    component: home,
+    beforeEnter: _auth_guard__WEBPACK_IMPORTED_MODULE_3__["default"]
   }, {
     path: '/facturation/register',
     name: 'register',
@@ -96344,7 +96484,8 @@ var logout = vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('logout', __we
   }, {
     path: '/facturation/logout',
     name: 'logout',
-    component: logout
+    component: logout,
+    beforeEnter: _auth_guard__WEBPACK_IMPORTED_MODULE_3__["default"]
   }]
 }));
 
@@ -96363,10 +96504,33 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = (function (to, from, next) {
   if (_store___WEBPACK_IMPORTED_MODULE_0__["store"].getters.isLogged) {
-    console.log('youpiii');
     next();
   } else {
-    console.log('ynoo');
+    next({
+      name: 'login'
+    });
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/router/superadmin-guard.js":
+/*!*************************************************!*\
+  !*** ./resources/js/router/superadmin-guard.js ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _store___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../store/ */ "./resources/js/store/index.js");
+
+/* harmony default export */ __webpack_exports__["default"] = (function (to, from, next) {
+  if (_store___WEBPACK_IMPORTED_MODULE_0__["store"].getters.getLoggedUser.roles.some(function (item) {
+    return item.name === 'superadministrator';
+  })) {
+    next();
+  } else {
     next({
       name: 'login'
     });
@@ -96397,9 +96561,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   state: {
-    isLoggedIn: !!localStorage.getItem('token'),
+    isLoggedIn: false,
+    // !!localStorage.getItem('token'),
     user: null,
-    test: 'test'
+    wait: false
   },
   mutations: {
     loginUser: function loginUser(state) {
@@ -96410,37 +96575,65 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     setUser: function setUser(state, payload) {
       state.user = payload;
+    },
+    setWait: function setWait(state, payload) {
+      state.wait = payload;
     }
   },
   actions: {
-    login: function login(_ref, payload) {
-      var commit = _ref.commit,
-          dispatch = _ref.dispatch;
-      var uri = "http://localhost:3000" + '/api/auth/login';
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.post(uri, payload.loginfo).then(function (response) {
-        // login user, store the token and redirect to dashboard
-        commit('loginUser');
-        localStorage.setItem('token', response.data.token);
-        payload.router.push({
-          name: 'parametres'
-        });
-        dispatch('loggedUser');
-      }).catch(function (error) {
-        console.log(error);
-      });
-    },
-    loggedUser: function () {
-      var _loggedUser = _asyncToGenerator(
+    login: function () {
+      var _login = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(_ref2) {
-        var commit, uri;
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(_ref, payload) {
+        var commit, dispatch, state, uri;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
+                commit = _ref.commit, dispatch = _ref.dispatch, state = _ref.state;
+                commit('setLoading', true);
+                uri = "http://localhost:3000" + '/api/auth/login';
+                _context.next = 5;
+                return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post(uri, payload.loginfo).then(function (response) {
+                  // login user, store the token and redirect to dashboard
+                  commit('loginUser');
+                  localStorage.setItem('token', response.data.token);
+                  dispatch('loggedUser').then(function () {
+                    payload.router.push({
+                      name: 'home'
+                    });
+                  });
+                  commit('setLoading', false);
+                }).catch(function (error) {
+                  console.log(error);
+                });
+
+              case 5:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function login(_x, _x2) {
+        return _login.apply(this, arguments);
+      }
+
+      return login;
+    }(),
+    loggedUser: function () {
+      var _loggedUser = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(_ref2) {
+        var commit, uri;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
                 commit = _ref2.commit;
                 uri = "http://localhost:3000" + '/api/auth/user';
-                _context.next = 4;
+                _context2.next = 4;
                 return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(uri, {
                   headers: {
                     Authorization: 'Bearer ' + localStorage.getItem('token')
@@ -96456,17 +96649,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   commit('setUser', user);
                 }).catch(function (error) {
                   console.log(error);
+                  commit('logoutUser');
                 });
 
               case 4:
               case "end":
-                return _context.stop();
+                return _context2.stop();
             }
           }
-        }, _callee, this);
+        }, _callee2, this);
       }));
 
-      function loggedUser(_x) {
+      function loggedUser(_x3) {
         return _loggedUser.apply(this, arguments);
       }
 
@@ -96494,11 +96688,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     getLoggedUser: function getLoggedUser(state) {
       return state.user;
-    },
-    hasRole: function hasRole(state, val) {
-      return state.user.roles.some(function (item) {
-        return item.name === val;
-      });
     }
   }
 });

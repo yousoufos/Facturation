@@ -2,7 +2,8 @@ import { store } from '../store/'
 export default (to, from, next) => {
 
 
-    if (store.getters.isLogged) {
+
+    if (store.getters.getLoggedUser.roles.some(item => item.name === 'superadministrator')) {
 
 
         next()

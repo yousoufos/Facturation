@@ -15,6 +15,7 @@ class CreateModeRegelementsTable extends Migration
     {
         Schema::create('mode_reglements', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('user_id');
             $table->string('modeReglement');
             $table->timestamps();
         });

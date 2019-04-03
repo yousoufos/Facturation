@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import multiguard from 'vue-router-multiguard';
 import AuthGuard from './auth-guard'
+import SuperAdminGuard from './superadmin-guard'
 Vue.use(Router)
 
 
@@ -25,12 +27,14 @@ export default new Router({
         path: '/facturation/create',
         name: 'create_facture',
             component: facturation,
+            beforeEnter: AuthGuard
 
     },
         {
         path: '/facturation/liste',
         name: 'liste_facture',
-        component: liste_facture,
+            component: liste_facture,
+            beforeEnter: AuthGuard
 
         },
         {
@@ -38,6 +42,7 @@ export default new Router({
             name: 'showfacture',
             props: true,
             component: show_facture,
+            beforeEnter: AuthGuard
 
         },
         {
@@ -50,6 +55,7 @@ export default new Router({
             path: '/facturation/produit/liste',
             name: 'liste_produit',
             component: liste_produit,
+            beforeEnter: AuthGuard
 
 
         },
@@ -57,24 +63,21 @@ export default new Router({
             path: '/facturation/client/liste',
             name: 'liste_client',
             component: liste_client,
+            beforeEnter: AuthGuard
 
-        },
-        {
-            path: '/facturation/test',
-            name: 'test',
-            component: test
         },
         {
             path: '/facturation/parametres',
             name: 'parametres',
             component: parametres,
-            beforeEnter:AuthGuard
+            beforeEnter:multiguard([AuthGuard,SuperAdminGuard])
 
         },
         {
             path: '*',
             name:'home',
             component: home,
+            beforeEnter: AuthGuard
 
 
         },
@@ -94,6 +97,7 @@ export default new Router({
             path: '/facturation/logout',
             name: 'logout',
             component: logout,
+            beforeEnter: AuthGuard
 
         },
     ],

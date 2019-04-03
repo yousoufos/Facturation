@@ -15,6 +15,7 @@ class CreateReglementsTable extends Migration
     {
         Schema::create('reglements', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('user_id');
             $table->decimal('montant');
             $table->string('mode_reglement');
             $table->date('date_reglement');

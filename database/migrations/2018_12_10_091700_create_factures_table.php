@@ -15,6 +15,7 @@ class CreateFacturesTable extends Migration
     {
         Schema::create('factures', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('user_id');
             $table->string('reference',50)->unique()->nullable();
             $table->unsignedInteger('client_id')->nullable();
             $table->dateTime('date_emission')->nullable();

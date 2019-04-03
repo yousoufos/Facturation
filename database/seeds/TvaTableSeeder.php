@@ -15,7 +15,8 @@ class TvaTableSeeder extends Seeder
         $a=array(7,13,19,28);
         foreach($a as $i){
            Tva::create([
-               'value' => $i
+               'value' => $i,
+               'user_id' => 1,
            ]);
         }
     }

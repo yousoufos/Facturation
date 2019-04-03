@@ -15,7 +15,8 @@ class ModeReglementSeeder extends Seeder
         $a=array('CB','Cheque','Espece');
         foreach($a as $i){
            ModeReglement::create([
-               'modeReglement' => $i
+               'modeReglement' => $i,
+               'user_id' => 1,
            ]);
         }
     }

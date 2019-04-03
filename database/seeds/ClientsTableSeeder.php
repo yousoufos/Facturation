@@ -17,6 +17,7 @@ class ClientsTableSeeder extends Seeder
         foreach(range(10,60) as $i){
             Client::create([
                 'nom' => $faker->name,
+                'user_id' => 1,
                 'adresse' => $faker->address,
                 'tel' => $faker->phoneNumber,
                 'email' => $faker->email,

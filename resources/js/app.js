@@ -88,13 +88,6 @@ const app = new Vue({
     store: store,
     render: h => h(require('./components/App').default),
     created () {
-        //  this.$store.dispatch('loadFactures')
-        //  this.$store.dispatch('loadLignesFacture')
-        //  this.$store.dispatch('loadClients')
-        // this.$store.dispatch('loadProduits')
-        // this.$store.dispatch('loadReglements')
-        //this.$store.dispatch('loadAll')
-        localStorage.clear();
         this.$store.dispatch('chargerFacture')
     },
 })

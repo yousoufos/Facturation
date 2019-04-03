@@ -1,4 +1,5 @@
 <template>
+<div v-if="!loading">
     <v-navigation-drawer app stateless value="true" class="blue-grey lighten-3" width="250" fixed>
 	  <v-list>
 		<v-list-tile :to="'/facturation'">
@@ -13,7 +14,7 @@
 			<v-list-tile-title>Users</v-list-tile-title>
 		  </v-list-tile> -->
 
-		  <v-list-group no-action sub-group value="true">
+		  <v-list-group no-action sub-group value="true" v-if="loggedUser.roles.some(item => item.name === 'superadministrator')">
 			<v-list-tile slot="activator">
 			  <v-list-tile-title>Admin</v-list-tile-title>
 			</v-list-tile>
@@ -67,7 +68,7 @@
 		  </v-list-group>
           <v-list-group sub-group no-action v-if="isLogged" >
 			<v-list-tile slot="activator">
-			  <v-list-tile-title>Bonjour</v-list-tile-title>
+			  <v-list-tile-title>Bonjour, {{loggedUser.name  }}</v-list-tile-title>
 			</v-list-tile>
 
 			<v-list-tile v-for="(menu, i) in menu_auth" :key="i" :to="menu.link">
@@ -81,6 +82,7 @@
 
 	  </v-list>
 	</v-navigation-drawer>
+    </div>
 </template>
 
 <script>
@@ -105,13 +107,20 @@ props: ["url"],
         {icon:"dehaze", title:"Logout",link:"/facturation/logout"}
     ]
   }),
+  methods:{
+
+  },
+
   computed: {
       isLogged(){
           return this.$store.getters.isLogged
       },
-    //   loggedUser(){
-    //       return this.$store.getters.getLoggedUser
-    //   }
+      loggedUser(){
+          return this.$store.getters.getLoggedUser
+      },
+      loading(){
+          return this.$store.getters.loading
+      }
   },
   methods: {}
 }

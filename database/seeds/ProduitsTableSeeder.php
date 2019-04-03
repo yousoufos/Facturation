@@ -18,6 +18,7 @@ class ProduitsTableSeeder extends Seeder
         foreach(range(10,60) as $i){
             Produit::create([
                 'designation' => 'PROD-1000'.$i,
+                'user_id' => 1,
                 'tva' => $faker->randomElement($a),
                 'prix' => mt_rand(100,1000),
                 'code' => 'Art-'.$i

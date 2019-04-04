@@ -88,6 +88,6 @@ const app = new Vue({
     store: store,
     render: h => h(require('./components/App').default),
     created () {
-        this.$store.dispatch('chargerFacture')
+
     },
 })

@@ -27,7 +27,12 @@ export default {
                 // login user, store the token and redirect to dashboard
                 commit('loginUser')
                 localStorage.setItem('token', response.data.token)
-                dispatch('loggedUser').then(() => { payload.router.push({ name: 'home' })})
+                dispatch('loggedUser').then(() => {
+                    dispatch('chargerFacture').then(()=>{
+                        payload.router.push({ name: 'home' })
+                    })
+
+                })
 
 
                 commit('setLoading', false);

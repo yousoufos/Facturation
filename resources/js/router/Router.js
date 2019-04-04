@@ -55,7 +55,7 @@ export default new Router({
             path: '/facturation/produit/liste',
             name: 'liste_produit',
             component: liste_produit,
-            beforeEnter: AuthGuard
+            beforeEnter: AuthGuard,
 
 
         },

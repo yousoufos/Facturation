@@ -21,7 +21,7 @@
                           min="8"
                           :append-icon="e1 ? 'visibility' : 'visibility_off'"
                           @click:append="() => (e1 = !e1)"
-                          :type="e1 ? 'password' : 'text'"
+                          :type="e1 ? 'text' : 'password'"
                           :rules="passwordRules"
                           counter
                           required

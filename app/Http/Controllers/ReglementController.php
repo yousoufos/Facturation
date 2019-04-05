@@ -40,6 +40,7 @@ class ReglementController extends Controller
     {
         $reglement = new Reglement();
         $reglement->mode_reglement = $request->get('mode_reglement');
+        $reglement->user_id = $request->get('user_id');
         $reglement->montant = $request->get('montant');
         $reglement->date_reglement = $request->get('date_reglement');
         $reglement->facture_id = $request->get('facture_id');

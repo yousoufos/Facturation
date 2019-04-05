@@ -16,7 +16,6 @@ class ModeReglementSeeder extends Seeder
         foreach($a as $i){
            ModeReglement::create([
                'modeReglement' => $i,
-               'user_id' => 1,
            ]);
         }
     }

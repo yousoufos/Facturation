@@ -42,6 +42,7 @@ export default {
                     const value = obj[key];
                     facture.push({
                         id: value.id,
+                        user_id: value.user_id,
                         reference: value.reference,
                         statut: value.statut,
                         date_emission: value.date_emission,

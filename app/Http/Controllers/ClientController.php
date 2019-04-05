@@ -43,6 +43,7 @@ class ClientController extends Controller
     {
         $client = new Client;
         $client->nom = $request->get('nom');
+        $client->user_id = $request->get('user_id');
         $client->raison = $request->get('raison');
         $client->matricule = $request->get('matricule');
         $client->tel = $request->get('tel');

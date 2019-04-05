@@ -15,7 +15,6 @@ class CreateTvasTable extends Migration
     {
         Schema::create('tvas', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
             $table->decimal('value');
             $table->timestamps();
         });

@@ -32,7 +32,8 @@ export default {
                         date_reglement: value.date_reglement,
                         facture_id: value.facture_id,
                         mode_reglement: value.mode_reglement,
-                        montant: value.montant
+                        montant: value.montant,
+                        user_id:value.user_id
                     });
                 });
                 commit('setLoadedReglements', reglement);

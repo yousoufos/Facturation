@@ -42,6 +42,7 @@ class ProduitController extends Controller
     {
         $produit = new Produit;
         $produit->code = $request->get('code');
+        $produit->user_id = $request->get('user_id');
         $produit->designation = $request->get('designation');
         $produit->prix = $request->get('prix');
         $produit->tva = $request->get('tva');

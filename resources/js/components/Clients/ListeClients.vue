@@ -227,6 +227,7 @@ export default {
                if(result){
                    let client={
                 nom:this.nom,
+                user_id:this.loggerdUser.id,
                 raison:this.raison,
                 matricule:this.matricule,
                 tel:this.tel,
@@ -268,7 +269,10 @@ export default {
       },
       loadingTable(){
             return this.$store.getters.getLoadingTable
-        }
+        },
+    loggedUser(){
+        return this.$store.getters.getLoggedUser
+    }
 
 
 

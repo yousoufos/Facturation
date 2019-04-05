@@ -28,6 +28,7 @@ export default {
           clt.tel = payload.tel
           clt.email = payload.email
           clt.adresse = payload.adresse
+          clt.user_id = payload.user_id
       }
   },
     actions: {
@@ -74,6 +75,7 @@ export default {
                         tel: client.tel,
                         email: client.email,
                         adresse: client.adresse,
+                        user_id: client.user_id,
                     }
                     commit('addNewClient', clt)
                     commit('setLoadingTable', false);
@@ -104,6 +106,7 @@ export default {
                 adresse: obj[key].adresse,
                 tel: obj[key].tel,
                 email: obj[key].email,
+                user_id: obj[key].user_id,
             });
 
         })

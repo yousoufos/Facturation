@@ -49,6 +49,7 @@ class FactureController extends Controller
         $facture->save();
         $facture->reference = $this->reference($facture->id);
         $facture->statut = $request->get('statut');
+        $facture->user_id = $request->get('user_id');
         $facture->date_emission = $request->get('date_emission');
         $facture->date_echeance = $request->get('date_echeance');
         $facture->client_id = $request->get('client_id');

@@ -552,6 +552,7 @@ export default {
       if (this.validation_client == false && this.validation_date == false && this.validation_qte == false && this.validation_remise == false && this.validation_lignes == false && this.validation_produit == false) {
         let facture = {
           client_id: this.client_id,
+          user_id: this.loggedUser.id,
           date_emission: this.$refs["datefacture"].date,
           date_echeance: this.$refs["dateecheance"].date,
           statut: this.statut,
@@ -561,6 +562,7 @@ export default {
           total_tva: eval(this.total_tva).toFixed(3),
           lignes: this.lignes
         }
+
 
         this.$store.dispatch("saveFacture", facture);
         this.resetFields()
@@ -660,6 +662,9 @@ export default {
     },
     loadedClients(){
         return this.$store.getters.loadedClients
+    },
+    loggedUser(){
+        return this.$store.getters.getLoggedUser
     }
   },
   mounted(){
@@ -679,6 +684,7 @@ export default {
                     const f = e.facture;
                     let facture = {
                         id:f.id,
+                        user_id:f.user_id,
                         client_id: f.client_id,
                         date_emission: f.date_emission,
                         date_echeance: f.date_echeance,

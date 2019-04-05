@@ -25,6 +25,7 @@ class StoreFactureRequest extends FormRequest
     {
         return [
             'statut' => 'required',
+            'user_id' => 'required',
             'date_emission' => 'required|date',
             'date_echeance' => 'required|date',
             'client_id' => 'required',
@@ -46,6 +47,7 @@ class StoreFactureRequest extends FormRequest
 {
     return [
         'statut.required'     => 'Le statut de la facture doit etre defini.',
+        'user_id.required'     => 'Le user de la facture doit etre defini.',
         'date_emission.required'     => "La date d'emission de la facture doit etre definie",
         'date_emission.date'     => "La date d'emission n'est pas une date valide",
         'date_echeance.required'     => "La date d'echeance de la facture doit etre definie",

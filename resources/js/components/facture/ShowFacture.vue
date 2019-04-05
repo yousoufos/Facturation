@@ -349,6 +349,7 @@ export default {
             {
                 let r = {
                 mode_reglement : this.mode_reglement,
+                user_id : this.loggedUser.id,
                 montant : this.montant_reglement,
                 date_reglement : this.$refs["datereglement"].computedDateFormatted,
                 facture_id : (this.facture.id).toString(),
@@ -509,6 +510,9 @@ export default {
         },
         societe(){
             return this.$store.getters.getInformation
+        },
+        loggedUser(){
+            return this.$store.getters.getLoggedUser
         }
 
     },
@@ -519,7 +523,8 @@ export default {
                         montant: e.reglement.montant,
                         mode_reglement: e.reglement.mode_reglement,
                         date_reglement: e.reglement.date_reglement,
-                        facture_id: e.reglement.facture_id
+                        facture_id: e.reglement.facture_id,
+                        user_id:e.reglement.user_id
 
                     }
 

@@ -74,6 +74,7 @@
               router:this.$router
 
           }
+          this.valid=false
           this.$store.dispatch("login",param)
           }
 

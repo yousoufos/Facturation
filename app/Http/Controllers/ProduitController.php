@@ -48,7 +48,7 @@ class ProduitController extends Controller
         $produit->tva = $request->get('tva');
         $produit->save();
         broadcast(new ProduitCreated($produit));
-        return response()->json(['produit'=> $produit]);
+        //return response()->json(['produit'=> $produit]);
 
     }
 
@@ -86,7 +86,7 @@ class ProduitController extends Controller
         $produit = Produit::find($id);
         $produit->update($request->all());
         broadcast(new ProduitUpdated($produit));
-        return response()->json('successfully updated');
+        //return response()->json('successfully updated');
     }
 
     /**
@@ -100,6 +100,6 @@ class ProduitController extends Controller
      $produit = Produit::findOrFail($id);
      broadcast(new ProduitDeleted($produit));
         $produit->delete();
-        return response()->json('Produit '.$id.' effacé avec succée');
+        //return response()->json('Produit '.$id.' effacé avec succée');
     }
 }

@@ -35,7 +35,11 @@ export default {
         editClient ({ commit }, payload) {
             const uri  =process.env.MIX_URI_PORT+'/api/client/update/' + payload.id
             commit('setLoadingTable', true)
-            axios.put(uri, payload).then((response) => {
+            axios.put(uri, payload, {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token')
+                }
+            }).then((response) => {
                 // commit('editClientLoaded', payload)
                 // console.log(response);
                 commit('setLoadingTable', false)
@@ -49,7 +53,11 @@ export default {
         deleteClient ({ commit }, payload) {
             commit('setLoadingTable', true)
             const uri   = process.env.MIX_URI_PORT +'/api/client/delete/' + payload.id
-            axios.delete(uri).then(response => {
+            axios.delete(uri, {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token')
+                }
+            }).then(response => {
                 // commit('removeClient', payload.index)
                 // console.log(response);
                 commit('setLoadingTable', false)
@@ -65,7 +73,11 @@ export default {
             commit('setLoadingTable', true);
 
 
-            axios.post(uri, payload)
+            axios.post(uri, payload, {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token')
+                }
+            })
                 .then(response => {
                     // const client = response.data.client;
                     // let clt = {
@@ -93,7 +105,11 @@ export default {
     }) {
         const uri   = process.env.MIX_URI_PORT +'/api/client';
       //commit('setLoading', true);
-      await axios.get(uri).then((response) => {
+        await axios.get(uri, {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then((response) => {
         const client = [];
         const obj = response.data;
         Object.keys(obj).forEach((key) => {

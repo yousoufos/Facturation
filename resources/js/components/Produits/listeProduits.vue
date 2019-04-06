@@ -169,9 +169,9 @@ export default {
                 id:item.id,
                 index:item
             }
-            const index = this.produits.indexOf(item)
       		let response = confirm('Etes vous sur de vouloir supprimer ce produit?')
       		if (response) {
+                  console.log(a.id)
                   this.$store.dispatch('deleteProduit',a)
 
               }
@@ -204,7 +204,8 @@ export default {
                 designation:this.designation,
                 prix:this.prix,
                 tva:this.tva,
-                id:this.id
+                id:this.id,
+                user_id:this.loggedUser.id
                      }
                    if(this.create){
                      this.$store.dispatch('saveProduit',produit)
@@ -238,6 +239,9 @@ export default {
       },
       loadingTable(){
             return this.$store.getters.getLoadingTable
+        },
+        loggedUser(){
+            return this.$store.getters.getLoggedUser
         }
 
 
@@ -245,6 +249,29 @@ export default {
   },
   mounted () {
       this.$validator.localize('en', this.dictionary)
+      window.Echo.channel("newProduit").listen(".produit-created", e => {
+                    const prod = e.produit;
+                    let produit = {
+                        code: prod.code,
+                        user_id:prod.user_id,
+                        designation: prod.designation,
+                        prix: prod.prix,
+                        tva: prod.tva,
+                        id:prod.id
+                    }
+
+
+                    this.$store.commit('addNewProduit', produit)
+
+
+
+        });
+        window.Echo.channel("delProduit").listen(".produit-deleted", e => {
+          this.$store.commit("removeProduit", e.produit.id)
+        });
+        window.Echo.channel("updateProduit").listen(".produit-updated", e => {
+          this.$store.commit('editProduitLoaded', e.produit)
+        });
     },
 }
 </script>

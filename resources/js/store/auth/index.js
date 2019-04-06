@@ -46,7 +46,7 @@ export default {
         },
         async loggedUser ({ commit }) {
 
-            const uri = process.env.MIX_URI_PORT + '/api/auth/user'
+            const uri = process.env.MIX_URI_PORT + '/api/user'
             await axios.get(uri, {
                 headers: {
                     Authorization: 'Bearer ' + localStorage.getItem('token')
@@ -72,7 +72,7 @@ export default {
             })
         },
         logout ({ commit }) {
-            const uri = process.env.MIX_URI_PORT + '/api/auth/logout'
+            const uri = process.env.MIX_URI_PORT + '/api/logout'
             axios.get(uri, {
                 headers: {
                     Authorization: 'Bearer ' + localStorage.getItem('token')

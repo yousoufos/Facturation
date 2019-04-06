@@ -15,7 +15,11 @@ state.loadedLignesFacture.push(payload)
         async loadLignesFacture({commit,dispatch}){
             const uri   = process.env.MIX_URI_PORT +'/api/facture/lignesfacture/';
             //commit('setLoading', true);
-            await axios.get(uri).then((response) => {
+            await axios.get(uri, {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token')
+                }
+            }).then((response) => {
               const lignes = [];
               const obj = response.data;
               Object.keys(obj).forEach((key) => {

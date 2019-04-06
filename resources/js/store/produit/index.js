@@ -27,6 +27,7 @@ export default {
             prod.tva = payload.tva
             prod.designation = payload.designation
             prod.code = payload.code
+            prod.usre_id= payload.user_id
         }
 
     },
@@ -35,9 +36,13 @@ export default {
 
             const uri   = process.env.MIX_URI_PORT +'/api/produit/update/' + payload.id
             commit('setLoadingTable', true)
-            axios.put(uri, payload).then((response) => {
-                commit('editProduitLoaded', payload)
-                console.log(response);
+            axios.put(uri, payload, {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token')
+                }
+            }).then((response) => {
+                // commit('editProduitLoaded', payload)
+                // console.log(response);
 
                 commit('setLoadingTable', false)
             }).catch((error) => {
@@ -49,9 +54,13 @@ export default {
         deleteProduit ({ commit }, payload) {
             commit('setLoadingTable', true)
             const uri   = process.env.MIX_URI_PORT +'/api/produit/delete/'+payload.id
-            axios.delete(uri).then(response => {
-                commit('removeProduit',payload.index)
-                console.log(response);
+            axios.delete(uri, {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token')
+                }
+            }).then(response => {
+                // commit('removeProduit',payload.index)
+                // console.log(response);
                 commit('setLoadingTable', false)
 
             }).catch(error => {
@@ -66,13 +75,18 @@ export default {
         }) {
             const uri   = process.env.MIX_URI_PORT +'/api/produit';
             //commit('setLoading', true);
-            await axios.get(uri).then((response) => {
+            await axios.get(uri, {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token')
+                }
+            }).then((response) => {
                 const Produit = [];
                 const obj = response.data;
                 Object.keys(obj).forEach((key) => {
                     const value = obj[key];
                     Produit.push({
                         id: value.id,
+                        user_id:value.user_id,
                         designation: value.designation,
                         tva: value.tva,
                         prix: value.prix,
@@ -105,16 +119,20 @@ export default {
         saveProduit ({ commit }, payload) {
             const uri   = process.env.MIX_URI_PORT +'/api/produit/add'
             commit('setLoading', true);
-            axios.post(uri, payload)
+            axios.post(uri, payload, {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token')
+                }
+            })
                 .then(response => {
-                    const produit = response.data.produit;
-                    let prod = {
-                        code: produit.code,
-                        designation: produit.designation,
-                        prix: produit.prix,
-                        tva: produit.tva
-                    }
-                    commit('addNewProduit', prod)
+                    // const produit = response.data.produit;
+                    // let prod = {
+                    //     code: produit.code,
+                    //     designation: produit.designation,
+                    //     prix: produit.prix,
+                    //     tva: produit.tva
+                    // }
+                    // commit('addNewProduit', prod)
                     commit('setLoading', false);
                 }).catch(error => {
                     commit('setLoading', false);

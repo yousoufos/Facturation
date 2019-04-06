@@ -21,7 +21,11 @@ export default {
     actions: {
         changeStatut ({commit},payload) {
             const uri   = process.env.MIX_URI_PORT +'/api/facture/update/' + payload.id
-            axios.put(uri, payload).then((response) => {
+            axios.put(uri, payload, {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token')
+                }
+            }).then((response) => {
                 // commit('setStatutFacture', payload)
 
 
@@ -35,7 +39,11 @@ export default {
         async loadFactures ({ commit, getters }) {
             const uri   = process.env.MIX_URI_PORT +'/api/facture';
             //commit('setLoading', true);
-             await axios.get(uri).then((response) => {
+            await axios.get(uri, {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token')
+                }
+            }).then((response) => {
                 const facture = [];
                 const obj = response.data.facture;
                 Object.keys(obj).forEach((key) => {
@@ -70,7 +78,11 @@ export default {
         saveFacture ({ commit }, payload) {
             const uri   = process.env.MIX_URI_PORT +'/api/facture/create'
             commit('setLoading', true)
-            axios.post(uri, payload)
+            axios.post(uri, payload, {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token')
+                }
+            })
                 .then(response => {
                     // const lignes = [];
                     // const obj = response.data.lignes;

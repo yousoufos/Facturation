@@ -18,7 +18,11 @@ export default {
             commit,
         }) {
             const uri   = process.env.MIX_URI_PORT +'/api/information';
-            await axios.get(uri).then((response) => {
+            await axios.get(uri, {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token')
+                }
+            }).then((response) => {
                 const value = response.data.information
                 const info = {
                     id: value[0].id,
@@ -45,7 +49,11 @@ export default {
         updateInformation ({ commit }, payload) {
             commit('setLoadingTable', true)
             const uri   = process.env.MIX_URI_PORT +'/api/information/update/' + payload.id;
-            axios.put(uri, payload).then((response) => {
+            axios.put(uri, payload, {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token')
+                }
+            }).then((response) => {
                 let info = {
                     id: response.data.information.id,
                     nom: response.data.information.nom,

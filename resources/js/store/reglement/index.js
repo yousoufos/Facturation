@@ -22,7 +22,11 @@ export default {
 		async loadReglements ({commit}) {
             const uri   = process.env.MIX_URI_PORT +'/api/facture/reglementfacture';
 			//commit('setLoading', true);
-            await axios.get(uri).then((response) => {
+            await axios.get(uri, {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token')
+                }
+            }).then((response) => {
                 const reglement = [];
                 const obj = response.data;
                 Object.keys(obj).forEach((key) => {
@@ -47,7 +51,11 @@ export default {
         saveReglement ({ commit }, payload) {
             const uri   = process.env.MIX_URI_PORT +'/api/facture/reglementfacture/add'
             commit('setLoadingTable', true)
-            axios.post(uri, payload)
+            axios.post(uri, payload, {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token')
+                }
+            })
                 .then(response => {
                     const reglement = response.data.reglement;
                     // let reg = {
@@ -70,7 +78,11 @@ export default {
         deleteReglement ({ commit }, payload) {
             commit('setLoadingTable', true)
             const uri   = process.env.MIX_URI_PORT +'/api/facture/reglementfacture/delete/'+payload.id
-            axios.delete(uri).then(response => {
+            axios.delete(uri, {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token')
+                }
+            }).then(response => {
                 //commit('removeLigneReglement',payload.index)
                 console.log(response);
                 commit('setLoadingTable', false)

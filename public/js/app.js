@@ -2040,6 +2040,7 @@ __webpack_require__.r(__webpack_exports__);
         if (result) {
           var client = {
             nom: _this.nom,
+            user_id: _this.loggedUser.id,
             raison: _this.raison,
             matricule: _this.matricule,
             tel: _this.tel,
@@ -2078,10 +2079,35 @@ __webpack_require__.r(__webpack_exports__);
     },
     loadingTable: function loadingTable() {
       return this.$store.getters.getLoadingTable;
+    },
+    loggedUser: function loggedUser() {
+      return this.$store.getters.getLoggedUser;
     }
   },
   mounted: function mounted() {
+    var _this2 = this;
+
     this.$validator.localize('en', this.dictionary);
+    window.Echo.channel("newClient").listen(".client-created", function (e) {
+      var clt = e.client;
+      var client = {
+        nom: clt.nom,
+        raison: clt.raison,
+        matricule: clt.matricule,
+        tel: clt.tel,
+        email: clt.email,
+        adresse: clt.adresse,
+        user_id: clt.user_id
+      };
+
+      _this2.$store.commit('addNewClient', client);
+    });
+    window.Echo.channel("delClient").listen(".client-deleted", function (e) {
+      _this2.$store.commit("removeClient", e.client.id);
+    });
+    window.Echo.channel("updateClient").listen(".client-updated", function (e) {
+      _this2.$store.commit('editClientLoaded', e.client);
+    });
   }
 });
 
@@ -4639,7 +4665,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -96732,6 +96758,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       clt.tel = payload.tel;
       clt.email = payload.email;
       clt.adresse = payload.adresse;
+      clt.user_id = payload.user_id;
     }
   },
   actions: {
@@ -96740,8 +96767,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var uri = "http://localhost:3000" + '/api/client/update/' + payload.id;
       commit('setLoadingTable', true);
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.put(uri, payload).then(function (response) {
-        commit('editClientLoaded', payload);
-        console.log(response);
+        // commit('editClientLoaded', payload)
+        // console.log(response);
         commit('setLoadingTable', false);
       }).catch(function (error) {
         console.log(error);
@@ -96753,8 +96780,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       commit('setLoadingTable', true);
       var uri = "http://localhost:3000" + '/api/client/delete/' + payload.id;
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.delete(uri).then(function (response) {
-        commit('removeClient', payload.index);
-        console.log(response);
+        // commit('removeClient', payload.index)
+        // console.log(response);
         commit('setLoadingTable', false);
       }).catch(function (error) {
         commit('setLoadingTable', false);
@@ -96766,16 +96793,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var uri = "http://localhost:3000" + '/api/client/add';
       commit('setLoadingTable', true);
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.post(uri, payload).then(function (response) {
-        var client = response.data.client;
-        var clt = {
-          nom: client.nom,
-          raison: client.raison,
-          matricule: client.matricule,
-          tel: client.tel,
-          email: client.email,
-          adresse: client.adresse
-        };
-        commit('addNewClient', clt);
+        // const client = response.data.client;
+        // let clt = {
+        //     nom: client.nom,
+        //     raison: client.raison,
+        //     matricule: client.matricule,
+        //     tel: client.tel,
+        //     email: client.email,
+        //     adresse: client.adresse,
+        //     user_id: client.user_id,
+        // }
+        // commit('addNewClient', clt)
         commit('setLoadingTable', false);
       }).catch(function (error) {
         commit('setLoadingTable', false); //commit('seterreurs', error.response.data.errors)
@@ -96808,7 +96836,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                       matricule: obj[key].matricule,
                       adresse: obj[key].adresse,
                       tel: obj[key].tel,
-                      email: obj[key].email
+                      email: obj[key].email,
+                      user_id: obj[key].user_id
                     });
                   });
                   commit('setLoadedClients', client);

@@ -36,8 +36,8 @@ export default {
             const uri  =process.env.MIX_URI_PORT+'/api/client/update/' + payload.id
             commit('setLoadingTable', true)
             axios.put(uri, payload).then((response) => {
-                commit('editClientLoaded', payload)
-                console.log(response);
+                // commit('editClientLoaded', payload)
+                // console.log(response);
                 commit('setLoadingTable', false)
 
             }).catch((error) => {
@@ -50,8 +50,8 @@ export default {
             commit('setLoadingTable', true)
             const uri   = process.env.MIX_URI_PORT +'/api/client/delete/' + payload.id
             axios.delete(uri).then(response => {
-                commit('removeClient', payload.index)
-                console.log(response);
+                // commit('removeClient', payload.index)
+                // console.log(response);
                 commit('setLoadingTable', false)
 
             }).catch(error => {
@@ -67,18 +67,18 @@ export default {
 
             axios.post(uri, payload)
                 .then(response => {
-                    const client = response.data.client;
-                    let clt = {
-                        nom: client.nom,
-                        raison: client.raison,
-                        matricule: client.matricule,
-                        tel: client.tel,
-                        email: client.email,
-                        adresse: client.adresse,
-                        user_id: client.user_id,
-                    }
-                    commit('addNewClient', clt)
-                    commit('setLoadingTable', false);
+                    // const client = response.data.client;
+                    // let clt = {
+                    //     nom: client.nom,
+                    //     raison: client.raison,
+                    //     matricule: client.matricule,
+                    //     tel: client.tel,
+                    //     email: client.email,
+                    //     adresse: client.adresse,
+                    //     user_id: client.user_id,
+                    // }
+                    // commit('addNewClient', clt)
+                     commit('setLoadingTable', false);
                 }).catch(error => {
                     commit('setLoadingTable', false);
                     //commit('seterreurs', error.response.data.errors)

@@ -227,7 +227,7 @@ export default {
                if(result){
                    let client={
                 nom:this.nom,
-                user_id:this.loggerdUser.id,
+                user_id:this.loggedUser.id,
                 raison:this.raison,
                 matricule:this.matricule,
                 tel:this.tel,
@@ -280,6 +280,30 @@ export default {
   },
   mounted () {
       this.$validator.localize('en', this.dictionary)
+      window.Echo.channel("newClient").listen(".client-created", e => {
+                    const clt = e.client;
+                    let client = {
+                        nom: clt.nom,
+                        raison: clt.raison,
+                        matricule: clt.matricule,
+                        tel: clt.tel,
+                        email: clt.email,
+                        adresse: clt.adresse,
+                        user_id: clt.user_id,
+                    }
+
+
+                    this.$store.commit('addNewClient', client)
+
+
+
+        });
+        window.Echo.channel("delClient").listen(".client-deleted", e => {
+          this.$store.commit("removeClient", e.client.id)
+        });
+        window.Echo.channel("updateClient").listen(".client-updated", e => {
+          this.$store.commit('editClientLoaded', e.client)
+        });
     },
 }
 </script>

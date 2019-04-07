@@ -10,6 +10,25 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
+    protected $user;
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+
+            $this->user = Auth::user();
+
+            return $next($request);
+        });
+    }
+    public function authenticate(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            // Authentication passed...
+            return redirect()->intended('home');
+        }
+    }
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');

@@ -10,14 +10,13 @@ use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
-    public function index(){
-        $facture = LigneFacture::find(4)->Facture;
-        dd($facture);
-        
-        
-        
+    public function admin(){
+        return view('layouts.app');
+
+
+
     }
     public function facturation(){
-        return view('layouts.app');
+        return view('layouts.vuejs');
     }
 }

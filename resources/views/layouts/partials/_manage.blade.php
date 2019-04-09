@@ -4,7 +4,13 @@
 	    General
 	  </p>
 	  <ul class="menu-list">
-	    <li><a href="route('manage.dashboard') }}" class="">Dashboard</a></li>
+	    <li><a href="" class="">Dashboard</a></li>
+	  </ul>
+	  <p class="menu-label">
+	    Content
+	  </p>
+	  <ul class="menu-list">
+	    <li><a href="" class="">Blog Posts</a></li>
 	  </ul>
 	  <p class="menu-label">
 	    Administration

@@ -10,14 +10,15 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Auth::routes();
+Route::get('/admin', 'PageController@admin');
+Route::group(['middleware' => 'auth:web'], function(){
 
-//Route::get('/', 'PageController@facturation');
-Route::group(['middleware' => 'web'], function(){
-    Route::auth();
-    Auth::routes();
-    Route::get('/home', 'HomeController@index')->name('home');
-    Route::get('/admin', 'PageController@admin');
-    Route::post('/log', 'AuthController@authenticate')->name('log');
+Route::get('/home', 'HomeController@index')->name('home');
+Route::resource('/users','UserController');
+Route::resource('/roles','RoleController');
+Route::resource('/permissions','PermissionController');
+
 });
 
 

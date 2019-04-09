@@ -20,15 +20,14 @@ class AuthController extends Controller
             return $next($request);
         });
     }
-    public function authenticate(Request $request)
-    {
-        $credentials = $request->only('email', 'password');
+    // public function authenticate(Request $request)
+    // {
+    //     $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($credentials)) {
-            // Authentication passed...
-            return redirect()->intended('home');
-        }
-    }
+    //     if (Auth::attempt($credentials)) {
+    //         return redirect()->intended('home');
+    //     }
+    // }
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');

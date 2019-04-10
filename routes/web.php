@@ -11,6 +11,7 @@
 */
 Auth::routes();
 Route::get('/admin', 'PageController@admin');
+Route::get('/logout', 'AuthController@deco')->middleware('auth:web');
 Route::group(['middleware' => 'auth:web'], function(){
     Route::group(['middleware' => 'role:superadministrator'], function(){
         Route::get('/home', 'HomeController@index')->name('home');

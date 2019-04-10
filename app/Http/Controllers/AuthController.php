@@ -120,4 +120,9 @@ class AuthController extends Controller
     {
         return Auth::guard();
     }
+    public function deco(){
+        auth()->logout();
+        return redirect('/');
+    }
+
 }

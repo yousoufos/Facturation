@@ -16,7 +16,7 @@ class HomeController extends Controller
 
     {
          //dd(Auth::user());
-        $this->middleware('role:superadministrator');
+        $this->middleware('auth:web');
     }
 
     /**

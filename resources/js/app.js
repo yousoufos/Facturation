@@ -17,35 +17,11 @@ import App from './components/App.vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import 'es6-promise/auto'
-
 Vue.router = router
 Vue.use(VueRouter)
 Vue.use(VueAxios, axios)
 
 window.Store = store;
-
-// router.beforeEach((to, from, next) => {
-//     console.log('router beforeeach');
-
-//     // check if the route requires authentication and user is not logged in
-//     if (to.matched.some(route => route.meta.requiresAuth) && !store.getters.isLogged) {
-//         // redirect to login page
-//         next({ name: 'login' })
-//         return
-//     }
-
-//     // if logged in redirect to dashboard
-//     if (to.path === '/login' && store.getters.isLogged) {
-//         next({ name: 'parametres' })
-
-
-//         return
-//     }
-
-//     next()
-// })
-
-
 import Echo from 'laravel-echo'
 
 window.Pusher = require('pusher-js');

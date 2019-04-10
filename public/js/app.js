@@ -95162,22 +95162,7 @@ Vue.use(vuetify__WEBPACK_IMPORTED_MODULE_4___default.a);
 Vue.router = _router_Router__WEBPACK_IMPORTED_MODULE_2__["default"];
 Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
 Vue.use(vue_axios__WEBPACK_IMPORTED_MODULE_7___default.a, axios__WEBPACK_IMPORTED_MODULE_6___default.a);
-window.Store = _store_index__WEBPACK_IMPORTED_MODULE_0__["store"]; // router.beforeEach((to, from, next) => {
-//     console.log('router beforeeach');
-//     // check if the route requires authentication and user is not logged in
-//     if (to.matched.some(route => route.meta.requiresAuth) && !store.getters.isLogged) {
-//         // redirect to login page
-//         next({ name: 'login' })
-//         return
-//     }
-//     // if logged in redirect to dashboard
-//     if (to.path === '/login' && store.getters.isLogged) {
-//         next({ name: 'parametres' })
-//         return
-//     }
-//     next()
-// })
-
+window.Store = _store_index__WEBPACK_IMPORTED_MODULE_0__["store"];
 
 window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_9__["default"]({
@@ -96469,7 +96454,7 @@ var login = vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('login', __webp
 var logout = vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('logout', __webpack_require__(/*! ../components/auth/logout.vue */ "./resources/js/components/auth/logout.vue").default);
 /* harmony default export */ __webpack_exports__["default"] = (new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   mode: 'history',
-  base: Object({"MIX_PUSHER_APP_KEY":"6603ece663054ffd7568","MIX_PUSHER_APP_CLUSTER":"eu","MIX_URI_PORT":"http://localhost:3000","NODE_ENV":"development"}).BASE_URL,
+  base: Object({"MIX_PUSHER_APP_CLUSTER":"eu","MIX_PUSHER_APP_KEY":"6603ece663054ffd7568","MIX_URI_PORT":"http://localhost:3000","NODE_ENV":"development"}).BASE_URL,
   routes: [{
     path: '/facturation/create',
     name: 'create_facture',
@@ -98119,8 +98104,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/macbookpro/Desktop/Facturation/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/macbookpro/Desktop/Facturation/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\youso\Laravel_tuto\Facturation\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\youso\Laravel_tuto\Facturation\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

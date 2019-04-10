@@ -12,10 +12,14 @@
 Auth::routes();
 Route::get('/admin', 'PageController@admin');
 Route::group(['middleware' => 'auth:web'], function(){
-Route::get('/home', 'HomeController@index')->name('home');
-Route::resource('/users','UserController');
-Route::resource('/roles','RoleController');
-Route::resource('/permissions','PermissionController');
+    Route::group(['middleware' => 'role:superadministrator'], function(){
+        Route::get('/home', 'HomeController@index')->name('home');
+        Route::resource('/users','UserController');
+        Route::resource('/roles','RoleController');
+        Route::resource('/permissions','PermissionController');
+    });
+
+
 });
 Route::get('/facturation{any}', [
     'as' => 'root_facturation'	,

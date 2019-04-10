@@ -56,9 +56,13 @@
             Settings
           </a>
           <hr class="navbar-divider">
-          <a class="navbar-item" href="{{url('/logout')}}"><span class="icone"><i class="m-r-5 fa fa-sign-out" aria-hidden="true"></i></span>
-            Logout
-          </a>
+          <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+    Logout
+</a>
+
+<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+    {{ csrf_field() }}
+</form>
         </div>
       </div>
       @endif

@@ -10,6 +10,7 @@
 |
 */
 Auth::routes();
+Route::get('/', 'PageController@facturation');
 Route::get('/admin', 'PageController@admin');
 Route::get('/logout', 'AuthController@deco')->middleware('auth:web');
 Route::group(['middleware' => 'auth:web'], function(){

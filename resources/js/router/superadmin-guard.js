@@ -3,7 +3,7 @@ export default (to, from, next) => {
 
 
 
-    if (store.getters.getLoggedUser.roles.some(item => item.name === 'superadministrator')) {
+    if (store.getters.hasRole('superadministrator')) {
 
 
         next()

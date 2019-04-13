@@ -303,10 +303,8 @@ export default {
             return state.loadingReglement
         },
         getLoadedTva (state) {
-            //return state.getLoadedTva
-            return state.loadedTva.sort((tvaA, tvaB) => {
-                return tvaB.value - tvaA.value
-            })
+            return _.orderBy(state.loadedTva, ['value'], ['asc']);
+
         },
         getLoadedModeReglement (state) {
             return state.loadedModeReglement

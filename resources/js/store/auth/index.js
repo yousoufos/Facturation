@@ -97,5 +97,9 @@ export default {
         getLoggedUser (state) {
             return state.user
         },
+        hasRole (state, value)
+        {
+            _.find(state.user.roles,function(o){return o.name==value})
+        }
     }
 }

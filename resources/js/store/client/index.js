@@ -151,8 +151,9 @@ export default {
     },
   },
   getters: {
-    getloadedClients(state) {
-      return state.loadedClients;
+      getloadedClients (state) {
+          return _.orderBy(state.loadedClients, ['id'], ['desc']);
+      //return state.loadedClients;
     },
     getClientListName(state) {
       return state.clientListName;

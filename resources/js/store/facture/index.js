@@ -130,9 +130,8 @@ export default {
     },
     getters: {
         getLoadedFactures (state) {
-            return state.loadedFactures.sort((factureA, factureB) => {
-                return factureB.id - factureA.id
-            })
+            return _.orderBy(state.loadedFactures, ['id'], ['desc']);
+
         },
         getFacture(state) {
             return (factureId) => {

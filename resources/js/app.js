@@ -17,6 +17,7 @@ import App from './components/App.vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import 'es6-promise/auto'
+import _ from 'lodash'
 Vue.router = router
 Vue.use(VueRouter)
 Vue.use(VueAxios, axios)

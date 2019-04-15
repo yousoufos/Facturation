@@ -3,7 +3,7 @@ export default (to, from, next) => {
 
 
 
-    if (store.getters.hasRole('superadministrator')) {
+    if (_.find(store.getters.getLoggedUser.roles, function(o){ return o.name == 'superadministrator' })) {
 
 
         next()

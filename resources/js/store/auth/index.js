@@ -97,9 +97,9 @@ export default {
         getLoggedUser (state) {
             return state.user
         },
-        hasRole (state, value)
+        hasRole (state)
         {
-            _.find(state.user.roles,function(o){return o.name==value})
+            _.find(state.user.roles,function(o){return o.name=='superadministrator'})
         }
     }
 }

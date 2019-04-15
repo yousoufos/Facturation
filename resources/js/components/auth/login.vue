@@ -41,6 +41,9 @@
 
 <script>
   export default {
+      timers: {
+    updateTime: { time: 1000, autostart: false ,repeat: Boolean}
+  },
     data() {
       return {
         email: null,
@@ -81,7 +84,19 @@
 
 
 
+      },
+      updateTime(){
+          var cd = new Date()
+          console.log(this.zeroPadding(cd.getHours(),2)+':'+this.zeroPadding(cd.getMinutes(),2)+':'+this.zeroPadding(cd.getSeconds(),2))
+      },
+      zeroPadding(num,digit){
+          var zero = '';
+    for(var i = 0; i < digit; i++) {
+        zero += '0';
+    }
+    return (zero + num).slice(-digit);
       }
+
     }
   }
 </script>

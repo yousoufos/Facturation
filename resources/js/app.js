@@ -21,6 +21,9 @@ import _ from 'lodash'
 Vue.router = router
 Vue.use(VueRouter)
 Vue.use(VueAxios, axios)
+import VueTimers from 'vue-timers'
+
+Vue.use(VueTimers)
 
 window.Store = store;
 import Echo from 'laravel-echo'

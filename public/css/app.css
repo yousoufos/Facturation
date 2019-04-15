@@ -1,7 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Nunito);@import url(https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons);@charset "UTF-8";
 
 /*!
-* Vuetify v1.5.6
+* Vuetify v1.5.11
 * Forged by John Leider
 * Released under the MIT License.
 */
@@ -5266,7 +5266,7 @@ p {
 }
 
 .v-messages__message {
-  line-height: 1;
+  line-height: normal;
   word-break: break-word;
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -6381,6 +6381,10 @@ p {
   pointer-events: none;
 }
 
+.v-menu__content--fixed {
+  position: fixed;
+}
+
 .v-menu__content > .card {
   contain: content;
   -webkit-backface-visibility: hidden;
@@ -7084,35 +7088,35 @@ p {
   border-radius: 50%;
 }
 
-.v-btn--floating .v-btn__content :not(:only-child) {
+.v-btn--floating .v-btn__content > :not(:only-child) {
   transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
 }
 
-.v-btn--floating .v-btn__content :not(:only-child):first-child {
+.v-btn--floating .v-btn__content > :not(:only-child):first-child {
   opacity: 1;
 }
 
-.v-btn--floating .v-btn__content :not(:only-child):last-child {
+.v-btn--floating .v-btn__content > :not(:only-child):last-child {
   opacity: 0;
   -webkit-transform: rotate(-45deg);
   transform: rotate(-45deg);
 }
 
-.v-btn--floating .v-btn__content :not(:only-child):first-child,
-.v-btn--floating .v-btn__content :not(:only-child):last-child {
+.v-btn--floating .v-btn__content > :not(:only-child):first-child,
+.v-btn--floating .v-btn__content > :not(:only-child):last-child {
   -webkit-backface-visibility: hidden;
   position: absolute;
   left: 0;
   top: 0;
 }
 
-.v-btn--floating.v-btn--active .v-btn__content :not(:only-child):first-child {
+.v-btn--floating.v-btn--active .v-btn__content > :not(:only-child):first-child {
   opacity: 0;
   -webkit-transform: rotate(45deg);
   transform: rotate(45deg);
 }
 
-.v-btn--floating.v-btn--active .v-btn__content :not(:only-child):last-child {
+.v-btn--floating.v-btn--active .v-btn__content > :not(:only-child):last-child {
   opacity: 1;
   -webkit-transform: rotate(0);
   transform: rotate(0);
@@ -12735,6 +12739,10 @@ table.v-table tfoot tr td {
   pointer-events: none;
 }
 
+.v-tooltip__content--fixed {
+  position: fixed;
+}
+
 @media only screen and (max-width: 959px) {
   .v-tooltip .v-tooltip__content {
     padding: 10px 16px;
@@ -12820,7 +12828,7 @@ table.v-table tfoot tr td {
 .v-treeview-node__root {
   display: flex;
   align-items: center;
-  height: 34px;
+  min-height: 34px;
 }
 
 .v-treeview-node__content {

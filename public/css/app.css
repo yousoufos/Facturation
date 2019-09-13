@@ -1,7 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Nunito);@import url(https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons);@charset "UTF-8";
 
 /*!
-* Vuetify v1.5.11
+* Vuetify v1.5.15
 * Forged by John Leider
 * Released under the MIT License.
 */
@@ -4852,6 +4852,7 @@ p {
 }
 
 .v-text-field--outline .v-text-field__prefix {
+  margin-top: 22px;
   max-height: 32px;
 }
 
@@ -8080,6 +8081,11 @@ p {
   background-color: rgba(0, 0, 0, 0.12) !important;
 }
 
+.theme--light.v-overflow-btn.v-text-field--outline .v-input__control:before,
+.theme--light.v-overflow-btn.v-text-field--outline .v-input__slot:before {
+  background-color: transparent !important;
+}
+
 .theme--light.v-overflow-btn--editable.v-input--is-focused .v-input__append-inner,
 .theme--light.v-overflow-btn--editable.v-select--is-menu-active .v-input__append-inner,
 .theme--light.v-overflow-btn--editable:hover .v-input__append-inner,
@@ -8096,6 +8102,11 @@ p {
 .theme--dark.v-overflow-btn .v-input__control:before,
 .theme--dark.v-overflow-btn .v-input__slot:before {
   background-color: hsla(0, 0%, 100%, 0.12) !important;
+}
+
+.theme--dark.v-overflow-btn.v-text-field--outline .v-input__control:before,
+.theme--dark.v-overflow-btn.v-text-field--outline .v-input__slot:before {
+  background-color: transparent !important;
 }
 
 .theme--dark.v-overflow-btn--editable.v-input--is-focused .v-input__append-inner,
